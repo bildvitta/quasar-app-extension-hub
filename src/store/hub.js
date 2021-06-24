@@ -1,11 +1,19 @@
 import Vue from 'vue'
 import { LocalStorage } from 'quasar'
 
+function isString (string) {
+  return typeof string === 'string'
+}
+
+function hasString (string) {
+  return string && isString(string)
+}
+
 // Get the same Axios instance of application.
 const axios = Vue.prototype.$axios
 
 function setAuthorizationHeader (accessToken) {
-  if (accessToken && typeof accessToken === 'string') {
+  if (hasString(accessToken)) {
     axios.defaults.headers = { Authorization: `Bearer ${accessToken}` }
   } else {
     delete axios.defaults.headers.Authorization
@@ -24,6 +32,7 @@ const stateData = {
 
 const getters = {
   accessToken: state => state.accessToken,
+  hasAccessToken: state => hasString(state.accessToken),
   user: state => state.user,
   userPermissions: state => state.user.userPermissions
 }

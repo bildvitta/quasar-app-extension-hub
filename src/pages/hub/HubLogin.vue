@@ -1,0 +1,59 @@
+<template>
+  <div>
+    <div v-if="isLoading" class="text-center">
+      <q-spinner size="3em" />
+      <p class="q-mt-lg">Contactando servidor de autenticação...</p>
+    </div>
+
+    <q-banner v-else class="bg-red-1 text-red" inline-actions rounded>
+      {{ errorMessage }}
+
+      <template v-slot:action>
+        <q-btn color="red" flat label="Tentar novamente" @click="openHub" />
+      </template>
+    </q-banner>
+  </div>
+</template>
+
+<script>
+import { mapActions, mapGetters } from 'vuex'
+
+export default {
+  data () {
+    return {
+      errorMessage: '',
+      isLoading: true
+    }
+  },
+
+  computed: {
+    ...mapGetters('hub', ['hasAccessToken']),
+
+    redirectURL () {
+      return this.$route.query.url
+    }
+  },
+
+  created () {
+    this.openHub()
+  },
+
+  methods: {
+    ...mapActions('hub', ['login']),
+
+    async openHub () {
+      if (this.hasAccessToken) {
+        return this.$router.replace(this.redirectURL || { name: 'Root' })
+      }
+
+      try {
+        const url = await this.login({ url: this.redirectURL })
+        location.href = url
+      } catch (error) {
+        this.errorMessage = 'Erro ao obter o endereço de autenticação.'
+        this.isLoading = false
+      }
+    }
+  }
+}
+</script>
