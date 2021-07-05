@@ -9,8 +9,10 @@ Esta extensão comunica-se apenas com a aplicação servidor diretamente ligada 
 | Endpoint | Método | Parâmetros | Retorno | Descrição |
 |----------|--------|------------|---------|-----------|
 | `/users/me` | `GET` | | `{ user: { ... } }` | Busca os dados do usuário autenticado. |
+| `/auth/callback` | `GET` | `code` e `state`: Chaves do Hub. | `{ accessToken: '...' }` | Irá retornar o JWT. |
 | `/auth/login` | `GET` | `url`: Endereço de _callback_. | `{ loginUrl: '...' }` | Busca o endereço de autenticação. |
 | `/auth/logout` | `GET` | `url`: Endereço de _callback_. | `{ logoutUrl: '...' }` | Busca o endereço de desconexão. |
+| `/auth/refresh` | `GET` | | `{ accessToken: '...' }` | Irá retornar um novo JWT. |
 
 ## Instalação
 

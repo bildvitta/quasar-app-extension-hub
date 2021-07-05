@@ -56,6 +56,20 @@ const actions = {
     commit('replaceUser')
   },
 
+  async callback ({ commit }, { code, state } = {}) {
+    try {
+      const { data } = await axios.get('/auth/callback', {
+        params: { code, state }
+      })
+
+      commit('replaceAccessToken', data.accessToken)
+      return data
+    } catch (error) {
+      commit('replaceAccessToken')
+      throw error
+    }
+  },
+
   async getUser ({ commit }) {
     try {
       const { data } = await axios.get('/users/me')
@@ -82,6 +96,18 @@ const actions = {
     })
 
     return data.logoutUrl
+  },
+
+  async refresh ({ commit, getters }) {
+    try {
+      const { data } = await axios.get('/auth/refresh')
+  
+      commit('replaceAccessToken', data.accessToken)
+      return data
+    } catch (error) {
+      commit('replaceAccessToken')
+      throw error
+    }
   },
 
   setAccessToken ({ commit }, accessToken) {

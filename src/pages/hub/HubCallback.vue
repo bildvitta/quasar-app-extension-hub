@@ -2,14 +2,14 @@
   <div>
     <div v-if="isLoading" class="text-center">
       <q-spinner size="3em" />
-      <p class="q-mt-lg">Contactando servidor de autenticação...</p>
+      <p class="q-mt-lg">Validando...</p>
     </div>
 
     <q-banner v-else class="bg-red-1 text-red" inline-actions rounded>
       {{ errorMessage }}
 
       <template v-slot:action>
-        <q-btn color="red" flat label="Tentar novamente" @click="openHub" />
+        <q-btn color="red" flat label="Tentar novamente" @click="callback" />
       </template>
     </q-banner>
   </div>
@@ -29,34 +29,43 @@ export default {
   computed: {
     ...mapGetters('hub', ['hasAccessToken']),
 
+    hasSession () {
+      return this.session.code && this.session.state
+    },
+
+    session () {
+      const { code, state } = this.$route.query
+      return { code, state }
+    },
+
     redirectURL () {
       return this.$route.query.url
     }
   },
 
   created () {
-    this.openHub()
+    this.callback()
   },
 
   methods: {
-    ...mapActions('hub', ['login', 'refresh']),
+    ...mapActions('hub', ['callback']),
 
-    async openHub () {
+    async callback () {
       this.errorMessage = ''
       this.isLoading = true
 
-      if (this.hasAccessToken) {
-        try {
-          await this.refresh()
-          return this.$router.replace(this.redirectURL || { name: 'Root' })
-        } catch (error) {}
-      }
-
       try {
-        const url = await this.login({ url: this.redirectURL })
-        location.href = url
+        if (!this.hasSession) {
+          return this.$router.replace({
+            name: 'HubLogin',
+            query: { url: this.redirectURL }
+          })
+        }
+
+        await this.callback(this.session)
+        this.$router.replace(this.redirectURL || '/')
       } catch (error) {
-        this.errorMessage = 'Erro ao obter o endereço de autenticação.'
+        this.errorMessage = 'Erro ao validar sessão.'
         this.isLoading = false
       }
     }

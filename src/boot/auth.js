@@ -37,6 +37,11 @@ export default async ({ router, store, Vue }) => {
 
     children: [
       {
+        name: 'HubCallback',
+        path: '/auth/callback',
+        component: () => import('../pages/hub/HubCallback.vue')
+      },
+      {
         name: 'HubLogin',
         path: '/auth/login',
         component: () => import('../pages/hub/HubLogin.vue')
@@ -51,12 +56,6 @@ export default async ({ router, store, Vue }) => {
         path: '/auth/logged-out',
         component: () => import('../pages/hub/HubLoggedOut.vue')
       }
-      
-      // {
-      //   name: 'AuthValidate',
-      //   path: '/auth/validate',
-      //   component: () => import('../pages/hub/AuthValidate.vue')
-      // }
     ]
   })
 
