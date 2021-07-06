@@ -7,9 +7,6 @@ export default async ({ router, store, Vue }) => {
   // Store
   store.registerModule('hub', hubModule)
 
-  // Token
-  const hasAccessToken = store.getters['hub/hasAccessToken']
-
   // Status
   axios.defaults.validateStatus = status => {
     // Unauthorized
@@ -67,6 +64,9 @@ export default async ({ router, store, Vue }) => {
     if (!requiresAuth) {
       return next()
     }
+
+    // Token
+    const hasAccessToken = store.getters['hub/hasAccessToken']
 
     // Is user authenticated?
     return next(hasAccessToken ? true : {

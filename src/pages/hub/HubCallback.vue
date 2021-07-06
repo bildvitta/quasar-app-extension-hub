@@ -9,7 +9,7 @@
       {{ errorMessage }}
 
       <template v-slot:action>
-        <q-btn color="red" flat label="Tentar novamente" @click="callback" />
+        <q-btn color="red" flat label="Tentar novamente" @click="authorize" />
       </template>
     </q-banner>
   </div>
@@ -34,8 +34,8 @@ export default {
     },
 
     session () {
-      const { code, state } = this.$route.query
-      return { code, state }
+      const { url, ...session } = this.$route.query
+      return session
     },
 
     redirectURL () {
@@ -44,13 +44,13 @@ export default {
   },
 
   created () {
-    this.callback()
+    this.authorize()
   },
 
   methods: {
     ...mapActions('hub', ['callback']),
 
-    async callback () {
+    async authorize () {
       this.errorMessage = ''
       this.isLoading = true
 
