@@ -27,11 +27,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters('hub', ['hasAccessToken']),
-
-    redirectURL () {
-      return this.$route.query.url
-    }
+    ...mapGetters('hub', ['hasAccessToken'])
   },
 
   created () {
@@ -47,7 +43,8 @@ export default {
       }
 
       try {
-        const url = await this.logout({ url: this.redirectURL })
+        // E se der 401?
+        const url = await this.logout({ url: '/auth/logged-out' })
         this.clear()
         location.href = url
       } catch (error) {
