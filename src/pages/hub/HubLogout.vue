@@ -27,7 +27,11 @@ export default {
   },
 
   computed: {
-    ...mapGetters('hub', ['hasAccessToken'])
+    ...mapGetters('hub', ['hasAccessToken']),
+
+    redirectURL () {
+      return this.$route.query.url
+    }
   },
 
   created () {
@@ -35,7 +39,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('hub', ['logout']),
+    ...mapActions('hub', ['clear', 'logout']),
 
     async openHub () {
       if (!this.hasAccessToken) {
@@ -44,6 +48,7 @@ export default {
 
       try {
         const url = await this.logout({ url: this.redirectURL })
+        this.clear()
         location.href = url
       } catch (error) {
         this.errorMessage = 'Erro ao desconectar.'

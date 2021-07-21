@@ -3,18 +3,30 @@ import hubModule from '../store/hub.js'
 export default async ({ router, store, Vue }) => {
   const asteroid = Vue.prototype.$qas
   const axios = Vue.prototype.$axios
+  const quasar = Vue.prototype.$q
 
   // Store
   store.registerModule('hub', hubModule)
 
   // Status
-  axios.defaults.validateStatus = status => {
+  axios.interceptors.response.use(response => response, async error => {
+    const { status } = error.response
+
     // Unauthorized
     if (status === 401) {
-      asteroid.error('Houve um problema de autenticação. Por gentileza, faça o login novamente.')
-  
-      store.dispatch('hub/clear')
-      router.push({ name: 'Hub' })
+      quasar.loading.show({ message: 'Autenticando...' })
+
+      try {
+        await store.dispatch('hub/refresh')
+        return axios.request(error.config)
+      } catch (error) {
+        asteroid.error('Houve um problema de autenticação. Por gentileza, faça o login novamente.')
+
+        store.dispatch('hub/clear')
+        router.push({ name: 'HubLogin' })
+      }
+
+      quasar.loading.hide()
     }
 
     // Forbidden
@@ -22,8 +34,8 @@ export default async ({ router, store, Vue }) => {
       asteroid.error('Você não tem permissão para acessar este recurso.')
     }
 
-    return status >= 200 && status < 300
-  }
+    return Promise.reject(error)
+  })
 
   // Routes
   router.addRoute({
