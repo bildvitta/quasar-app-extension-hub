@@ -17,6 +17,10 @@ export default async ({ router, store, Vue }) => {
       quasar.loading.show({ message: 'Autenticando...' })
 
       try {
+        if (error.config.url.endsWith('/auth/refresh')) {
+          throw error
+        }
+
         await store.dispatch('hub/refresh')
         quasar.loading.hide()
 

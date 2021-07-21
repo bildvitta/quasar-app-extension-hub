@@ -43,7 +43,6 @@ export default {
       }
 
       try {
-        // E se der 401?
         const url = await this.logout({ url: '/auth/logged-out' })
         this.clear()
         location.href = url
