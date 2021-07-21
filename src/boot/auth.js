@@ -18,15 +18,17 @@ export default async ({ router, store, Vue }) => {
 
       try {
         await store.dispatch('hub/refresh')
+        quasar.loading.hide()
+
+        delete error.config.headers.Authorization
         return axios.request(error.config)
       } catch (error) {
+        quasar.loading.hide()
         asteroid.error('Houve um problema de autenticação. Por gentileza, faça o login novamente.')
 
         store.dispatch('hub/clear')
         router.push({ name: 'HubLogin' })
       }
-
-      quasar.loading.hide()
     }
 
     // Forbidden
