@@ -74,8 +74,8 @@ const actions = {
     try {
       const { data } = await axios.get('/users/me')
 
-      commit('replaceUser', data.user)
-      return data
+      commit('replaceUser', data.result)
+      return data.result
     } catch (error) {
       commit('replaceUser')
       throw error
