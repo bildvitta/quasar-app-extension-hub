@@ -2,7 +2,8 @@ module.exports = function (api) {
   api.extendQuasarConf(quasar => {
     // Boot
     const boots = [
-      'auth'
+      'auth',
+      'can'
     ]
 
     boots.forEach(boot => quasar.boot.push(`~@bildvitta/quasar-app-extension-hub/src/boot/${boot}.js`))

@@ -14,6 +14,23 @@ Esta extensão comunica-se apenas com a aplicação servidor diretamente ligada 
 | `/auth/logout` | `GET` | `url`: Endereço de _callback_. | `{ logoutUrl: '...' }` | Busca o endereço de desconexão. |
 | `/auth/refresh` | `GET` | | `{ accessToken: '...' }` | Irá retornar um novo JWT. |
 
+## Funções
+
+Esta extensão também verifica se o usuário possui ou não permissões para visualizar o conteúdo com a função `$can`
+A função verifica no retorno do usuário logado, se ele possui ou não privilegios atrelados à chamada do `/me` salvo na storage
+
+`$can('permissionName.permissionAction', 'id')`
+
+`permissionName` = Nome da permissão em questão
+`permissionAction` = Ação da permissão
+`id` = Chave única da entidade (não obrigatório), necessário quando existe a verificação de um item especifico
+
+ex.: `$can('realState.create')` -> Verifica se o usuário possui permissões de criação de empreendimento
+ex. 2: `$can('realState.show`, realStateId)` -> Verifica se o usuário possui permissão para ver o empreendimento de id `realStateId`
+
+Obs.: Caso o usuário tenha permissões de verificar `todas as entidades`, ele terá um wildcard `*`.
+Obs. 2: Essa função também verifica se o usuário é superuser, caso positivo, ira retornar sempre `true`
+
 ## Instalação
 
 Entre no diretório do seu projeto Quasar e execute o comando:
