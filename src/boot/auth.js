@@ -57,11 +57,6 @@ export default async ({ router, store, Vue }) => {
         component: () => import('../pages/hub/HubCallback.vue')
       },
       {
-        name: 'HubRefused',
-        path: '/auth/refused',
-        component: () => import('../pages/hub/HubRefused.vue')
-      },
-      {
         name: 'HubLogin',
         path: '/auth/login',
         component: () => import('../pages/hub/HubLogin.vue')
@@ -75,6 +70,11 @@ export default async ({ router, store, Vue }) => {
         name: 'HubLoggedOut',
         path: '/auth/logged-out',
         component: () => import('../pages/hub/HubLoggedOut.vue')
+      },
+      {
+        name: 'HubRefused',
+        path: '/auth/refused',
+        component: () => import('../pages/hub/HubRefused.vue')
       }
     ]
   })

@@ -1,6 +1,6 @@
 <template>
   <q-banner class="bg-red-1 text-red" inline-actions rounded>
-    Você não autorizou os acessos aos seus dados, infelizmente não podemos continuar
+    Você não autorizou o acessos aos seus dados.
 
     <template v-slot:action>
       <q-btn color="red" flat label="Tentar novamente" @click="login" />
