@@ -40,6 +40,10 @@ export default {
 
     redirectURL () {
       return this.$route.query.url
+    },
+
+    hasError () {
+      return this.$route.query.error
     }
   },
 
@@ -55,6 +59,10 @@ export default {
       this.isLoading = true
 
       try {
+        if (this.hasError === 'access_denied') {
+          return this.$router.replace({ name: 'HubRefused' })
+        } 
+
         if (!this.hasSession) {
           return this.$router.replace({
             name: 'HubLogin',
