@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Changelog
+- Created event to get token in application.
 
 ## [1.3.0] - 2021-07-28
 ### Added
