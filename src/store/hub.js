@@ -12,9 +12,15 @@ function hasString (string) {
 // Get the same Axios instance of application.
 const axios = Vue.prototype.$axios
 
+
+function postMessage (type, payload) {
+  window.postMessage({ type, ...payload })
+}
+
 function setAuthorizationHeader (accessToken) {
   if (hasString(accessToken)) {
     axios.defaults.headers = { Authorization: `Bearer ${accessToken}` }
+    postMessage('updateAccessToken', { accessToken })
   } else {
     delete axios.defaults.headers.Authorization
   }
@@ -23,6 +29,13 @@ function setAuthorizationHeader (accessToken) {
 // Revive access token from cache.
 const accessToken = LocalStorage.getItem('accessToken') || ''
 setAuthorizationHeader(accessToken)
+
+// Listen access token requests.
+window.addEventListener('message', ({ data }) => {
+  if (data.type !== 'requestAccessToken') return
+
+  postMessage('responseAccessToken', { accessToken: stateData.accessToken })
+})
 
 // Vuex module.
 const stateData = {
