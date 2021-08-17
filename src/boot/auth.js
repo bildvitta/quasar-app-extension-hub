@@ -79,14 +79,6 @@ export default async ({ router, store, Vue }) => {
     ]
   })
 
-    // Callback events
-    const eventsSent = { token: false }
-    const createTokenEvent = token => {
-      const event = new CustomEvent('setAccessToken', { detail: { token } })
-      window.dispatchEvent(event)
-      eventsSent.token = true
-    }
-
   // Requires auth?
   router.beforeEach(async (to, from, next) => {
     // Routes that does not requires authentication.
@@ -98,12 +90,6 @@ export default async ({ router, store, Vue }) => {
 
     // Token
     const hasAccessToken = store.getters['hub/hasAccessToken']
-    const accessToken = store.getters['hub/accessToken']
-
-    // Call events
-    if (hasAccessToken && !eventsSent.token) {
-      createTokenEvent(accessToken)
-    }
 
     // Is user authenticated?
     return next(hasAccessToken ? true : {
