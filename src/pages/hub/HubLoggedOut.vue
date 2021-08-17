@@ -12,6 +12,12 @@
 import { mapGetters } from 'vuex'
 
 export default {
+  meta () {
+    return {
+      title: 'Desconectado'
+    }
+  },
+
   computed: {
     ...mapGetters('hub', ['hasAccessToken'])
   },

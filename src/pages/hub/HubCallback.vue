@@ -26,6 +26,12 @@ export default {
     }
   },
 
+  meta () {
+    return {
+      title: 'Validando...'
+    }
+  },
+
   computed: {
     ...mapGetters('hub', ['hasAccessToken']),
 

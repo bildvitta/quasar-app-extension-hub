@@ -26,6 +26,12 @@ export default {
     }
   },
 
+  meta () {
+    return {
+      title: 'Desconectando...'
+    }
+  },
+
   computed: {
     ...mapGetters('hub', ['hasAccessToken'])
   },

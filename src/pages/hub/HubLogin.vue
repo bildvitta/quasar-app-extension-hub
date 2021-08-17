@@ -26,6 +26,12 @@ export default {
     }
   },
 
+  meta () {
+    return {
+      title: 'Contactando servidor de autenticação...'
+    }
+  },
+
   computed: {
     ...mapGetters('hub', ['hasAccessToken']),
 
