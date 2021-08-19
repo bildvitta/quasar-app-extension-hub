@@ -14,7 +14,7 @@ import { mapGetters } from 'vuex'
 export default {
   meta () {
     return {
-      title: 'Autorização'
+      title: 'Autorização negada'
     }
   },
 
