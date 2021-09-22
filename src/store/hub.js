@@ -34,7 +34,13 @@ setAuthorizationHeader(accessToken)
 window.addEventListener('message', ({ data }) => {
   if (data.type !== 'requestAccessToken') return
 
-  postMessage('responseAccessToken', { accessToken: stateData.accessToken })
+  if (data.type === 'requestAccessToken') {
+    postMessage('responseAccessToken', { accessToken: stateData.accessToken })
+  }
+
+  if (data.type === 'requestUser') {
+    postMessage('responseUser', { user: stateData.user })
+  }
 })
 
 // Vuex module.
@@ -60,6 +66,7 @@ const mutations = {
   replaceUser (state, user = {}) {
     LocalStorage.set('user', user)
     state.user = user
+    postMessage('updateUser', { user })
   }
 }
 
