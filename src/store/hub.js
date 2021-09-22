@@ -32,8 +32,6 @@ setAuthorizationHeader(accessToken)
 
 // Listen access token requests.
 window.addEventListener('message', ({ data }) => {
-  if (data.type !== 'requestAccessToken') return
-
   if (data.type === 'requestAccessToken') {
     postMessage('responseAccessToken', { accessToken: stateData.accessToken })
   }
