@@ -19,7 +19,7 @@ function postMessage (type, payload) {
 
 function setAuthorizationHeader (accessToken) {
   if (hasString(accessToken)) {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
+    axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`
     postMessage('updateAccessToken', { accessToken })
   } else {
     delete axios.defaults.headers.Authorization
