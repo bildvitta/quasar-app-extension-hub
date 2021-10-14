@@ -22,7 +22,7 @@ function setAuthorizationHeader (accessToken) {
     axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`
     postMessage('updateAccessToken', { accessToken })
   } else {
-    delete axios.defaults.headers.Authorization
+    delete axios.defaults.headers.common.Authorization
   }
 }
 
