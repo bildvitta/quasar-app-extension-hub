@@ -128,7 +128,7 @@ const actions = {
     }
   },
 
-  async getUserMeUrl (context) {
+  async getUserMeURL () {
     try {
       const { data } = await axios.get('/users/me/edit')
       return data

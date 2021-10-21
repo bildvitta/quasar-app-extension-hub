@@ -45,7 +45,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('hub', ['getUserMeUrl']),
+    ...mapActions('hub', ['getUserMeURL']),
 
     login () {
       this.$router.replace({ name: 'Hub' })
@@ -60,9 +60,9 @@ export default {
       }
 
       try {
-        const { redirect } = await this.getUserMeUrl()
+        const { redirect } = await this.getUserMeURL()
         location.href = `${redirect}?from=${this.backURL}`
-      } catch (error) {
+      } catch {
         this.errorMessage = 'Erro ao receber url de retorno.'
         this.isLoading = false
       }
