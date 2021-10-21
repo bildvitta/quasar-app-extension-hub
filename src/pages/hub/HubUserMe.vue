@@ -63,7 +63,7 @@ export default {
         const { redirect } = await this.getUserMeUrl()
         location.href = `${redirect}?from=${this.backURL}`
       } catch (error) {
-        this.errorMessage = 'Erro ao validar sessão.'
+        this.errorMessage = 'Erro ao receber url de retorno.'
         this.isLoading = false
       }
     }
