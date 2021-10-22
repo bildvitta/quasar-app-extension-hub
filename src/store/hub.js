@@ -128,6 +128,15 @@ const actions = {
     }
   },
 
+  async getUserMeURL () {
+    try {
+      const { data } = await axios.get('/users/me/edit')
+      return data
+    } catch (error) {
+      throw error
+    }
+  },
+
   setAccessToken ({ commit }, accessToken) {
     commit('replaceAccessToken', accessToken)
   },

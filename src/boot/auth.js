@@ -75,6 +75,11 @@ export default async ({ router, store, Vue }) => {
         name: 'HubRefused',
         path: '/auth/refused',
         component: () => import('../pages/hub/HubRefused.vue')
+      },
+      {
+        name: 'HubUserEdit',
+        path: '/me',
+        component: () => import('../pages/hub/HubUserMe.vue')
       }
     ]
   })
