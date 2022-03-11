@@ -1,9 +1,9 @@
 import hubModule from '../store/hub.js'
 
-export default async ({ router, store, Vue }) => {
-  const asteroid = Vue.prototype.$qas
-  const axios = Vue.prototype.$axios
-  const quasar = Vue.prototype.$q
+export default async ({ router, store, app }) => {
+  const asteroid = app.config.globalProperties.$qas
+  const axios = app.config.globalProperties.$axios
+  const quasar = app.config.globalProperties.$q
 
   // Store
   store.registerModule('hub', hubModule)

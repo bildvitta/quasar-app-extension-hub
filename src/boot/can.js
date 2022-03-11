@@ -1,4 +1,4 @@
-export default async ({ Vue, store }) => {
+export default async ({ app, store }) => {
   function can (permission, entity) {
     try {
       const { isSuperuser, userPermissions } = store.getters['hub/user']
@@ -19,5 +19,5 @@ export default async ({ Vue, store }) => {
     }
   }
 
-  Vue.prototype.$can = can
+  app.config.globalProperties.$can = can
 }

@@ -1,5 +1,5 @@
-import Vue from 'vue'
 import { LocalStorage } from 'quasar'
+import axios from 'axios'
 
 function isString (string) {
   return typeof string === 'string'
@@ -8,10 +8,6 @@ function isString (string) {
 function hasString (string) {
   return string && isString(string)
 }
-
-// Get the same Axios instance of application.
-const axios = Vue.prototype.$axios
-
 
 function postMessage (type, payload) {
   window.postMessage({ type, ...payload })
@@ -116,7 +112,7 @@ const actions = {
     return data.logoutUrl
   },
 
-  async refresh ({ commit, getters }) {
+  async refresh ({ commit }) {
     try {
       const { data } = await axios.get('/auth/refresh')
   

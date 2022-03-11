@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0-beta.1] - 11-03-2022
 
-> :warning: Nesta versão existem **Breaking Changes** pelo fato da troca de versão do vue, porém não há nenhuma alteração no código, e ela continua funcionando da mesma forma que a v1.
+> :warning: Nesta versão existem **Breaking Changes** pelo fato da troca de versão do vue, porém não há **nenhuma alteração em como utilizar** esta extensão.
 
 ### Modificado
 - Modificado arquivos que usam variaveis globais do vue de acordo com a versão do vue v2, agora usam de acordo com a v3.
