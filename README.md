@@ -35,6 +35,7 @@ Através do vuex podemos ter acesso às informações do usuário logado:
 - callback
 - getUser
 - login
+- logout
 - refresh
 - getUserMeURL
 - setAccessToken
