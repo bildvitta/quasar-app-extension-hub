@@ -95,6 +95,12 @@ export default async ({ router, store, Vue }) => {
 
     // Token
     const hasAccessToken = store.getters['hub/hasAccessToken']
+    const hasUser = store.getters['hub/hasUser']
+
+    // get user before enter on application
+    if (hasAccessToken && (hasUser || !from.name)) {
+      await store.dispatch('hub/getUser')
+    }
 
     // Is user authenticated?
     return next(hasAccessToken ? true : {

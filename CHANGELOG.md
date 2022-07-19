@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.9.0] - 2022-07-19
+### Added
+- Added new getter `hasUser`.
+- Added validation on `router.beforeEach` to call `getUser` before entering the application.
+
 ## [1.8.0] - 2021-10-21
 ### Added
 - Creating redirect edit the logged user (hub/me)
