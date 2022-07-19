@@ -50,7 +50,7 @@ const stateData = {
 const getters = {
   accessToken: state => state.accessToken,
   hasAccessToken: state => hasString(state.accessToken),
-  hasUser: state => !!Object.keys(state.user),
+  hasUser: state => !!Object.keys(state.user).length,
   user: state => state.user,
   userPermissions: state => state.user.userPermissions
 }
