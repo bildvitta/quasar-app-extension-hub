@@ -98,7 +98,7 @@ export default async ({ router, store, app }) => {
     const hasUser = store.getters['hub/hasUser']
 
     // get user before enter on application
-    if (hasAccessToken && (hasUser || !from.name)) {
+    if (hasAccessToken && (!hasUser || !from.name)) {
       await store.dispatch('hub/getUser')
     }
 
