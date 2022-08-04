@@ -68,7 +68,7 @@ Obs. 2: Essa função também verifica se o usuário é superuser, caso positivo
 Entre no diretório do seu projeto Quasar e execute o comando:
 
 ```bash
-$ quasar ext add @bildvitta/hub
+$ quasar ext add @bildvitta/hub@1
 ```
 
 Simples assim.
