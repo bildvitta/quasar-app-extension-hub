@@ -1,6 +1,6 @@
 # Quasar App Extension Hub
 
-Adiciona integração com o Hub de autenticação.
+Adiciona integração com o Hub de autenticação. Compatível com quasar v2, para o quasar v1 clique [aqui](https://github.com/bildvitta/quasar-app-extension-hub/tree/version-1).
 
 ## Endpoints
 
