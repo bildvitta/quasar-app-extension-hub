@@ -6,6 +6,8 @@ module.exports = function (api) {
       'can'
     ]
 
+    api.compatibleWith('axios', '>=0.21.1')
+
     boots.forEach(boot => quasar.boot.push(`~@bildvitta/quasar-app-extension-hub/src/boot/${boot}.js`))
 
     // Plugins
