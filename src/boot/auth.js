@@ -1,6 +1,6 @@
 import hubModule from '../store/hub.js'
 
-export default async ({ router, store, app }) => {
+export default async ({ router, store, app, Vue }) => {
   const isLatestQuasar = !Vue
 
   const asteroid = isLatestQuasar ? app.config.globalProperties.$qas : Vue.prototype.$qas
