@@ -19,5 +19,9 @@ export default async ({ app, store }) => {
     }
   }
 
-  app.config.globalProperties.$can = can
+  if (isLatestQuasar) {
+    app.config.globalProperties.$can = can
+  } else {
+    Vue.prototype.$can = can
+  }
 }
