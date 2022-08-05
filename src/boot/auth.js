@@ -5,7 +5,7 @@ export default async ({ router, store, app }) => {
 
   const asteroid = isLatestQuasar ? app.config.globalProperties.$qas : Vue.prototype.$qas
   const axios = isLatestQuasar ? app.config.globalProperties.$axios : Vue.prototype.$axios
-  const quasar = isLatestQuasar ? app.config.globalProperties.$q : Vue.prototype.$axios
+  const quasar = isLatestQuasar ? app.config.globalProperties.$q : Vue.prototype.$q
 
   const notifyError = message => {
     return asteroid
