@@ -1,4 +1,6 @@
-export default async ({ app, store }) => {
+export default async ({ app, store, Vue }) => {
+  const isLatestQuasar = !Vue
+
   function can (permission, entity) {
     try {
       const { isSuperuser, userPermissions } = store.getters['hub/user']
