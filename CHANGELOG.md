@@ -2,6 +2,13 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
+## [2.1.0] - 09-08-2022
+Versão estável lançada.
+
+### Adicionado
+- Adicionado suporte para vue 2 com quasar 1.
+- Adicionado suporte para notify sem ter `Asteroid` instalado.
+
 ## [2.1.0.beta.2] - 05-08-2022
 ### Corrigido
 - `auth.js`: adicionado `Vue`no parâmetro.
