@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { getGetter, getAction } from '../../helpers/store-handler.js'
 
 export default {
   data () {
@@ -33,7 +33,9 @@ export default {
   },
 
   computed: {
-    ...mapGetters('hub', ['hasAccessToken']),
+    hasAccessToken () {
+      return getGetter.call(this, { entity: 'hub', key: 'hasAccessToken' })
+    },
 
     backURL () {
       return this.$route.query.from
@@ -45,8 +47,6 @@ export default {
   },
 
   methods: {
-    ...mapActions('hub', ['getUserMeURL']),
-
     login () {
       this.$router.replace({ name: 'Hub' })
     },
@@ -60,7 +60,12 @@ export default {
       }
 
       try {
-        const { redirect } = await this.getUserMeURL()
+        const { redirect } = await getAction.call(this, {
+          entity: 'hub',
+          key: 'getUserMeURL'
+        })
+
+        // const { redirect } = await this.getUserMeURL()
         location.href = `${redirect}?from=${this.backURL}`
       } catch {
         this.errorMessage = 'Erro ao receber url de retorno.'

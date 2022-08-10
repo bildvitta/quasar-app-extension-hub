@@ -9,9 +9,11 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { getGetter } from '../../helpers/store-handler.js'
 
 export default {
+  name: 'HubRefused',
+
   meta () {
     return {
       title: 'Autorização negada'
@@ -19,7 +21,9 @@ export default {
   },
 
   computed: {
-    ...mapGetters('hub', ['hasAccessToken'])
+    hasAccessToken () {
+      return getGetter.call(this, { entity: 'hub', key: 'hasAccessToken' })
+    }
   },
 
   created () {

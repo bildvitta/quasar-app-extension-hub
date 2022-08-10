@@ -16,9 +16,11 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { getAction } from '../../helpers/store-handler.js'
 
 export default {
+  name: 'HubCallback',
+
   data () {
     return {
       errorMessage: '',
@@ -33,8 +35,6 @@ export default {
   },
 
   computed: {
-    ...mapGetters('hub', ['hasAccessToken']),
-
     hasError () {
       return this.session.error === 'access_denied'
     },
@@ -58,8 +58,6 @@ export default {
   },
 
   methods: {
-    ...mapActions('hub', ['callback']),
-
     async authorize () {
       this.errorMessage = ''
       this.isLoading = true
@@ -76,7 +74,13 @@ export default {
           })
         }
 
-        await this.callback(this.session)
+        await getAction.call(this, {
+          entity: 'hub',
+          key: 'callback',
+          payload: this.session
+        })
+
+        // await this.callback(this.session)
         this.$router.replace(this.redirectURL || '/')
       } catch (error) {
         this.errorMessage = 'Erro ao validar sessão.'

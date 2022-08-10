@@ -1,5 +1,11 @@
 import { LocalStorage } from 'quasar'
 import axios from 'axios'
+import handleProcess from '../helpers/handle-process'
+import getState from '../helpers/get-state'
+import getActionPayload from '../helpers/get-action-payload'
+
+const storeAdapter = handleProcess(() => process.env.STORE_ADAPTER, 'vuex')
+const isPinia = storeAdapter === 'pinia'
 
 function isString (string) {
   return typeof string === 'string'
@@ -22,6 +28,24 @@ function setAuthorizationHeader (accessToken) {
   }
 }
 
+// mutations functions
+function replaceAccessToken (accessToken = '') {
+  setAuthorizationHeader(accessToken)
+  LocalStorage.set('accessToken', accessToken)
+
+  const state = getState.call(this, { isPinia, resource: 'hub' })
+  state.accessToken = accessToken
+}
+
+function replaceUser (user = {}) {
+  LocalStorage.set('user', user)
+
+  const state = getState.call(this, { isPinia, resource: 'hub' })
+  state.user = user
+
+  postMessage('updateUser', { user })
+}
+
 // Revive access token from cache.
 const accessToken = LocalStorage.getItem('accessToken') || ''
 setAuthorizationHeader(accessToken)
@@ -37,67 +61,57 @@ window.addEventListener('message', ({ data }) => {
   }
 })
 
-// Vuex module.
-const stateData = {
-  accessToken,
-  user: LocalStorage.getItem('user') || {}
-}
-
-const getters = {
-  accessToken: state => state.accessToken,
-  hasAccessToken: state => hasString(state.accessToken),
-  hasUser: state => !!Object.keys(state.user).length,
-  user: state => state.user,
-  userPermissions: state => state.user.userPermissions
-}
-
-const mutations = {
-  replaceAccessToken (state, accessToken = '') {
-    setAuthorizationHeader(accessToken)
-    LocalStorage.set('accessToken', accessToken)
-    state.accessToken = accessToken
-  },
-
-  replaceUser (state, user = {}) {
-    LocalStorage.set('user', user)
-    state.user = user
-    postMessage('updateUser', { user })
+// Vuex | Pinia module.
+const stateData = () => {
+  return {
+    accessToken,
+    user: LocalStorage.getItem('user') || {}
   }
 }
 
+const getters = {
+  hasAccessToken: state => hasString(state.accessToken),
+  hasUser: state => !!Object.keys(state.user).length,
+  userPermissions: state => state.user.userPermissions
+}
+
 const actions = {
-  clear ({ commit }) {
-    commit('replaceAccessToken')
-    commit('replaceUser')
+  clear () {
+    replaceAccessToken.call(this)
+    replaceUser.call(this)
   },
 
-  async callback ({ commit }, { code, state } = {}) {
+  async callback (...args) {
+    const { code, state } = getActionPayload(isPinia, ...args)
+
     try {
       const { data } = await axios.get('/auth/callback', {
         params: { code, state }
       })
 
-      commit('replaceAccessToken', data.accessToken)
+      replaceAccessToken.call(this, data.accessToken)
       return data
     } catch (error) {
-      commit('replaceAccessToken')
+      replaceAccessToken.call(this)
       throw error
     }
   },
 
-  async getUser ({ commit }) {
+  async getUser () {
     try {
       const { data } = await axios.get('/users/me')
 
-      commit('replaceUser', data.result)
+      replaceUser.call(this, data.result)
       return data.result
     } catch (error) {
-      commit('replaceUser')
+      replaceUser.call(this)
       throw error
     }
   },
 
-  async login (context, { url } = {}) {
+  async login (...args) {
+    const { url } = getActionPayload(isPinia, ...args)
+
     const { data } = await axios.get('/auth/login', {
       params: { url }
     })
@@ -105,7 +119,9 @@ const actions = {
     return data.loginUrl
   },
 
-  async logout ({ commit }, { url } = {}) {
+  async logout (...args) {
+    const { url } = getActionPayload(isPinia, ...args)
+
     const { data } = await axios.get('/auth/logout', {
       params: { url }
     })
@@ -113,14 +129,14 @@ const actions = {
     return data.logoutUrl
   },
 
-  async refresh ({ commit }) {
+  async refresh () {
     try {
       const { data } = await axios.get('/auth/refresh')
-  
-      commit('replaceAccessToken', data.accessToken)
+      
+      replaceAccessToken.call(this, data.accessToken)
       return data
     } catch (error) {
-      commit('replaceAccessToken')
+      replaceAccessToken.call(this)
       throw error
     }
   },
@@ -134,20 +150,21 @@ const actions = {
     }
   },
 
-  setAccessToken ({ commit }, accessToken) {
-    commit('replaceAccessToken', accessToken)
+  setAccessToken (...args) {
+    const accessToken = getActionPayload(isPinia, ...args)
+    replaceAccessToken.call(this, accessToken)
   },
 
-  setUser ({ commit }, user) {
-    commit('replaceUser', user)
+  setUser (...args) {
+    const user = getActionPayload(isPinia, ...args)
+    replaceUser.call(this, user)
   }
 }
 
 export default {
-  namespaced: true,
+  ...(!isPinia && { namespaced: true }),
 
   state: stateData,
   getters,
-  mutations,
   actions
 }

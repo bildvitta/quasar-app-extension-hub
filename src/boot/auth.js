@@ -1,7 +1,13 @@
 import hubModule from '../store/hub.js'
+import handleProcess from '../helpers/handle-process'
+
+import { getState, getAction } from '../helpers/store-handler'
+
+const storeAdapter = handleProcess(() => process.env.STORE_ADAPTER, 'pinia')
 
 export default async ({ router, store, app, Vue }) => {
   const isLatestQuasar = !Vue
+  const isPinia = storeAdapter === 'pinia'
 
   const asteroid = isLatestQuasar ? app.config.globalProperties.$qas : Vue.prototype.$qas
   const axios = isLatestQuasar ? app.config.globalProperties.$axios : Vue.prototype.$axios
@@ -13,8 +19,23 @@ export default async ({ router, store, app, Vue }) => {
       : quasar.notify({ progress: true, color: 'negative', message })
   }
 
-  // Store
-  store.registerModule('hub', hubModule)
+  if (isPinia) {
+    console.log('isPinia', 'ue')
+
+    try {
+      // const defineGlobalPiniaStore = (await import('../plugins/define-global-pinia-store.js')).default
+      const storeName = 'store'
+      const hubStore = (await import(`../${storeName}/pinia-hub-store.js`)).default
+      console.log("🚀 ~ file: auth.js ~ line 30 ~ hubStore", hubStore)
+      // app.use(defineGlobalPiniaStore, { stores: [hubStore()] })
+    } catch {}
+  } else {
+    store.registerModule('hub', hubModule)
+  }
+
+  const globalContext = { $store: store, $piniaStore: app.config.globalProperties.$piniaStore }
+
+  // const getter = getState.call(globalContext, { entity: 'hub', key: 'hasAccessToken' })
 
   // Status
   axios.interceptors.response.use(response => response, async error => {
@@ -29,7 +50,12 @@ export default async ({ router, store, app, Vue }) => {
           throw error
         }
 
-        await store.dispatch('hub/refresh')
+        if (isPinia) {
+          await app.config.globalProperties.$piniaStore.hub.refresh()
+        } else {
+          await store.dispatch('hub/refresh')
+        }
+
         quasar.loading.hide()
 
         delete error.config.headers.Authorization
@@ -38,7 +64,12 @@ export default async ({ router, store, app, Vue }) => {
         quasar.loading.hide()
         notifyError('Houve um problema de autenticação. Por gentileza, faça o login novamente.')
 
-        store.dispatch('hub/clear')
+        if (isPinia) {
+          app.config.globalProperties.$piniaStore.hub.clear()
+        } else {
+          store.dispatch('hub/clear')
+        }
+
         router.push({ name: 'HubLogin' })
       }
     }
