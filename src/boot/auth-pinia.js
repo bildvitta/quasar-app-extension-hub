@@ -1,8 +1,14 @@
 import piniaHubStore from '../store/pinia-hub-store.js'
 import defineGlobalPiniaStore from '../plugins/define-global-pinia-store.js'
-import { getGlobalVariables, interceptAxios, addRoutes, beforeEach } from '../helpers/auth-boot.js'
 
-export default async ({ router, app, Vue }) => {
+import {
+  addRoutes,
+  beforeEach,
+  getGlobalVariables,
+  interceptAxios
+} from '../helpers/auth-boot.js'
+
+export default ({ router, app, Vue }) => {
   const store = piniaHubStore()
 
   const {
@@ -16,6 +22,7 @@ export default async ({ router, app, Vue }) => {
   }
 
   interceptAxios({
+    router,
     quasar,
     asteroid,
     storeConfig: {
@@ -28,8 +35,12 @@ export default async ({ router, app, Vue }) => {
 
   beforeEach({
     router,
-    getUser: store.getUser,
-    hasAccessToken: store.hasAccessToken,
-    hasUser: store.hasUser
+    quasar,
+    asteroid,
+    storeConfig: {
+      getUser: store.getUser,
+      hasAccessToken: store.hasAccessToken,
+      hasUser: store.hasUser
+    }
   })
 }

@@ -3,21 +3,11 @@ import axios from 'axios'
 import handleProcess from '../helpers/handle-process'
 import getState from '../helpers/get-state'
 import getActionPayload from '../helpers/get-action-payload'
+import { hasString } from '../helpers/string'
+import postMessage from '../helpers/post-message'
 
 const storeAdapter = handleProcess(() => process.env.STORE_ADAPTER, 'vuex')
 const isPinia = storeAdapter === 'pinia'
-
-function isString (string) {
-  return typeof string === 'string'
-}
-
-function hasString (string) {
-  return string && isString(string)
-}
-
-function postMessage (type, payload) {
-  window.postMessage({ type, ...payload })
-}
 
 function setAuthorizationHeader (accessToken) {
   if (hasString(accessToken)) {
@@ -49,17 +39,6 @@ function replaceUser (user = {}) {
 // Revive access token from cache.
 const accessToken = LocalStorage.getItem('accessToken') || ''
 setAuthorizationHeader(accessToken)
-
-// Listen access token requests.
-window.addEventListener('message', ({ data }) => {
-  if (data.type === 'requestAccessToken') {
-    postMessage('responseAccessToken', { accessToken: stateData.accessToken })
-  }
-
-  if (data.type === 'requestUser') {
-    postMessage('responseUser', { user: stateData.user })
-  }
-})
 
 // Vuex | Pinia module.
 const stateData = () => {
@@ -160,6 +139,17 @@ const actions = {
     replaceUser.call(this, user)
   }
 }
+
+// Listen access token requests.
+window.addEventListener('message', ({ data }) => {
+  if (data.type === 'requestAccessToken') {
+    postMessage('responseAccessToken', { accessToken: stateData().accessToken })
+  }
+
+  if (data.type === 'requestUser') {
+    postMessage('responseUser', { user: stateData().user })
+  }
+})
 
 export default {
   ...(!isPinia && { namespaced: true }),

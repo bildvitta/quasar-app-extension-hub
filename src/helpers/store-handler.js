@@ -3,7 +3,7 @@ function _getStateOrGetters ({ entity, key, model }) {
     return this.$piniaStore[entity]?.[key]
   }
 
-  return this.$store.getters[model][`${entity}/${key}}`]
+  return this.$store[model][`${entity}/${key}`]
 }
 
 /**
@@ -20,7 +20,7 @@ function getAction ({ entity, key, payload }) {
     return this.$piniaStore[entity]?.[key](payload)
   }
 
-  return this.$store.dispatch(`${entity}/${key}}`, payload)
+  return this.$store.dispatch(`${entity}/${key}`, payload)
 }
 
 /**

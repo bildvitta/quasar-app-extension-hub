@@ -10,7 +10,7 @@ export const getGlobalVariables = ({ app, Vue }) => {
   }
 }
 
-export const interceptAxios = ({ quasar, asteroid, storeConfig = {} }) => {
+export const interceptAxios = ({ router, quasar, asteroid, storeConfig = {} }) => {
   const { refresh = () => {}, clear = () => {} } = storeConfig
 
   axios.interceptors.response.use(response => response, async error => {
@@ -54,7 +54,7 @@ export const interceptAxios = ({ quasar, asteroid, storeConfig = {} }) => {
   })
 }
 
-export const beforeEach = ({ router, storeConfig = {} }) => {
+export const beforeEach = ({ router, storeConfig = {}, quasar }) => {
   router.beforeEach(async (to, from, next) => {
     const { getUser = () => {}, hasAccessToken, hasUser } = storeConfig
 
@@ -67,7 +67,15 @@ export const beforeEach = ({ router, storeConfig = {} }) => {
   
     // get user before enter on application
     if (hasAccessToken && (!hasUser || !from.name)) {
-      await getUser()
+      try {
+        quasar.loading.show({ message: 'Validando usuário...' })
+        await getUser()
+      } catch {
+        notifyError(asteroid, 'Erro ao validar usuário')
+      }
+      finally {
+        quasar.loading.hide()
+      }
     }
   
     // Is user authenticated?

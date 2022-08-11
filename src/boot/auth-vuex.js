@@ -1,7 +1,13 @@
-import { getGlobalVariables, interceptAxios, addRoutes, beforeEach } from '../helpers/auth-boot.js'
 import hubModule from '../store/hub.js'
 
-export default async ({ router, app, Vue, store }) => {
+import {
+  addRoutes,
+  beforeEach,
+  getGlobalVariables,
+  interceptAxios
+} from '../helpers/auth-boot.js'
+
+export default ({ router, app, Vue, store }) => {
   const {
     asteroid,
     quasar
@@ -10,6 +16,7 @@ export default async ({ router, app, Vue, store }) => {
   store.registerModule('hub', hubModule)
 
   interceptAxios({
+    router,
     quasar,
     asteroid,
     storeConfig: {
@@ -22,8 +29,12 @@ export default async ({ router, app, Vue, store }) => {
 
   beforeEach({
     router,
-    getUser: () => store.dispatch('hub/getUser'),
-    hasAccessToken: store.getters['hub/hasAccessToken'],
-    hasUser: store.getters['hub/hasUser']
+    quasar,
+    asteroid,
+    storeConfig: {
+      getUser: () => store.dispatch('hub/getUser'),
+      hasAccessToken: store.getters['hub/hasAccessToken'],
+      hasUser: store.getters['hub/hasUser']
+    }
   })
 }
