@@ -54,23 +54,32 @@ export const interceptAxios = ({ router, quasar, asteroid, storeConfig = {} }) =
   })
 }
 
-export const beforeEach = ({ router, storeConfig = {}, quasar }) => {
+export const beforeEach = ({ asteroid, router, storeConfig = {}, quasar, isPinia, store }) => {
   router.beforeEach(async (to, from, next) => {
-    const { getUser = () => {}, hasAccessToken, hasUser } = storeConfig
-
     // Routes that does not requires authentication.
     const requiresAuth = to.matched.some(item => item.meta.requiresAuth)
+
+    to.matched.forEach(item => {
+      if (item.meta.title) {
+        document.title = item.meta.title
+      }
+    })
+
+    console.log(to.matched, '>>>>>>>>> to.matched')
   
     if (!requiresAuth) {
       return next()
     }
+
+    const hasAccessToken = isPinia ? store.hasAccessToken : store.getters['hub/hasAccessToken']
+    const hasUser = isPinia ? store.hasUser : store.getters['hub/hasUser']
   
     // get user before enter on application
-    if (hasAccessToken && (!hasUser || !from.name)) {
+    if (hasAccessToken && (!hasUser || !from.name) && from.name !== 'HubCallback') {
       try {
         quasar.loading.show({ message: 'Validando usuário...' })
-        await getUser()
-      } catch {
+        isPinia ? await store.getUser() : await store.dispatch('hub/getUser')
+      } catch (error) {
         notifyError(asteroid, 'Erro ao validar usuário')
       }
       finally {
@@ -103,32 +112,50 @@ export const addRoutes = router => {
       {
         name: 'HubCallback',
         path: '/auth/callback',
-        component: () => import('../pages/hub/HubCallback.vue')
+        component: () => import('../pages/hub/HubCallback.vue'),
+        meta: {
+          title: 'Validando...'
+        }
       },
       {
         name: 'HubLogin',
         path: '/auth/login',
-        component: () => import('../pages/hub/HubLogin.vue')
+        component: () => import('../pages/hub/HubLogin.vue'),
+        meta: {
+          title: 'Contactando servidor de autenticação...'
+        }
       },
       {
         name: 'HubLogout',
         path: '/auth/logout',
-        component: () => import('../pages/hub/HubLogout.vue')
+        component: () => import('../pages/hub/HubLogout.vue'),
+        meta: {
+          title: 'Desconectado'
+        }
       },
       {
         name: 'HubLoggedOut',
         path: '/auth/logged-out',
-        component: () => import('../pages/hub/HubLoggedOut.vue')
+        component: () => import('../pages/hub/HubLoggedOut.vue'),
+        meta: {
+          title: 'Desconectado'
+        }
       },
       {
         name: 'HubRefused',
         path: '/auth/refused',
-        component: () => import('../pages/hub/HubRefused.vue')
+        component: () => import('../pages/hub/HubRefused.vue'),
+        meta: {
+          title: 'Autorização negada'
+        }
       },
       {
         name: 'HubUserEdit',
         path: '/me',
-        component: () => import('../pages/hub/HubUserMe.vue')
+        component: () => import('../pages/hub/HubUserMe.vue'),
+        meta: {
+          title: 'Redirecionando para ações de usuário'
+        }
       }
     ]
   })

@@ -1,40 +1,14 @@
 import { LocalStorage } from 'quasar'
 import axios from 'axios'
 import handleProcess from '../helpers/handle-process'
-import getState from '../helpers/get-state'
 import getActionPayload from '../helpers/get-action-payload'
 import { hasString } from '../helpers/string'
-import postMessage from '../helpers/post-message'
+import setAuthorizationHeader from '../helpers/set-authorization-header'
+import setMessageEvent from '../helpers/set-message-event'
+import { replaceAccessToken, replaceUser } from '../helpers/mutations'
 
 const storeAdapter = handleProcess(() => process.env.STORE_ADAPTER, 'vuex')
 const isPinia = storeAdapter === 'pinia'
-
-function setAuthorizationHeader (accessToken) {
-  if (hasString(accessToken)) {
-    axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`
-    postMessage('updateAccessToken', { accessToken })
-  } else {
-    delete axios.defaults.headers.common.Authorization
-  }
-}
-
-// mutations functions
-function replaceAccessToken (accessToken = '') {
-  setAuthorizationHeader(accessToken)
-  LocalStorage.set('accessToken', accessToken)
-
-  const state = getState.call(this, { isPinia, resource: 'hub' })
-  state.accessToken = accessToken
-}
-
-function replaceUser (user = {}) {
-  LocalStorage.set('user', user)
-
-  const state = getState.call(this, { isPinia, resource: 'hub' })
-  state.user = user
-
-  postMessage('updateUser', { user })
-}
 
 // Revive access token from cache.
 const accessToken = LocalStorage.getItem('accessToken') || ''
@@ -56,8 +30,8 @@ const getters = {
 
 const actions = {
   clear () {
-    replaceAccessToken.call(this)
-    replaceUser.call(this)
+    replaceAccessToken.call(this, { isPinia })
+    replaceUser.call(this, { isPinia })
   },
 
   async callback (...args) {
@@ -68,10 +42,10 @@ const actions = {
         params: { code, state }
       })
 
-      replaceAccessToken.call(this, data.accessToken)
+      replaceAccessToken.call(this, { accessToken: data.accessToken, isPinia })
       return data
     } catch (error) {
-      replaceAccessToken.call(this)
+      replaceAccessToken.call(this, { isPinia })
       throw error
     }
   },
@@ -80,10 +54,10 @@ const actions = {
     try {
       const { data } = await axios.get('/users/me')
 
-      replaceUser.call(this, data.result)
+      replaceUser.call(this, { user: data.result, isPinia })
       return data.result
     } catch (error) {
-      replaceUser.call(this)
+      replaceUser.call(this, { isPinia })
       throw error
     }
   },
@@ -112,10 +86,10 @@ const actions = {
     try {
       const { data } = await axios.get('/auth/refresh')
       
-      replaceAccessToken.call(this, data.accessToken)
+      replaceAccessToken.call(this, { accessToken: data.accessToken, isPinia })
       return data
     } catch (error) {
-      replaceAccessToken.call(this)
+      replaceAccessToken.call(this, { isPinia })
       throw error
     }
   },
@@ -131,25 +105,17 @@ const actions = {
 
   setAccessToken (...args) {
     const accessToken = getActionPayload(isPinia, ...args)
-    replaceAccessToken.call(this, accessToken)
+    replaceAccessToken.call(this, { accessToken, isPinia })
   },
 
   setUser (...args) {
     const user = getActionPayload(isPinia, ...args)
-    replaceUser.call(this, user)
+    replaceUser.call(this, { user, isPinia })
   }
 }
 
 // Listen access token requests.
-window.addEventListener('message', ({ data }) => {
-  if (data.type === 'requestAccessToken') {
-    postMessage('responseAccessToken', { accessToken: stateData().accessToken })
-  }
-
-  if (data.type === 'requestUser') {
-    postMessage('responseUser', { user: stateData().user })
-  }
-})
+setMessageEvent(stateData)
 
 export default {
   ...(!isPinia && { namespaced: true }),

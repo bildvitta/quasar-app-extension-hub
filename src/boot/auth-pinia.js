@@ -37,10 +37,7 @@ export default ({ router, app, Vue }) => {
     router,
     quasar,
     asteroid,
-    storeConfig: {
-      getUser: store.getUser,
-      hasAccessToken: store.hasAccessToken,
-      hasUser: store.hasUser
-    }
+    isPinia: true,
+    store
   })
 }

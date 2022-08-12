@@ -61,7 +61,7 @@ export default {
           })
 
           // await this.refresh()
-          return this.$router.replace(this.redirectURL || { name: 'Root' })
+          return this.$router.replace(this.redirectURL || '/')
         } catch {}
       }
 
@@ -74,7 +74,7 @@ export default {
 
         // const url = await this.login({ url: this.redirectURL })
         location.href = url
-      } catch (error) {
+      } catch {
         this.errorMessage = 'Erro ao obter o endereço de autenticação.'
       } finally {
         this.isLoading = false

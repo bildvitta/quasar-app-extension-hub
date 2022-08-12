@@ -28,13 +28,11 @@ export default ({ router, app, Vue, store }) => {
   addRoutes(router)
 
   beforeEach({
+    asteroid,
     router,
     quasar,
     asteroid,
-    storeConfig: {
-      getUser: () => store.dispatch('hub/getUser'),
-      hasAccessToken: store.getters['hub/hasAccessToken'],
-      hasUser: store.getters['hub/hasUser']
-    }
+    isPinia: false,
+    store
   })
 }

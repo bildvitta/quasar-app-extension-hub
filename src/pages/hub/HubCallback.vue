@@ -80,9 +80,14 @@ export default {
           payload: this.session
         })
 
+        await getAction.call(this, {
+          entity: 'hub',
+          key: 'getUser'
+        })
+
         // await this.callback(this.session)
         this.$router.replace(this.redirectURL || '/')
-      } catch (error) {
+      } catch {
         this.errorMessage = 'Erro ao validar sessão.'
         this.isLoading = false
       }
