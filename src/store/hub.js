@@ -7,7 +7,7 @@ import { LocalStorage } from 'quasar'
 import { hasString } from '../helpers/string'
 import { replaceAccessToken, replaceUser } from '../helpers/mutations'
 
-const storeAdapter = handleProcess(() => process.env.STORE_ADAPTER, 'vuex')
+const storeAdapter = handleProcess(() => process.env.STORE_ADAPTER, 'pinia')
 const isPinia = storeAdapter === 'pinia'
 
 // Revive access token from cache.

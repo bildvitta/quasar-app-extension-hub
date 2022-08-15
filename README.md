@@ -23,23 +23,20 @@ Esta extensão comunica-se apenas com a aplicação servidor diretamente ligada 
 | `/auth/logout` | `GET` | `url`: Endereço de _callback_. | `{ logoutUrl: '...' }` | Busca o endereço de desconexão. |
 | `/auth/refresh` | `GET` | | `{ accessToken: '...' }` | Irá retornar um novo JWT. |
 
-## Usando Vuex
-Através do vuex podemos ter acesso às informações do usuário logado:
+## Estrutura da store (pinia ou vuex)
+A store gerada contém a seguinte estrutura abaixo, independente se utilizar pinia ou vuex:
+
+### State
+- accessToken
+- user
 
 ### Getters
-- accessToken
 - hasAccessToken
-- user
+- hasUser
 - userPermissions
 
-### Mutations
-
-- replaceAccessToken
-- replaceUser
-
 ### Actions
-
-- clear 
+- clear
 - callback
 - getUser
 - login
@@ -47,17 +44,81 @@ Através do vuex podemos ter acesso às informações do usuário logado:
 - refresh
 - getUserMeURL
 - setAccessToken
-  
+
+## Usando com Pinia
+Por padrão a store de controle de estado é utilizando pinia, não sendo necessário nenhuma configuração a mais, quanto utilizado pinia, é adicionado uma variável global `$piniaStore`.
+
+
+Usando store do pinia:
+```js
+import { hubStore } from 'hub'
+
+const hub = hubStore()
+
+hub.user // retorna o usuário caso exista
+hub.accessToken // retorna o accessToken caso existe, e assim por diante...
+
+// ou
+
+// esta forma de utilizar é a MENOS recomendada
+this.$piniaStore.hub.user
+this.$piniaStore.hub.accessToken
+```
+
+Para mais detalhes de como utilizar uma store do Pinia, clique [aqui](https://pinia.vuejs.org/).
+
+## Usando com Vuex
+Para a utilização do vuex, precisa ser feito algumas configurações adicionais:
+
+1º - Adicione a variável global `STORE_ADAPTER` com o valor `vuex` dentro do quasar.config.js, por exemplo:
+```js
+
+env: {
+  STORE_ADAPTER: 'vuex'
+}
+```
+
+2º - Como estamos dando compatibilidade tanto para pinia quando para vuex, não existem `mutations` dentro da nossa store, uma vez que mutations não existem no `pinia`, por conta disto quando utilizar vuex precisamos desativar o modo `strict`, senão vai aparecer vários erros, vá dentro do `index.js` do store e desabilite, por exemplo:
+
+```js
+export default store(function (/* { ssrContext } */) {
+  const Store = createStore({
+    modules: {
+      // example
+    },
+
+    strict: false
+  })
+
+  return Store
+})
+```
+
+Pronto, agora podemos utilizar nossa extensão com `vuex`.
+
+Usando store do vuex:
+```js
+import { mapState } from 'vuex'
+
+...mapState('hub', ['user', 'accessToken'])
+
+// ou
+
+// esta forma de utilizar é a MENOS recomendada
+this.$store.state.hub.user
+this.$store.state.hub.accessToken
+```
+
 ## Validação das rotas
 
 Para a validação das rotas, será necessário adicionar no objeto correspondente a rota o seguinte trecho de código: `meta: { requiresAuth: true }`.
 
-Ele poderá ser adicionado diretamente na raiz, assim atribuindo a validação nas rotas filhas. 
+Ele poderá ser adicionado diretamente na raiz, assim atribuindo a validação nas rotas filhas.
 
 ## Funções
 
 Esta extensão também verifica se o usuário possui ou não permissões para visualizar o conteúdo com a função `$can`
-A função verifica no retorno do usuário logado, se ele possui ou não privilegios atrelados à chamada do `/me` salvo na storage
+A função verifica no retorno do usuário logado, se ele possui ou não privilégios atrelados à chamada do `/me` salvo na storage
 
 `$can('permissionName.permissionAction', 'id')`
 
