@@ -1,10 +1,10 @@
-import { LocalStorage } from 'quasar'
 import axios from 'axios'
-import handleProcess from '../helpers/handle-process'
 import getActionPayload from '../helpers/get-action-payload'
-import { hasString } from '../helpers/string'
+import handleProcess from '../helpers/handle-process'
 import setAuthorizationHeader from '../helpers/set-authorization-header'
 import setMessageEvent from '../helpers/set-message-event'
+import { LocalStorage } from 'quasar'
+import { hasString } from '../helpers/string'
 import { replaceAccessToken, replaceUser } from '../helpers/mutations'
 
 const storeAdapter = handleProcess(() => process.env.STORE_ADAPTER, 'vuex')

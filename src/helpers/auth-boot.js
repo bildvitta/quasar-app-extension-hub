@@ -55,21 +55,19 @@ export const interceptAxios = ({ router, quasar, asteroid, storeConfig = {} }) =
 }
 
 export const beforeEach = ({ asteroid, router, storeConfig = {}, quasar, isPinia, store }) => {
+  let productName
+
   router.beforeEach(async (to, from, next) => {
+    productName = productName ?? document.title
+
     // Routes that does not requires authentication.
     const requiresAuth = to.matched.some(item => item.meta.requiresAuth)
 
     to.matched.forEach(item => {
-      if (item.meta.title) {
-        document.title = item.meta.title
-      }
+      document.title = item.meta.title || productName
     })
 
-    console.log(to.matched, '>>>>>>>>> to.matched')
-  
-    if (!requiresAuth) {
-      return next()
-    }
+    if (!requiresAuth) return next()
 
     const hasAccessToken = isPinia ? store.hasAccessToken : store.getters['hub/hasAccessToken']
     const hasUser = isPinia ? store.hasUser : store.getters['hub/hasUser']
@@ -78,6 +76,7 @@ export const beforeEach = ({ asteroid, router, storeConfig = {}, quasar, isPinia
     if (hasAccessToken && (!hasUser || !from.name) && from.name !== 'HubCallback') {
       try {
         quasar.loading.show({ message: 'Validando usuário...' })
+
         isPinia ? await store.getUser() : await store.dispatch('hub/getUser')
       } catch (error) {
         notifyError(asteroid, 'Erro ao validar usuário')
@@ -86,7 +85,7 @@ export const beforeEach = ({ asteroid, router, storeConfig = {}, quasar, isPinia
         quasar.loading.hide()
       }
     }
-  
+
     // Is user authenticated?
     return next(hasAccessToken ? true : {
       name: 'Hub',
@@ -130,7 +129,7 @@ export const addRoutes = router => {
         path: '/auth/logout',
         component: () => import('../pages/hub/HubLogout.vue'),
         meta: {
-          title: 'Desconectado'
+          title: 'Desconectando...'
         }
       },
       {

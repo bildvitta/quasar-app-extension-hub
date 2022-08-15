@@ -1,6 +1,15 @@
 # Quasar App Extension Hub
 
-Adiciona integração com o Hub de autenticação. Compatível com quasar v2, para o quasar v1 clique [aqui](https://github.com/bildvitta/quasar-app-extension-hub/tree/version-1).
+Adiciona integração com o Hub de autenticação. Compatível com quasar v1 quasar v2.
+
+Para fazer o controle de estado da aplicação, esta extensão aceita `pinia` e `vuex`, dependendo de qual versão do quasar estiver utilizando:
+
+- Quasar v1:
+  - [x] pinia ✅
+  - [ ] vuex ❌
+- Quasar v2:
+  - [x] pinia ✅
+  - [x] vuex ✅
 
 ## Endpoints
 
@@ -13,7 +22,6 @@ Esta extensão comunica-se apenas com a aplicação servidor diretamente ligada 
 | `/auth/login` | `GET` | `url`: Endereço de _callback_. | `{ loginUrl: '...' }` | Busca o endereço de autenticação. |
 | `/auth/logout` | `GET` | `url`: Endereço de _callback_. | `{ logoutUrl: '...' }` | Busca o endereço de desconexão. |
 | `/auth/refresh` | `GET` | | `{ accessToken: '...' }` | Irá retornar um novo JWT. |
-
 
 ## Usando Vuex
 Através do vuex podemos ter acesso às informações do usuário logado:
