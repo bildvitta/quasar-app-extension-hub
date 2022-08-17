@@ -45,9 +45,18 @@ A store gerada contém a seguinte estrutura abaixo, independente se utilizar pin
 - getUserMeURL
 - setAccessToken
 
-## Usando com Pinia
-Por padrão a store de controle de estado é utilizando pinia, não sendo necessário nenhuma configuração a mais, quanto utilizado pinia, é adicionado uma variável global `$piniaStore`.
+## Instalação
 
+Entre no diretório do seu projeto Quasar e execute o comando:
+
+```bash
+$ quasar ext add @bildvitta/hub
+```
+
+Simples assim.
+
+## Usando com Pinia
+Por padrão a store de controle de estado é utilizando pinia, não sendo necessário nenhuma configuração adicional, quanto utilizado pinia, é adicionado uma variável global `$piniaStore`.
 
 Usando store do pinia:
 ```js
@@ -68,9 +77,9 @@ this.$piniaStore.hub.accessToken
 Para mais detalhes de como utilizar uma store do Pinia, clique [aqui](https://pinia.vuejs.org/).
 
 ## Usando com Vuex
-Para a utilização do vuex, precisa ser feito algumas configurações adicionais:
+Para a utilização do vuex, é necessário fazer algumas configurações adicionais:
 
-1º - Adicione a variável global `STORE_ADAPTER` com o valor `vuex` dentro do quasar.config.js, por exemplo:
+1º - Adicione a variável global `STORE_ADAPTER` com o valor `vuex` dentro do `quasar.config.js`, por exemplo:
 ```js
 
 env: {
@@ -78,7 +87,7 @@ env: {
 }
 ```
 
-2º - Como estamos dando compatibilidade tanto para pinia quando para vuex, não existem `mutations` dentro da nossa store, uma vez que mutations não existem no `pinia`, por conta disto quando utilizar vuex precisamos desativar o modo `strict`, senão vai aparecer vários erros, vá dentro do `index.js` do store e desabilite, por exemplo:
+2º - Como estamos dando compatibilidade tanto para pinia quando para vuex, não existem `mutations` dentro da nossa store, uma vez que mutations não existem no `pinia`, por conta disto quando utilizar vuex é necessário desativar o modo `strict`, caso contrario vai aparecer vários erros de alteração de `state` fora de `mutations`, entre no `index.js` do `store` e desabilite, por exemplo:
 
 ```js
 export default store(function (/* { ssrContext } */) {
@@ -87,7 +96,7 @@ export default store(function (/* { ssrContext } */) {
       // example
     },
 
-    strict: false
+    strict: false // Aqui desativamos o strict!!!
   })
 
   return Store
@@ -131,16 +140,6 @@ ex. 2: `$can('realState.show`, realStateId)` -> Verifica se o usuário possui pe
 
 Obs.: Caso o usuário tenha permissões de verificar `todas as entidades`, ele terá um wildcard `*`.
 Obs. 2: Essa função também verifica se o usuário é superuser, caso positivo, ira retornar sempre `true`
-
-## Instalação
-
-Entre no diretório do seu projeto Quasar e execute o comando:
-
-```bash
-$ quasar ext add @bildvitta/hub
-```
-
-Simples assim.
 
 ## Contribuindo
 
