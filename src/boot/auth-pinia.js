@@ -34,10 +34,10 @@ export default ({ router, app, Vue }) => {
   addRoutes(router)
 
   beforeEach({
-    router,
-    quasar,
     asteroid,
     isPinia: true,
+    quasar,
+    router,
     store
   })
 }

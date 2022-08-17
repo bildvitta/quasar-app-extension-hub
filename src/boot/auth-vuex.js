@@ -29,10 +29,10 @@ export default ({ router, app, Vue, store }) => {
 
   beforeEach({
     asteroid,
-    router,
-    quasar,
     asteroid,
     isPinia: false,
+    quasar,
+    router,
     store
   })
 }
