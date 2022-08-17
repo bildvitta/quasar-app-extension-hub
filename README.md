@@ -11,40 +11,6 @@ Para fazer o controle de estado da aplicação, esta extensão aceita `pinia` e 
   - [x] pinia ✅
   - [x] vuex ✅
 
-## Endpoints
-
-Esta extensão comunica-se apenas com a aplicação servidor diretamente ligada ao projeto, que deve possuir os seguintes _endpoints_:
-
-| Endpoint | Método | Parâmetros | Retorno | Descrição |
-|----------|--------|------------|---------|-----------|
-| `/users/me` | `GET` | | `{ user: { ... } }` | Busca os dados do usuário autenticado. |
-| `/auth/callback` | `GET` | `code` e `state`: Chaves do Hub. | `{ accessToken: '...' }` | Irá retornar o JWT. |
-| `/auth/login` | `GET` | `url`: Endereço de _callback_. | `{ loginUrl: '...' }` | Busca o endereço de autenticação. |
-| `/auth/logout` | `GET` | `url`: Endereço de _callback_. | `{ logoutUrl: '...' }` | Busca o endereço de desconexão. |
-| `/auth/refresh` | `GET` | | `{ accessToken: '...' }` | Irá retornar um novo JWT. |
-
-## Estrutura da store (pinia ou vuex)
-A store gerada contém a seguinte estrutura abaixo, independente se utilizar pinia ou vuex:
-
-### State
-- accessToken
-- user
-
-### Getters
-- hasAccessToken
-- hasUser
-- userPermissions
-
-### Actions
-- clear
-- callback
-- getUser
-- login
-- logout
-- refresh
-- getUserMeURL
-- setAccessToken
-
 ## Instalação
 
 Entre no diretório do seu projeto Quasar e execute o comando:
@@ -118,11 +84,73 @@ this.$store.state.hub.user
 this.$store.state.hub.accessToken
 ```
 
+## Estrutura da store (pinia ou vuex)
+A store gerada contém a seguinte estrutura abaixo, independente se utilizar pinia ou vuex:
+
+### State
+- accessToken
+- user
+
+### Getters
+- hasAccessToken
+- hasUser
+- userPermissions
+
+### Actions
+- clear
+- callback
+- getUser
+- login
+- logout
+- refresh
+- getUserMeURL
+- setAccessToken
+
 ## Validação das rotas
 
 Para a validação das rotas, será necessário adicionar no objeto correspondente a rota o seguinte trecho de código: `meta: { requiresAuth: true }`.
 
 Ele poderá ser adicionado diretamente na raiz, assim atribuindo a validação nas rotas filhas.
+
+## Endpoints
+
+Esta extensão comunica-se apenas com a aplicação servidor diretamente ligada ao projeto, que deve possuir os seguintes _endpoints_:
+
+| Endpoint | Método | Parâmetros | Retorno | Descrição |
+|----------|--------|------------|---------|-----------|
+| `/users/me` | `GET` | | `{ user: { ... } }` | Busca os dados do usuário autenticado. |
+| `/auth/callback` | `GET` | `code` e `state`: Chaves do Hub. | `{ accessToken: '...' }` | Irá retornar o JWT. |
+| `/auth/login` | `GET` | `url`: Endereço de _callback_. | `{ loginUrl: '...' }` | Busca o endereço de autenticação. |
+| `/auth/logout` | `GET` | `url`: Endereço de _callback_. | `{ logoutUrl: '...' }` | Busca o endereço de desconexão. |
+| `/auth/refresh` | `GET` | | `{ accessToken: '...' }` | Irá retornar um novo JWT. |
+
+## Eventos
+
+É possível solicitar o `accessToken` e `user` através do [window.postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) (muito útil para utilizar com PWA).
+
+- solicitar `accessToken` na aplicação:
+  ```js
+  // aqui você solicita o accessToken
+  window.postMessage({ type: 'requestAccessToken' })
+
+  // aqui você recebe a solicitação do accessToken
+  window.addEventListener('message', ({ data }) => {
+    data.type // responseAccessToken
+    data.accessToken // accessToken atual
+  })
+  ```
+
+- solicitar `user` na aplicação:
+  ```js
+  // aqui você solicita o user
+  window.postMessage({ type: 'requestUser' })
+
+  // aqui você recebe a solicitação do user
+  window.addEventListener('message', ({ data }) => {
+    data.type // responseUser
+    data.user // user atual
+  })
+  ```
 
 ## Funções
 
