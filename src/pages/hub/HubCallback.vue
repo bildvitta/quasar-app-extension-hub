@@ -85,7 +85,6 @@ export default {
           key: 'getUser'
         })
 
-        // await this.callback(this.session)
         this.$router.replace(this.redirectURL || '/')
       } catch {
         this.errorMessage = 'Erro ao validar sessão.'

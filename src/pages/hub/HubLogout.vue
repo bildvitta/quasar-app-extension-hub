@@ -62,8 +62,6 @@ export default {
           key: 'clear'
         })
 
-        // const url = await this.logout({ url: '/auth/logged-out' })
-        // this.clear()
         location.href = url
       } catch (error) {
         this.errorMessage = 'Erro ao desconectar.'

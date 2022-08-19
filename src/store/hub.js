@@ -1,5 +1,4 @@
 import axios from 'axios'
-// import getActionPayload from '../helpers/get-action-payload'
 import handleProcess from '../helpers/handle-process'
 import setAuthorizationHeader from '../helpers/set-authorization-header'
 import setMessageEvent from '../helpers/set-message-event'

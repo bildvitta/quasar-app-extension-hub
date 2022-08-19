@@ -60,7 +60,6 @@ export default {
             key: 'refresh'
           })
 
-          // await this.refresh()
           return this.$router.replace(this.redirectURL || '/')
         } catch {}
       }
@@ -72,7 +71,6 @@ export default {
           payload: { url: this.redirectURL }
         })
 
-        // const url = await this.login({ url: this.redirectURL })
         location.href = url
       } catch {
         this.errorMessage = 'Erro ao obter o endereço de autenticação.'

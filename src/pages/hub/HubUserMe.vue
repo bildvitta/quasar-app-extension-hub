@@ -65,7 +65,6 @@ export default {
           key: 'getUserMeURL'
         })
 
-        // const { redirect } = await this.getUserMeURL()
         location.href = `${redirect}?from=${this.backURL}`
       } catch {
         this.errorMessage = 'Erro ao receber url de retorno.'
