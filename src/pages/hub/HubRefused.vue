@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { getGetter } from '../../helpers/store-handler.js'
+import { getGetter } from '@bildvitta/store-adapter'
 
 export default {
   name: 'HubRefused',

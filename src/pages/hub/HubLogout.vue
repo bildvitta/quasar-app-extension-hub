@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { getGetter, getAction } from '../../helpers/store-handler.js'
+import { getGetter, getAction } from '@bildvitta/store-adapter'
 
 export default {
   name: 'HubLogout',

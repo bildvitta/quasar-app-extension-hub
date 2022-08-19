@@ -1,11 +1,12 @@
 import axios from 'axios'
-import getActionPayload from '../helpers/get-action-payload'
+// import getActionPayload from '../helpers/get-action-payload'
 import handleProcess from '../helpers/handle-process'
 import setAuthorizationHeader from '../helpers/set-authorization-header'
 import setMessageEvent from '../helpers/set-message-event'
 import { LocalStorage } from 'quasar'
 import { hasString } from '../helpers/string'
 import { replaceAccessToken, replaceUser } from '../helpers/mutations'
+import { getActionPayload } from '@bildvitta/store-adapter'
 
 const storeAdapter = handleProcess(() => process.env.STORE_ADAPTER, 'pinia')
 const isPinia = storeAdapter === 'pinia'

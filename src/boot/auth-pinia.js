@@ -1,5 +1,5 @@
 import piniaHubStore from '../store/pinia-hub-store.js'
-import defineGlobalPiniaStore from '../plugins/define-global-pinia-store.js'
+import { DefineGlobalPiniaStore } from '@bildvitta/store-adapter'
 
 import {
   addRoutes,
@@ -18,7 +18,7 @@ export default ({ router, app, Vue }) => {
   } = getGlobalVariables({ app, Vue })
 
   if (isLatestQuasar) {
-    app.use(defineGlobalPiniaStore, { stores: [store] })
+    app.use(DefineGlobalPiniaStore, { stores: [store] })
   }
 
   interceptAxios({

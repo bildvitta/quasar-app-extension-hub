@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { getAction } from '../../helpers/store-handler.js'
+import { getAction } from '@bildvitta/store-adapter'
 
 export default {
   name: 'HubCallback',
