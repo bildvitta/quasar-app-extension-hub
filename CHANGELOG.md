@@ -2,6 +2,25 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
+### [3.0.0-beta.1]
+## BREAKING CHANGES
+Por conta de adicionar compatibilidade para o `pinia` e `vuex` a forma como se utiliza a extensão foi alterada, podendo haver breaking changes, olhe o arquivo `README.md`.
+
+### Adicionado
+- Adicionado suporte para `pinia` e `vuex`.
+- Adicionado loading quando acontece `getUser` sem ser vindo da pagina `auth/callback`.
+
+### Corrigido
+- Corrigido o titulo da página uma vez que o meta do quasar é diferente dependendo da versão, para isso, foi adicionado meta title nas rotas para controlar o título exibido.
+
+### Modificado
+- Modificado logica do `getUser` quando entra na aplicação.
+- Modificado documentação do `README.md`.
+
+### Removido
+- Removido getter `user` e `accessToken` (consegue recuperar pelo state).
+- Removido mutations `replaceAccessToken` e `replaceUser` (não existe mutations no pinia).
+
 ## [2.1.0] - 09-08-2022
 Versão estável lançada.
 

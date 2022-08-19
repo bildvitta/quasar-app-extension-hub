@@ -16,9 +16,11 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { getGetter, getAction } from '@bildvitta/store-adapter'
 
 export default {
+  name: 'HubLogout',
+
   data () {
     return {
       errorMessage: '',
@@ -33,7 +35,9 @@ export default {
   },
 
   computed: {
-    ...mapGetters('hub', ['hasAccessToken'])
+    hasAccessToken () {
+      return getGetter.call(this, { entity: 'hub', key: 'hasAccessToken' })
+    }
   },
 
   created () {
@@ -41,16 +45,23 @@ export default {
   },
 
   methods: {
-    ...mapActions('hub', ['clear', 'logout']),
-
     async openHub () {
       if (!this.hasAccessToken) {
         return this.$router.replace({ name: 'HubLoggedOut' })
       }
 
       try {
-        const url = await this.logout({ url: '/auth/logged-out' })
-        this.clear()
+        const url = await getAction.call(this, {
+          entity: 'hub',
+          key: 'logout',
+          payload: { url: '/auth/logged-out' }
+        })
+
+        getAction.call(this, {
+          entity: 'hub',
+          key: 'clear'
+        })
+
         location.href = url
       } catch (error) {
         this.errorMessage = 'Erro ao desconectar.'

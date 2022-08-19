@@ -1,103 +1,70 @@
-import { LocalStorage } from 'quasar'
 import axios from 'axios'
+import handleProcess from '../helpers/handle-process'
+import setAuthorizationHeader from '../helpers/set-authorization-header'
+import setMessageEvent from '../helpers/set-message-event'
+import { LocalStorage } from 'quasar'
+import { hasString } from '../helpers/string'
+import { replaceAccessToken, replaceUser } from '../helpers/mutations'
+import { getActionPayload } from '@bildvitta/store-adapter'
 
-function isString (string) {
-  return typeof string === 'string'
-}
-
-function hasString (string) {
-  return string && isString(string)
-}
-
-function postMessage (type, payload) {
-  window.postMessage({ type, ...payload })
-}
-
-function setAuthorizationHeader (accessToken) {
-  if (hasString(accessToken)) {
-    axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`
-    postMessage('updateAccessToken', { accessToken })
-  } else {
-    delete axios.defaults.headers.common.Authorization
-  }
-}
+const storeAdapter = handleProcess(() => process.env.STORE_ADAPTER, 'pinia')
+const isPinia = storeAdapter === 'pinia'
 
 // Revive access token from cache.
 const accessToken = LocalStorage.getItem('accessToken') || ''
 setAuthorizationHeader(accessToken)
 
-// Listen access token requests.
-window.addEventListener('message', ({ data }) => {
-  if (data.type === 'requestAccessToken') {
-    postMessage('responseAccessToken', { accessToken: stateData.accessToken })
+// Vuex | Pinia module.
+const stateData = () => {
+  return {
+    accessToken,
+    user: LocalStorage.getItem('user') || {}
   }
-
-  if (data.type === 'requestUser') {
-    postMessage('responseUser', { user: stateData.user })
-  }
-})
-
-// Vuex module.
-const stateData = {
-  accessToken,
-  user: LocalStorage.getItem('user') || {}
 }
 
 const getters = {
-  accessToken: state => state.accessToken,
   hasAccessToken: state => hasString(state.accessToken),
   hasUser: state => !!Object.keys(state.user).length,
-  user: state => state.user,
   userPermissions: state => state.user.userPermissions
 }
 
-const mutations = {
-  replaceAccessToken (state, accessToken = '') {
-    setAuthorizationHeader(accessToken)
-    LocalStorage.set('accessToken', accessToken)
-    state.accessToken = accessToken
-  },
-
-  replaceUser (state, user = {}) {
-    LocalStorage.set('user', user)
-    state.user = user
-    postMessage('updateUser', { user })
-  }
-}
-
 const actions = {
-  clear ({ commit }) {
-    commit('replaceAccessToken')
-    commit('replaceUser')
+  clear () {
+    replaceAccessToken.call(this, { isPinia })
+    replaceUser.call(this, { isPinia })
   },
 
-  async callback ({ commit }, { code, state } = {}) {
+  async callback (...args) {
+    const { code, state } = getActionPayload(isPinia, ...args)
+
     try {
       const { data } = await axios.get('/auth/callback', {
         params: { code, state }
       })
 
-      commit('replaceAccessToken', data.accessToken)
+      replaceAccessToken.call(this, { accessToken: data.accessToken, isPinia })
       return data
     } catch (error) {
-      commit('replaceAccessToken')
+      replaceAccessToken.call(this, { isPinia })
       throw error
     }
   },
 
-  async getUser ({ commit }) {
+  async getUser () {
     try {
       const { data } = await axios.get('/users/me')
 
-      commit('replaceUser', data.result)
+      replaceUser.call(this, { user: data.result, isPinia })
       return data.result
     } catch (error) {
-      commit('replaceUser')
+      replaceUser.call(this, { isPinia })
       throw error
     }
   },
 
-  async login (context, { url } = {}) {
+  async login (...args) {
+    const { url } = getActionPayload(isPinia, ...args)
+
     const { data } = await axios.get('/auth/login', {
       params: { url }
     })
@@ -105,7 +72,9 @@ const actions = {
     return data.loginUrl
   },
 
-  async logout ({ commit }, { url } = {}) {
+  async logout (...args) {
+    const { url } = getActionPayload(isPinia, ...args)
+
     const { data } = await axios.get('/auth/logout', {
       params: { url }
     })
@@ -113,14 +82,14 @@ const actions = {
     return data.logoutUrl
   },
 
-  async refresh ({ commit }) {
+  async refresh () {
     try {
       const { data } = await axios.get('/auth/refresh')
-  
-      commit('replaceAccessToken', data.accessToken)
+      
+      replaceAccessToken.call(this, { accessToken: data.accessToken, isPinia })
       return data
     } catch (error) {
-      commit('replaceAccessToken')
+      replaceAccessToken.call(this, { isPinia })
       throw error
     }
   },
@@ -134,20 +103,24 @@ const actions = {
     }
   },
 
-  setAccessToken ({ commit }, accessToken) {
-    commit('replaceAccessToken', accessToken)
+  setAccessToken (...args) {
+    const accessToken = getActionPayload(isPinia, ...args)
+    replaceAccessToken.call(this, { accessToken, isPinia })
   },
 
-  setUser ({ commit }, user) {
-    commit('replaceUser', user)
+  setUser (...args) {
+    const user = getActionPayload(isPinia, ...args)
+    replaceUser.call(this, { user, isPinia })
   }
 }
 
+// Listen access token requests.
+setMessageEvent(stateData)
+
 export default {
-  namespaced: true,
+  ...(!isPinia && { namespaced: true }),
 
   state: stateData,
   getters,
-  mutations,
   actions
 }
