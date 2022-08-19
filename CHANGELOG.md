@@ -4,14 +4,14 @@ O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versi
 
 ### [3.0.0-beta.1]
 ## BREAKING CHANGES
-Por conta de adicionar compatibilidade para o `pinia` e `vuex` a forma como se utiliza a a extensão foi alterada, podendo haver breaking changes, olhe o arquivo `README.md`.
+Por conta de adicionar compatibilidade para o `pinia` e `vuex` a forma como se utiliza a extensão foi alterada, podendo haver breaking changes, olhe o arquivo `README.md`.
 
 ### Adicionado
 - Adicionado suporte para `pinia` e `vuex`.
 - Adicionado loading quando acontece `getUser` sem ser vindo da pagina `auth/callback`.
 
 ### Corrigido
-- Corrigido como alterar o titulo da pagina uma vez que o `meta` do quasar é diferente dependendo das versão, adicionado meta `title` nas rotas para controlar.
+- Corrigido o titulo da página uma vez que o meta do quasar é diferente dependendo da versão, para isso, foi adicionado meta title nas rotas para controlar o título exibido.
 
 ### Modificado
 - Modificado logica do `getUser` quando entra na aplicação.

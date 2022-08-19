@@ -22,7 +22,7 @@ $ quasar ext add @bildvitta/hub
 Simples assim.
 
 ## Usando com Pinia
-Por padrão a store de controle de estado é utilizando pinia, não sendo necessário nenhuma configuração adicional, quanto utilizado pinia, é adicionado uma variável global `$piniaStore`.
+Por padrão a store de controle de estado é utilizando pinia, não sendo necessário nenhuma configuração adicional, quando utilizado pinia, é adicionado uma variável global `$piniaStore`.
 
 Usando store do pinia:
 ```js
