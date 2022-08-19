@@ -1,9 +1,17 @@
 import hubModule from '../store/hub.js'
 
-export default async ({ router, store, app }) => {
-  const asteroid = app.config.globalProperties.$qas
-  const axios = app.config.globalProperties.$axios
-  const quasar = app.config.globalProperties.$q
+export default async ({ router, store, app, Vue }) => {
+  const isLatestQuasar = !Vue
+
+  const asteroid = isLatestQuasar ? app.config.globalProperties.$qas : Vue.prototype.$qas
+  const axios = isLatestQuasar ? app.config.globalProperties.$axios : Vue.prototype.$axios
+  const quasar = isLatestQuasar ? app.config.globalProperties.$q : Vue.prototype.$q
+
+  const notifyError = message => {
+    return asteroid
+      ? asteroid.error(message)
+      : quasar.notify({ progress: true, color: 'negative', message })
+  }
 
   // Store
   store.registerModule('hub', hubModule)
@@ -28,7 +36,7 @@ export default async ({ router, store, app }) => {
         return axios.request(error.config)
       } catch (error) {
         quasar.loading.hide()
-        asteroid.error('Houve um problema de autenticação. Por gentileza, faça o login novamente.')
+        notifyError('Houve um problema de autenticação. Por gentileza, faça o login novamente.')
 
         store.dispatch('hub/clear')
         router.push({ name: 'HubLogin' })
@@ -37,7 +45,7 @@ export default async ({ router, store, app }) => {
 
     // Forbidden
     if (status === 403) {
-      asteroid.error('Você não tem permissão para acessar este recurso.')
+      notifyError('Você não tem permissão para acessar este recurso.')
     }
 
     return Promise.reject(error)
@@ -95,6 +103,12 @@ export default async ({ router, store, app }) => {
 
     // Token
     const hasAccessToken = store.getters['hub/hasAccessToken']
+    const hasUser = store.getters['hub/hasUser']
+
+    // get user before enter on application
+    if (hasAccessToken && (!hasUser || !from.name)) {
+      await store.dispatch('hub/getUser')
+    }
 
     // Is user authenticated?
     return next(hasAccessToken ? true : {

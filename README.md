@@ -14,6 +14,38 @@ Esta extensão comunica-se apenas com a aplicação servidor diretamente ligada 
 | `/auth/logout` | `GET` | `url`: Endereço de _callback_. | `{ logoutUrl: '...' }` | Busca o endereço de desconexão. |
 | `/auth/refresh` | `GET` | | `{ accessToken: '...' }` | Irá retornar um novo JWT. |
 
+
+## Usando Vuex
+Através do vuex podemos ter acesso às informações do usuário logado:
+
+### Getters
+- accessToken
+- hasAccessToken
+- user
+- userPermissions
+
+### Mutations
+
+- replaceAccessToken
+- replaceUser
+
+### Actions
+
+- clear 
+- callback
+- getUser
+- login
+- logout
+- refresh
+- getUserMeURL
+- setAccessToken
+  
+## Validação das rotas
+
+Para a validação das rotas, será necessário adicionar no objeto correspondente a rota o seguinte trecho de código: `meta: { requiresAuth: true }`.
+
+Ele poderá ser adicionado diretamente na raiz, assim atribuindo a validação nas rotas filhas. 
+
 ## Funções
 
 Esta extensão também verifica se o usuário possui ou não permissões para visualizar o conteúdo com a função `$can`
