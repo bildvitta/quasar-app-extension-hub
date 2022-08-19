@@ -17,9 +17,7 @@ export default ({ router, app, Vue }) => {
     quasar
   } = getGlobalVariables({ app, Vue })
 
-  if (isLatestQuasar) {
-    app.use(DefineGlobalPiniaStore, { stores: [store] })
-  }
+  app.use(DefineGlobalPiniaStore, { stores: [store] })
 
   interceptAxios({
     router,
