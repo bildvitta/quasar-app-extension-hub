@@ -5,8 +5,8 @@ Adiciona integração com o Hub de autenticação. Compatível com quasar v1 qua
 Para fazer o controle de estado da aplicação, esta extensão aceita `pinia` e `vuex`, dependendo de qual versão do quasar estiver utilizando:
 
 - Quasar v1:
-  - [x] pinia ✅
-  - [ ] vuex ❌
+  - [] pinia ❌
+  - [x] vuex ✅
 - Quasar v2:
   - [x] pinia ✅
   - [x] vuex ✅
