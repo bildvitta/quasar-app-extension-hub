@@ -58,7 +58,7 @@ export const beforeEach = ({ asteroid, router, storeConfig = {}, quasar, isPinia
   let productName
 
   router.beforeEach(async (to, from, next) => {
-    productName = productName ?? document.title
+    productName = productName || document.title
 
     // Routes that does not requires authentication.
     const requiresAuth = to.matched.some(item => item.meta.requiresAuth)

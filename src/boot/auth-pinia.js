@@ -12,7 +12,6 @@ export default ({ router, app, Vue }) => {
   const store = piniaHubStore()
 
   const {
-    isLatestQuasar,
     asteroid,
     quasar
   } = getGlobalVariables({ app, Vue })
