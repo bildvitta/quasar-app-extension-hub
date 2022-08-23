@@ -39,8 +39,7 @@ export default ({ router, app, Vue, store }) => {
     store
   })
 
-  const user = store.state.hub.user
-  const canFn = can(user)
+  const canFn = can(() => store.state.hub.user)
 
   if (isLatestQuasar) {
     app.config.globalProperties.$can = canFn

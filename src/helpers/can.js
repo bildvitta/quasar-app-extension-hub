@@ -1,6 +1,7 @@
-export default (user = {}) => {
+export default (userCallback = () => {}) => {
   return (permission, entity) => {
     try {
+      const user = userCallback()
       const { isSuperuser, userPermissions } = user
 
       if (isSuperuser) {

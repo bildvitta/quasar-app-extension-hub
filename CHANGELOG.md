@@ -2,6 +2,14 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
+## [3.0.0-beta.6] - 23-08-22
+### Corrigido
+- Corrigido problema do `$can` adicionando callback.
+- Pagina `AuthLogin` removido `isLoading` do `finally` e adicionado no `catch`.
+
+### Removido
+- Removido boot `can` e adicionado como `helper`.
+
 ## [3.0.0-beta.5] - 23-08-22
 ### Corrigido
 - Corrigido variável global `$can` para funcionar com pinia e vuex.
@@ -18,11 +26,11 @@ O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versi
 
 ## [3.0.0-beta.3] - 23-08-22
 ### Corrigido
-- Atualizado versão do `@bildvitta/store-adapter`
+- Atualizado versão do `@bildvitta/store-adapter`.
 
 ## [3.0.0-beta.2] - 23-08-22
 ### Corrigido
-- Atualizado versão do `@bildvitta/store-adapter`
+- Atualizado versão do `@bildvitta/store-adapter`.
 
 ## [3.0.0-beta.1] - 16-08-22
 ## BREAKING CHANGES

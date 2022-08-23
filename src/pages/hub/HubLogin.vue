@@ -74,7 +74,6 @@ export default {
         location.href = url
       } catch {
         this.errorMessage = 'Erro ao obter o endereço de autenticação.'
-      } finally {
         this.isLoading = false
       }
     }
