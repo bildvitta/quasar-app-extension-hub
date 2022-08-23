@@ -2,6 +2,11 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
+### [3.0.0-beta.2] - 23-08-22
+### Corrigido
+- Atualizado versão do `@bildvitta/store-adapter
+
+
 ### [3.0.0-beta.1] - 16-08-22
 ## BREAKING CHANGES
 Por conta de adicionar compatibilidade para o `pinia` e `vuex` a forma como se utiliza a extensão foi alterada, podendo haver breaking changes, olhe o arquivo `README.md`.
