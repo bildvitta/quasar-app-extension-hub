@@ -54,7 +54,7 @@ export const interceptAxios = ({ router, quasar, asteroid, storeConfig = {} }) =
   })
 }
 
-export const beforeEach = ({ asteroid, router, storeConfig = {}, quasar, isPinia, store }) => {
+export const beforeEach = ({ asteroid, router, quasar, isPinia, store }) => {
   let productName
 
   router.beforeEach(async (to, from, next) => {

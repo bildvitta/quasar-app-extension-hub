@@ -1,7 +1,7 @@
 module.exports = function (api) {
   api.extendQuasarConf(quasar => {
     // Boot
-    const boots = ['can']
+    const boots = []
 
     api.compatibleWith('axios', '>=0.21.1')
 

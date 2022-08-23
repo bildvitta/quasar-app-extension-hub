@@ -37,4 +37,8 @@ export default ({ router, app, Vue }) => {
     router,
     store
   })
+
+  const user = store.user
+  const canFn = can(user)
+  app.config.globalProperties.$can = canFn
 }

@@ -1,5 +1,7 @@
 import hubModule from '../store/hub.js'
 
+import can from '../helpers/can.js'
+
 import {
   addRoutes,
   beforeEach,
@@ -10,6 +12,7 @@ import {
 export default ({ router, app, Vue, store }) => {
   const {
     asteroid,
+    isLatestQuasar,
     quasar
   } = getGlobalVariables({ app, Vue })
 
@@ -35,4 +38,13 @@ export default ({ router, app, Vue, store }) => {
     router,
     store
   })
+
+  const user = store.state.hub.user
+  const canFn = can(user)
+
+  if (isLatestQuasar) {
+    app.config.globalProperties.$can = canFn
+  } else {
+    Vue.prototype.$can = canFn
+  }
 }
