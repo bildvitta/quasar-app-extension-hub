@@ -2,6 +2,13 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
+## Não publicado
+### Corrigido
+- Repassando quasar notify de erro.
+
+### Modificado
+- Removido notify de erro `403` quando estiver na página `Forbidden`.
+
 ## [3.0.0-beta.6] - 23-08-22
 ### Corrigido
 - Corrigido problema do `$can` adicionando callback.

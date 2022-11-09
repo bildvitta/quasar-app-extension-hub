@@ -34,6 +34,7 @@ export const interceptAxios = ({ router, quasar, asteroid, storeConfig = {} }) =
         quasar.loading.hide()
         notifyError(
           asteroid,
+          quasar,
           'Houve um problema de autenticação. Por gentileza, faça o login novamente.'
         )
 
@@ -42,10 +43,13 @@ export const interceptAxios = ({ router, quasar, asteroid, storeConfig = {} }) =
       }
     }
 
+    const isForbidden = router?.currentRoute?.value?.name === 'Forbidden'
+
     // Forbidden
-    if (status === 403) {
+    if (status === 403 && !isForbidden) {
       notifyError(
         asteroid,
+        quasar,
         'Você não tem permissão para acessar este recurso.'
       )
     }
@@ -79,7 +83,7 @@ export const beforeEach = ({ asteroid, router, quasar, isPinia, store }) => {
 
         isPinia ? await store.getUser() : await store.dispatch('hub/getUser')
       } catch (error) {
-        notifyError(asteroid, 'Erro ao validar usuário')
+        notifyError(asteroid, quasar, 'Erro ao validar usuário')
       }
       finally {
         quasar.loading.hide()
@@ -94,7 +98,7 @@ export const beforeEach = ({ asteroid, router, quasar, isPinia, store }) => {
   })
 }
 
-export const notifyError = (asteroid, message) => {
+export const notifyError = (asteroid, quasar, message) => {
   return asteroid
     ? asteroid.error(message)
     : quasar.notify({ progress: true, color: 'negative', message })
