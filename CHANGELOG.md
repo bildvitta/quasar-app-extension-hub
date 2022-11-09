@@ -2,7 +2,7 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
-## Não publicado
+## [3.0.0-beta.7] - 09-11-22
 ### Corrigido
 - Repassando quasar notify de erro.
 
