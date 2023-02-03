@@ -2,6 +2,29 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
+## 3.0.0 - 03-02-2023
+## BREAKING CHANGES
+Por conta de adicionar compatibilidade para o `pinia` e `vuex` a forma como se utiliza a extensão foi alterada, podendo haver breaking changes, olhe o arquivo `README.md`.
+
+### Adicionado
+- Adicionado suporte para `pinia` e `vuex`.
+- Adicionado loading quando acontece `getUser` sem ser vindo da pagina `auth/callback`.
+
+### Corrigido
+- Corrigido problema do `$can` adicionando callback.
+- Pagina `AuthLogin` removido `isLoading` do `finally` e adicionado no `catch`.
+- Repassando quasar notify de erro.
+- Corrigido o titulo da página uma vez que o meta do quasar é diferente dependendo da versão, para isso, foi adicionado meta title nas rotas para controlar o título exibido.
+
+### Modificado
+- Modificado documentação do `README.md`.
+
+### Removido
+- Removido boot `can` e adicionado como `helper`.
+- Removido notify de erro `403` quando estiver na página `Forbidden`.
+- Removido getter `user` e `accessToken` (consegue recuperar pelo state).
+- Removido mutations `replaceAccessToken` e `replaceUser` (não existe mutations no pinia).
+
 ## [3.0.0-beta.7] - 09-11-22
 ### Corrigido
 - Repassando quasar notify de erro.
