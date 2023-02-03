@@ -16,9 +16,11 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { getGetter, getAction } from '@bildvitta/store-adapter'
 
 export default {
+  name: 'HubLogin',
+
   data () {
     return {
       errorMessage: '',
@@ -33,7 +35,9 @@ export default {
   },
 
   computed: {
-    ...mapGetters('hub', ['hasAccessToken']),
+    hasAccessToken () {
+      return getGetter.call(this, { entity: 'hub', key: 'hasAccessToken' })
+    },
 
     redirectURL () {
       return this.$route.query.url
@@ -45,23 +49,30 @@ export default {
   },
 
   methods: {
-    ...mapActions('hub', ['login', 'refresh']),
-
     async openHub () {
       this.errorMessage = ''
       this.isLoading = true
 
       if (this.hasAccessToken) {
         try {
-          await this.refresh()
-          return this.$router.replace(this.redirectURL || { name: 'Root' })
-        } catch (error) {}
+          await getAction.call(this, {
+            entity: 'hub',
+            key: 'refresh'
+          })
+
+          return this.$router.replace(this.redirectURL || '/')
+        } catch {}
       }
 
       try {
-        const url = await this.login({ url: this.redirectURL })
+        const url = await getAction.call(this, {
+          entity: 'hub',
+          key: 'login',
+          payload: { url: this.redirectURL }
+        })
+
         location.href = url
-      } catch (error) {
+      } catch {
         this.errorMessage = 'Erro ao obter o endereço de autenticação.'
         this.isLoading = false
       }

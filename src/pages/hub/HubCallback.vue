@@ -16,9 +16,11 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { getAction } from '@bildvitta/store-adapter'
 
 export default {
+  name: 'HubCallback',
+
   data () {
     return {
       errorMessage: '',
@@ -33,8 +35,6 @@ export default {
   },
 
   computed: {
-    ...mapGetters('hub', ['hasAccessToken']),
-
     hasError () {
       return this.session.error === 'access_denied'
     },
@@ -58,8 +58,6 @@ export default {
   },
 
   methods: {
-    ...mapActions('hub', ['callback']),
-
     async authorize () {
       this.errorMessage = ''
       this.isLoading = true
@@ -76,9 +74,19 @@ export default {
           })
         }
 
-        await this.callback(this.session)
+        await getAction.call(this, {
+          entity: 'hub',
+          key: 'callback',
+          payload: this.session
+        })
+
+        await getAction.call(this, {
+          entity: 'hub',
+          key: 'getUser'
+        })
+
         this.$router.replace(this.redirectURL || '/')
-      } catch (error) {
+      } catch {
         this.errorMessage = 'Erro ao validar sessão.'
         this.isLoading = false
       }

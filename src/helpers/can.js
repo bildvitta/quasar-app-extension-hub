@@ -1,9 +1,8 @@
-export default async ({ app, store, Vue }) => {
-  const isLatestQuasar = !Vue
-
-  function can (permission, entity) {
+export default (userCallback = () => {}) => {
+  return (permission, entity) => {
     try {
-      const { isSuperuser, userPermissions } = store.getters['hub/user']
+      const user = userCallback()
+      const { isSuperuser, userPermissions } = user
 
       if (isSuperuser) {
         return true
@@ -19,11 +18,5 @@ export default async ({ app, store, Vue }) => {
     } catch {
       return false
     }
-  }
-
-  if (isLatestQuasar) {
-    app.config.globalProperties.$can = can
-  } else {
-    Vue.prototype.$can = can
   }
 }
