@@ -15,9 +15,7 @@ export const notifyConfig = {
 
 export const notifyError = message => {
   if (!hasAsteroid) {
-    return import('asteroid').then(({ NotifyError }) => {
-      return NotifyError ? NotifyError?.(message) : Notify.create({ ...notifyConfig, message })
-    })
+    return import('asteroid').then(({ NotifyError }) => NotifyError?.(message))
   }
 
   return Notify.create({ ...notifyConfig, message, classes: 'qas-notification--error' })

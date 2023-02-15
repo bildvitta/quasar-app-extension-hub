@@ -1,34 +1,28 @@
 <template>
-  <div>
-    <div v-if="isLoading" class="text-center">
-      <q-spinner size="3em" />
-      <p class="q-mt-lg">Redirecionando...</p>
-    </div>
-
-    <q-banner v-else class="bg-red-1 text-red" inline-actions rounded>
-      {{ errorMessage }}
-
-      <template v-slot:action>
-        <q-btn color="red" flat label="Tentar novamente" @click="login" />
+  <q-page class="flex column justify-center items-center">
+    <app-content v-if="hasError" :button-props="{ onClick: redirectToUser }">
+      <template #description>
+        Ops… Tivemos um problema ao redirecionar seu acesso. Por favor, tente novamente.
       </template>
-    </q-banner>
-  </div>
+    </app-content>
+  </q-page>
 </template>
 
 <script>
+import { Loading } from 'quasar'
 import { getGetter, getAction } from '@bildvitta/store-adapter'
+import AppContent from '../../components/AppContent.vue'
 
 export default {
-  data () {
-    return {
-      errorMessage: '',
-      isLoading: true
-    }
+  name: 'HubUserMe',
+
+  components: {
+    AppContent
   },
 
-  meta () {
+  data () {
     return {
-      title: 'Redirecionando para ações de usuário'
+      hasError: false
     }
   },
 
@@ -47,28 +41,25 @@ export default {
   },
 
   methods: {
-    login () {
-      this.$router.replace({ name: 'Hub' })
-    },
-
     async redirectToUser () {
-      this.errorMessage = ''
-      this.isLoading = true
+      Loading.show({ message: 'Redirecionando...' })
+      await new Promise(r => setTimeout(r, 2000))
 
-      if (!this.hasAccessToken) {
-        return this.$router.replace({ name: 'HubLoggedOut' })
-      }
+      // if (!this.hasAccessToken) {
+      //   return this.$router.replace({ name: 'HubLogin' })
+      // }
 
       try {
         const { redirect } = await getAction.call(this, {
-          entity: 'hub',
+          entity: 'hub1',
           key: 'getUserMeURL'
         })
 
         location.href = `${redirect}?from=${this.backURL}`
       } catch {
-        this.errorMessage = 'Erro ao receber url de retorno.'
-        this.isLoading = false
+        this.hasError = true
+      } finally {
+        Loading.hide()
       }
     }
   }
