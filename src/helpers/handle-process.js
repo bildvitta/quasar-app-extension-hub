@@ -6,7 +6,7 @@
  */
 export default (processEnv = () => {}, defaultValue) => {
   try {
-    return processEnv() || defaultValue
+    return processEnv() ?? defaultValue
   } catch {
     return defaultValue
   }
