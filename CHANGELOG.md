@@ -2,6 +2,17 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
+## Não publicado
+### BREAKING CHANGES
+- Caso a aplicação não utilize o `asteroid` é **necessário** adicionar a env `HAS_ASTEROID: false` no `quasar.config.js` caso não adicione, a aplicação irá quebrar.
+
+### Adicionado
+- `handleProcess`: adicionado novo helper para lidar com envs.
+- `notifies`: adicionado novo helper para lidar com notifies, no momento existe apenas o de erro, já que só é usado quando existe erro.
+
+### Corrigido
+- Corrigido problema com `notifyError` não estava sendo utilizado o notify do `asteroid` mesmo que a aplicação tivesse o asteroid, para resolver este problema foi necessário adicionar uma nova env `HAS_ASTEROID` com default `false`.
+
 ## 3.0.0 - 03-02-2023
 ## BREAKING CHANGES
 Por conta de adicionar compatibilidade para o `pinia` e `vuex` a forma como se utiliza a extensão foi alterada, podendo haver breaking changes, olhe o arquivo `README.md`.
