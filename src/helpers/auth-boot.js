@@ -31,7 +31,7 @@ export const interceptAxios = ({ router, quasar, storeConfig = {} }) => {
 
         delete error.config.headers.Authorization
         return axios.request(error.config)
-      } catch (error) {
+      } catch {
         quasar.loading.hide()
 
         notifyError('Houve um problema de autenticação. Por gentileza, faça o login novamente.')
@@ -124,14 +124,14 @@ export const addRoutes = router => {
           title: 'Desconectando...'
         }
       },
-      {
-        name: 'HubLoggedOut',
-        path: '/auth/logged-out',
-        component: () => import('../pages/hub/HubLoggedOut.vue'),
-        meta: {
-          title: 'Desconectado'
-        }
-      },
+      // {
+      //   name: 'HubLoggedOut',
+      //   path: '/auth/logged-out',
+      //   component: () => import('../pages/hub/HubLoggedOut.vue'),
+      //   meta: {
+      //     title: 'Desconectado'
+      //   }
+      // },
       {
         name: 'HubRefused',
         path: '/auth/refused',

@@ -1,36 +1,31 @@
 <template>
-  <div>
-    <div v-if="isLoading" class="text-center">
-      <q-spinner size="3em" />
-      <p class="q-mt-lg">Contactando servidor de autenticação...</p>
-    </div>
-
-    <q-banner v-else class="bg-red-1 text-red" inline-actions rounded>
-      {{ errorMessage }}
-
-      <template v-slot:action>
-        <q-btn color="red" flat label="Tentar novamente" @click="openHub" />
+  <app-hub-page>
+    <app-content v-if="hasError" :button-props="{ onClick: openHub }">
+      <template #description>
+        Ops… Tivemos um erro ao conectar com o servidor. Por favor, tente novamente.
       </template>
-    </q-banner>
-  </div>
+    </app-content>
+  </app-hub-page>
 </template>
 
 <script>
+import { Loading } from 'quasar'
 import { getGetter, getAction } from '@bildvitta/store-adapter'
+import parseValue from '../../helpers/parse-value.js'
+import AppContent from '../../components/AppContent.vue'
+import AppHubPage from '../../components/AppHubPage.vue'
 
 export default {
   name: 'HubLogin',
 
-  data () {
-    return {
-      errorMessage: '',
-      isLoading: true
-    }
+  components: {
+    AppContent,
+    AppHubPage
   },
 
-  meta () {
+  data () {
     return {
-      title: 'Contactando servidor de autenticação...'
+      hasError: false
     }
   },
 
@@ -50,38 +45,36 @@ export default {
 
   methods: {
     async openHub () {
-      this.errorMessage = ''
-      this.isLoading = true
+      this.hasError = false
 
-      if (this.hasAccessToken) {
-        try {
+      Loading.show({ message: 'Conectando ao servidor...' })
+
+      try {
+        if (this.hasAccessToken) {
           await getAction.call(this, {
             entity: 'hub',
             key: 'refresh'
           })
 
           return this.$router.replace(this.redirectURL || '/')
-        } catch {}
-      }
-
-      try {
-        const { query: logged_out } = this.$route
-
-        const payload = {
-          url: this.redirectURL,
-          ...(logged_out && { logged_out: true })
         }
+
+        const { query: { logged_out } } = this.$route
 
         const url = await getAction.call(this, {
           entity: 'hub',
           key: 'login',
-          payload
+          payload: { url: this.redirectURL }
         })
 
-        location.href = `${url}${logged_out ? 'logged_out=true' : ''}`
+        const hasLoggedOut = parseValue(logged_out)
+        const parsedQuery = hasLoggedOut ? '?logged_out=true' : ''
+
+        location.href = `${url}${parsedQuery}`
       } catch {
-        this.errorMessage = 'Erro ao obter o endereço de autenticação.'
-        this.isLoading = false
+        this.hasError = true
+      } finally {
+        Loading.hide()
       }
     }
   }

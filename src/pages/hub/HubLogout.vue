@@ -1,19 +1,4 @@
 <template>
-  <!-- <div>
-    <div v-if="isLoading" class="text-center">
-      <q-spinner size="3em" />
-      <p class="q-mt-lg">Desconectando...</p>
-    </div>
-
-    <q-banner v-else class="bg-red-1 text-red" inline-actions rounded>
-      {{ errorMessage }}
-
-      <template v-slot:action>
-        <q-btn color="red" flat label="Tentar novamente" @click="openHub" />
-      </template>
-    </q-banner>
-  </div> -->
-
   <app-hub-page>
     <app-content v-if="hasError" :button-props="{ onClick: openHub }">
       <template #description>
@@ -71,7 +56,7 @@ export default {
         })
 
         getAction.call(this, {
-          entity: 'hub1',
+          entity: 'hub',
           key: 'clear'
         })
 
