@@ -1,7 +1,7 @@
 <template>
   <div class="app-content">
     <header class="q-mb-xl">
-      <div v-if="hasDescriptionSlot" class="text-body1 text-grey-8">
+      <div v-if="hasDescriptionSlot" class="text-body1 text-grey-8 text-center">
         <slot name="description" />
       </div>
     </header>

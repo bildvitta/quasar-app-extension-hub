@@ -65,13 +65,20 @@ export default {
       }
 
       try {
+        const { query: logged_out } = this.$route
+
+        const payload = {
+          url: this.redirectURL,
+          ...(logged_out && { logged_out: true })
+        }
+
         const url = await getAction.call(this, {
           entity: 'hub',
           key: 'login',
-          payload: { url: this.redirectURL }
+          payload
         })
 
-        location.href = url
+        location.href = `${url}${logged_out ? 'logged_out=true' : ''}`
       } catch {
         this.errorMessage = 'Erro ao obter o endereço de autenticação.'
         this.isLoading = false

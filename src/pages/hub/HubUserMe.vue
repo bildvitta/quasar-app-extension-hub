@@ -1,23 +1,25 @@
 <template>
-  <q-page class="flex column justify-center items-center">
+  <app-hub-page>
     <app-content v-if="hasError" :button-props="{ onClick: redirectToUser }">
       <template #description>
         Ops… Tivemos um problema ao redirecionar seu acesso. Por favor, tente novamente.
       </template>
     </app-content>
-  </q-page>
+  </app-hub-page>
 </template>
 
 <script>
 import { Loading } from 'quasar'
 import { getGetter, getAction } from '@bildvitta/store-adapter'
 import AppContent from '../../components/AppContent.vue'
+import AppHubPage from '../../components/AppHubPage.vue'
 
 export default {
   name: 'HubUserMe',
 
   components: {
-    AppContent
+    AppContent,
+    AppHubPage
   },
 
   data () {
@@ -42,16 +44,17 @@ export default {
 
   methods: {
     async redirectToUser () {
-      Loading.show({ message: 'Redirecionando...' })
-      await new Promise(r => setTimeout(r, 2000))
+      this.hasError = false
 
-      // if (!this.hasAccessToken) {
-      //   return this.$router.replace({ name: 'HubLogin' })
-      // }
+      Loading.show({ message: 'Redirecionando...' })
+
+      if (!this.hasAccessToken) {
+        return this.$router.replace({ name: 'HubLogin' })
+      }
 
       try {
         const { redirect } = await getAction.call(this, {
-          entity: 'hub1',
+          entity: 'hub',
           key: 'getUserMeURL'
         })
 
