@@ -3,10 +3,10 @@
 </template>
 
 <script>
-import handleProcess from '../helpers/handle-process.js'
+import hubConfig from '../shared/default-hub-config.js'
 import { defineAsyncComponent, defineComponent } from 'vue'
 
-const hasAsteroid = handleProcess(() => process.env.HAS_ASTEROID, true)
+const { hasAsteroid } = hubConfig
 
 export default defineComponent({
   name: 'AppBtn',

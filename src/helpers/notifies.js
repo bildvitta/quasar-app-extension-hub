@@ -1,7 +1,7 @@
-import handleProcess from './handle-process.js'
 import { Notify } from 'quasar'
+import hubConfig from '../shared/default-hub-config.js'
 
-const hasAsteroid = handleProcess(() => process.env.HAS_ASTEROID, true)
+const { hasAsteroid } = hubConfig
 
 // custom config but same as config from asteroid
 export const notifyConfig = {

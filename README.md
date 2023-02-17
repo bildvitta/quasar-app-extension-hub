@@ -19,7 +19,17 @@ Entre no diretório do seu projeto Quasar e execute o comando:
 $ quasar ext add @bildvitta/hub
 ```
 
-Simples assim.
+Após isto, será gerado um arquivo `hub.config.js` com a seguinte configuração:
+
+```js
+module.exports = {
+  hasAsteroid: true, // usado caso tenha extensão @bildvitta/asteroid instalada na aplicação
+  forbiddenRouteName: 'Forbidden', // usado para definir o nome da rota da pagina de erro 404 (Forbidden)
+  storeAdapter: 'vuex' // usado para definir qual store esta utilizando na aplicação "vuex" ou "pinia"
+}
+```
+
+Lembrando que este arquivo não é obrigatório sendo possível utilizar somente para alterar configurações especificas como por exemplo usar apenas para alterar o `storeAdapter`.
 
 ## Usando com Pinia
 Por padrão a store de controle de estado é utilizando pinia, não sendo necessário nenhuma configuração adicional, quando utilizado pinia, é adicionado uma variável global `$piniaStore`.

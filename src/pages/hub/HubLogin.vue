@@ -68,7 +68,7 @@ export default {
         })
 
         const hasLoggedOut = parseValue(logged_out)
-        const parsedQuery = hasLoggedOut ? '?logged_out=true' : ''
+        const parsedQuery = hasLoggedOut ? '&logged_out=true' : ''
 
         location.href = `${url}${parsedQuery}`
       } catch {

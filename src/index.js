@@ -1,4 +1,7 @@
 module.exports = function (api) {
+  const hubConfigPath = 'hub.config.js'
+  const fs = require('fs')
+
   api.extendQuasarConf(quasar => {
     // Boot
     const boots = []
@@ -36,13 +39,20 @@ module.exports = function (api) {
 
 
   api.extendWebpack(webpack => {
+    console.log(fs.existsSync(hubConfigPath), '>>> achoi?')
     // Adiciona um "alias" chamado "hub" para a aplicação, necessário quando usar pinia
     const hub = 'node_modules/@bildvitta/quasar-app-extension-hub/src/hub.js'
+
+    const hasHubConfigFile = fs.existsSync(hubConfigPath)
+    const aliasPath = hasHubConfigFile
+      ? api.resolve.app(hubConfigPath)
+      : api.resolve.src('./templates/hub.config.js')
 
     webpack.resolve.alias = {
       ...webpack.resolve.alias,
 
-      hub: api.resolve.app(hub)
+      hub: api.resolve.app(hub),
+      hubConfig: aliasPath
     }
   })
 }

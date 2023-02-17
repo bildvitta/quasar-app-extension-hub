@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { notifyError } from './notifies'
+import { forbiddenRouteName } from 'hubConfig'
 
 export const getGlobalVariables = ({ app, Vue }) => {
   const isLatestQuasar = !Vue
@@ -19,12 +20,12 @@ export const interceptAxios = ({ router, quasar, storeConfig = {} }) => {
 
     // Unauthorized
     if (status === 401) {
-      quasar.loading.show({ message: 'Autenticando...' })
+      quasar.loading.show()
+
+      const isRefresh = error.config.url.endsWith('/auth/refresh')
 
       try {
-        if (error.config.url.endsWith('/auth/refresh')) {
-          throw error
-        }
+        if (isRefresh) throw error
 
         await refresh()
         quasar.loading.hide()
@@ -34,18 +35,17 @@ export const interceptAxios = ({ router, quasar, storeConfig = {} }) => {
       } catch {
         quasar.loading.hide()
 
-        notifyError('Houve um problema de autenticação. Por gentileza, faça o login novamente.')
-
-        clear()
         router.push({ name: 'HubLogin' })
+        clear()
       }
     }
 
-    const isForbidden = router?.currentRoute?.value?.name === 'Forbidden'
+    const isForbidden = router?.currentRoute?.value?.name === forbiddenRouteName
+    const hasForbiddenPage = router.hasRoute(forbiddenRouteName)
 
     // Forbidden
-    if (status === 403 && !isForbidden) {
-      notifyError('Você não tem permissão para acessar este recurso.')
+    if (status === 403 && !isForbidden && hasForbiddenPage) {
+      router.push({ name: forbiddenRouteName })
     }
 
     return Promise.reject(error)
@@ -73,11 +73,11 @@ export const beforeEach = ({ router, quasar, isPinia, store }) => {
     // get user before enter on application
     if (hasAccessToken && (!hasUser || !from.name) && from.name !== 'HubCallback') {
       try {
-        quasar.loading.show({ message: 'Validando usuário...' })
+        quasar.loading.show()
 
         isPinia ? await store.getUser() : await store.dispatch('hub/getUser')
-      } catch (error) {
-        notifyError('Erro ao validar usuário')
+      } catch ({ response: { status } }) {
+        if (status !== 401) notifyError('Erro ao carregar usuário')
       }
       finally {
         quasar.loading.hide()
@@ -105,7 +105,7 @@ export const addRoutes = router => {
         path: '/auth/callback',
         component: () => import('../pages/hub/HubCallback.vue'),
         meta: {
-          title: 'Validando...'
+          title: 'Carregando...'
         }
       },
       {
@@ -124,14 +124,6 @@ export const addRoutes = router => {
           title: 'Desconectando...'
         }
       },
-      // {
-      //   name: 'HubLoggedOut',
-      //   path: '/auth/logged-out',
-      //   component: () => import('../pages/hub/HubLoggedOut.vue'),
-      //   meta: {
-      //     title: 'Desconectado'
-      //   }
-      // },
       {
         name: 'HubRefused',
         path: '/auth/refused',
@@ -145,7 +137,7 @@ export const addRoutes = router => {
         path: '/me',
         component: () => import('../pages/hub/HubUserMe.vue'),
         meta: {
-          title: 'Redirecionando para ações de usuário'
+          title: 'Redirecionando...'
         }
       }
     ]
