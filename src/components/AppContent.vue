@@ -61,11 +61,5 @@ export default defineComponent({
 .app-content {
   max-width: 416px;
   width: 100%;
-
-  @media (max-width: $breakpoint-xs) {
-    &--fixed-width {
-      max-width: 100%;
-    }
-  }
 }
 </style>
