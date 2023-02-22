@@ -2,7 +2,7 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
-## Não publicado
+## 3.1.0-beta.0 - 22-02-2023
 ### Adicionado
 - `AppBtn`: adicionado componente de botão que é um wrapper do QasBtn (caso tenha asteroid) ou QBtn.
 - `AppContent`: adicionado componente para conteúdo.
