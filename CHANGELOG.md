@@ -22,7 +22,7 @@ O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versi
 
 ### Removido
 - removido helper `handleProcess` em favor de usar o arquivo do configuração `hub.config.js`.
-- removido pagina `HubLoggedOut`, agora caso tenha deslogado com sucesso o usuário é enviado para tela de login do HUB.
+- removido pagina `HubLoggedOut`, agora caso tenha desconectado com sucesso o usuário é enviado para tela de login do HUB.
 - removido utilização da env `STORE_ADAPTER`.
 
 ## 3.0.0 - 03-02-2023
