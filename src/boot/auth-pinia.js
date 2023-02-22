@@ -11,17 +11,13 @@ import {
 export default ({ router, app, Vue }) => {
   const store = piniaHubStore()
 
-  const {
-    asteroid,
-    quasar
-  } = getGlobalVariables({ app, Vue })
+  const { quasar } = getGlobalVariables({ app, Vue })
 
   app.use(DefineGlobalPiniaStore, { stores: [store] })
 
   interceptAxios({
     router,
     quasar,
-    asteroid,
     storeConfig: {
       refresh: store.refresh,
       clear: store.clear
@@ -31,7 +27,6 @@ export default ({ router, app, Vue }) => {
   addRoutes(router)
 
   beforeEach({
-    asteroid,
     isPinia: true,
     quasar,
     router,

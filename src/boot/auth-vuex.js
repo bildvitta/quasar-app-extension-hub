@@ -11,7 +11,6 @@ import {
 
 export default ({ router, app, Vue, store }) => {
   const {
-    asteroid,
     isLatestQuasar,
     quasar
   } = getGlobalVariables({ app, Vue })
@@ -21,7 +20,6 @@ export default ({ router, app, Vue, store }) => {
   interceptAxios({
     router,
     quasar,
-    asteroid,
     storeConfig: {
       refresh: () => store.dispatch('hub/refresh'),
       clear: () => store.dispatch('hub/clear')
@@ -31,8 +29,6 @@ export default ({ router, app, Vue, store }) => {
   addRoutes(router)
 
   beforeEach({
-    asteroid,
-    asteroid,
     isPinia: false,
     quasar,
     router,

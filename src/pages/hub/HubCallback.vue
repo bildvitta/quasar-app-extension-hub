@@ -1,41 +1,35 @@
 <template>
-  <div>
-    <div v-if="isLoading" class="text-center">
-      <q-spinner size="3em" />
-      <p class="q-mt-lg">Validando...</p>
-    </div>
-
-    <q-banner v-else class="bg-red-1 text-red" inline-actions rounded>
-      {{ errorMessage }}
-
-      <template v-slot:action>
-        <q-btn color="red" flat label="Tentar novamente" @click="authorize" />
+  <app-hub-page v-if="hasError">
+    <app-content :button-props="{ onClick: authorize }">
+      <template #description>
+        Ops… Tivemos um erro ao carregar as informações. Por favor, tente novamente.
       </template>
-    </q-banner>
-  </div>
+    </app-content>
+  </app-hub-page>
 </template>
 
 <script>
+import { Loading } from 'quasar'
 import { getAction } from '@bildvitta/store-adapter'
+import AppContent from '../../components/AppContent.vue'
+import AppHubPage from '../../components/AppHubPage.vue'
 
 export default {
   name: 'HubCallback',
 
-  data () {
-    return {
-      errorMessage: '',
-      isLoading: true
-    }
+  components: {
+    AppContent,
+    AppHubPage
   },
 
-  meta () {
+  data () {
     return {
-      title: 'Validando...'
+      hasError: false
     }
   },
 
   computed: {
-    hasError () {
+    hasSessionError () {
       return this.session.error === 'access_denied'
     },
 
@@ -59,11 +53,12 @@ export default {
 
   methods: {
     async authorize () {
-      this.errorMessage = ''
-      this.isLoading = true
+      this.hasError = false
+
+      Loading.show()
 
       try {
-        if (this.hasError) {
+        if (this.hasSessionError) {
           return this.$router.replace({ name: 'HubRefused' })
         }
 
@@ -87,8 +82,9 @@ export default {
 
         this.$router.replace(this.redirectURL || '/')
       } catch {
-        this.errorMessage = 'Erro ao validar sessão.'
-        this.isLoading = false
+        this.hasError = true
+      } finally {
+        Loading.hide()
       }
     }
   }

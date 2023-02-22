@@ -1,23 +1,24 @@
 <template>
-  <q-banner class="bg-red-1 text-red" inline-actions rounded>
-    Você não autorizou o acessos aos seus dados.
-
-    <template v-slot:action>
-      <q-btn color="red" flat label="Tentar novamente" @click="login" />
-    </template>
-  </q-banner>
+  <app-hub-page>
+    <app-content :button-props="{ onClick: login }">
+      <template #description>
+        Ops… Para acessar o sistema, você precisa autorizar o acesso aos seus dados. Por favor, tente novamente.
+      </template>
+    </app-content>
+  </app-hub-page>
 </template>
 
 <script>
 import { getGetter } from '@bildvitta/store-adapter'
+import AppContent from '../../components/AppContent.vue'
+import AppHubPage from '../../components/AppHubPage.vue'
 
 export default {
   name: 'HubRefused',
 
-  meta () {
-    return {
-      title: 'Autorização negada'
-    }
+  components: {
+    AppContent,
+    AppHubPage
   },
 
   computed: {

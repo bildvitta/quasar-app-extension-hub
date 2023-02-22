@@ -19,41 +19,20 @@ Entre no diretório do seu projeto Quasar e execute o comando:
 $ quasar ext add @bildvitta/hub
 ```
 
-Simples assim.
+Após isto, será gerado um arquivo `hub.config.js` com a seguinte configuração:
 
-## Usando com Pinia
-Por padrão a store de controle de estado é utilizando pinia, não sendo necessário nenhuma configuração adicional, quando utilizado pinia, é adicionado uma variável global `$piniaStore`.
-
-Usando store do pinia:
 ```js
-import { hubStore } from 'hub'
-
-const hub = hubStore()
-
-hub.user // retorna o usuário caso exista
-hub.accessToken // retorna o accessToken caso existe, e assim por diante...
-
-// ou
-
-// esta forma de utilizar é a MENOS recomendada
-this.$piniaStore.hub.user
-this.$piniaStore.hub.accessToken
-```
-
-Para mais detalhes de como utilizar uma store do Pinia, clique [aqui](https://pinia.vuejs.org/).
-
-## Usando com Vuex
-Para a utilização do vuex, é necessário fazer algumas configurações adicionais:
-
-1º - Adicione a variável global `STORE_ADAPTER` com o valor `vuex` dentro do `quasar.config.js`, por exemplo:
-```js
-
-env: {
-  STORE_ADAPTER: 'vuex'
+module.exports = {
+  hasAsteroid: true, // usado caso tenha extensão @bildvitta/asteroid instalada na aplicação
+  forbiddenRouteName: 'Forbidden', // usado para definir o nome da rota da pagina de erro 404 (Forbidden)
+  storeAdapter: 'vuex' // usado para definir qual store esta utilizando na aplicação "vuex" ou "pinia"
 }
 ```
 
-2º - Como estamos dando compatibilidade tanto para pinia quando para vuex, não existem `mutations` dentro da nossa store, uma vez que mutations não existem no `pinia`, por conta disto quando utilizar vuex é necessário desativar o modo `strict`, caso contrario vai aparecer vários erros de alteração de `state` fora de `mutations`, entre no `index.js` do `store` e desabilite, por exemplo:
+Lembrando que este arquivo não é obrigatório sendo possível utilizar somente para alterar configurações especificas como por exemplo usar apenas para alterar o `storeAdapter`.
+
+## Usando com Vuex
+Por padrão a store de controle de estado é utilizando vuex, como estamos dando compatibilidade tanto para pinia quando para vuex, não existem `mutations` dentro da nossa store, uma vez que mutations não existem no `pinia`, por conta disto quando utilizar vuex é necessário desativar o modo `strict`, caso contrario vai aparecer vários erros de alteração de `state` fora de `mutations`, entre no `index.js` do `store` e desabilite, por exemplo:
 
 ```js
 export default store(function (/* { ssrContext } */) {
@@ -83,6 +62,34 @@ import { mapState } from 'vuex'
 this.$store.state.hub.user
 this.$store.state.hub.accessToken
 ```
+
+## Usando com Pinia
+Caso não exista o arquivo `hub.config.js`, crie um na raiz da aplicação e adicione a seguinte configuração:
+
+```js
+// hub.config.js
+module.exports = {
+  storeAdapter: 'pinia'
+}
+```
+
+Usando store do pinia:
+```js
+import { hubStore } from 'hub'
+
+const hub = hubStore()
+
+hub.user // retorna o usuário caso exista
+hub.accessToken // retorna o accessToken caso existe, e assim por diante...
+
+// ou
+
+// esta forma de utilizar é a MENOS recomendada
+this.$piniaStore.hub.user
+this.$piniaStore.hub.accessToken
+```
+
+Para mais detalhes de como utilizar uma store do Pinia, clique [aqui](https://pinia.vuejs.org/).
 
 ## Estrutura da store (pinia ou vuex)
 A store gerada contém a seguinte estrutura abaixo, independente se utilizar pinia ou vuex:
