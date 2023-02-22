@@ -61,16 +61,23 @@ export default {
 
         const { query: { logged_out } } = this.$route
 
-        const url = await getAction.call(this, {
+        const urlData = await getAction.call(this, {
           entity: 'hub',
           key: 'login',
           payload: { url: this.redirectURL }
         })
 
+        const url = new URL(urlData)
         const hasLoggedOut = parseValue(logged_out)
-        const parsedQuery = hasLoggedOut ? '&logged_out=true' : ''
 
-        location.href = `${url}${parsedQuery}`
+        if (hasLoggedOut) {
+          const searchParams = new URLSearchParams(url.search)
+          searchParams.append('logged_out', true)
+
+          url.search = searchParams.toString()
+        }
+
+        location.href = url.href
       } catch {
         this.hasError = true
       } finally {
