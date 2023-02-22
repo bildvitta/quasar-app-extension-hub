@@ -11,9 +11,7 @@ import {
 export default ({ router, app, Vue }) => {
   const store = piniaHubStore()
 
-  const {
-    quasar
-  } = getGlobalVariables({ app, Vue })
+  const { quasar } = getGlobalVariables({ app, Vue })
 
   app.use(DefineGlobalPiniaStore, { stores: [store] })
 

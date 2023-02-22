@@ -15,7 +15,7 @@
 
       <div class="q-mt-xl text-center">
         <slot name="actions">
-          <app-btn label="Tentar novamente" v-bind="defaultButtonProps" />
+          <app-btn v-bind="defaultButtonProps" />
         </slot>
       </div>
     </div>

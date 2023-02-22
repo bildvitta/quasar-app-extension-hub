@@ -12,7 +12,7 @@ O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versi
 ### Modificado
 - [`HubLogin`, `HubLogout`, `HubRefused`, `HubCallback`, `HubMe`]: alterações de layout e comportamento.
 - modificado default do storeAdapter dê `vuex` para `pinia`, agora não é preciso declarar o `storeAdapter` caso esteja usando `vuex` na aplicação.
-- Atualizado `README.md`;
+- atualizado `README.md`;
 - `auth-boot.js`: removido `notifyError` quando acontece erro `401`, já que o usuario já é redirecionado para outra pagina.
 - `auth-boot.js`: removido `notifyError` quando acontece erro `403`, agora é redirecionado para uma pagina de 403.
 - `auth-boot.js`: removido `notifyError` quando acontece erro `401` do `/me`.
