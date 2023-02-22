@@ -3,9 +3,6 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
 ## Não publicado
-### BREAKING CHANGES
-- Caso a aplicação não utilize o `asteroid` é **necessário** adicionar a env `HAS_ASTEROID: false` no `quasar.config.js` caso não adicione, a aplicação irá quebrar.
-
 ### Adicionado
 - `AppBtn`: adicionado componente de botão que é um wrapper do QasBtn (caso tenha asteroid) ou QBtn.
 - `AppContent`: adicionado componente para conteúdo.

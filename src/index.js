@@ -39,7 +39,6 @@ module.exports = function (api) {
 
 
   api.extendWebpack(webpack => {
-    console.log(fs.existsSync(hubConfigPath), '>>> achoi?')
     // Adiciona um "alias" chamado "hub" para a aplicação, necessário quando usar pinia
     const hub = 'node_modules/@bildvitta/quasar-app-extension-hub/src/hub.js'
 
