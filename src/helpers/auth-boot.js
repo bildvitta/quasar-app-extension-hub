@@ -1,6 +1,8 @@
 import axios from 'axios'
 import { notifyError } from './notifies'
-import { forbiddenRouteName } from 'hubConfig'
+import hubConfig from '../shared/default-hub-config.js'
+
+const { forbiddenRouteName } = hubConfig
 
 export const getGlobalVariables = ({ app, Vue }) => {
   const isLatestQuasar = !Vue
