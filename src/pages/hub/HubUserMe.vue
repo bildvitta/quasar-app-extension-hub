@@ -58,7 +58,8 @@ export default {
           key: 'getUserMeURL'
         })
 
-        location.href = `${redirect}?from=${this.backURL}`
+        const query = this.backURL ? `?from=${this.backURL}` : ''
+        location.href = `${redirect}${query}`
       } catch {
         this.hasError = true
       } finally {
