@@ -2,6 +2,29 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
+## 3.1.0 - 05-04-2023
+### Adicionado
+- `AppBtn`: adicionado componente de botão que é um wrapper do QasBtn (caso tenha asteroid) ou QBtn.
+- `AppContent`: adicionado componente para conteúdo.
+- `notifies`: adicionado novo helper para lidar com notifies, no momento existe apenas o de erro, já que só é usado quando existe erro.
+- adicionado arquivo de configuração `hub.config.js` que é gerado automaticamente toda vez que a extensão é instalada através do comando `quasar ext add @bildvitta/hub`.
+
+### Modificado
+- [`HubLogin`, `HubLogout`, `HubRefused`, `HubCallback`, `HubMe`]: alterações de layout e comportamento.
+- modificado default do storeAdapter dê `vuex` para `pinia`, agora não é preciso declarar o `storeAdapter` caso esteja usando `vuex` na aplicação.
+- atualizado `README.md`;
+- `auth-boot.js`: removido `notifyError` quando acontece erro `401`, já que o usuário já é redirecionado para outra pagina.
+- `auth-boot.js`: removido `notifyError` quando acontece erro `403`, agora é redirecionado para uma pagina de 403.
+- `auth-boot.js`: removido `notifyError` quando acontece erro `401` do `/me`.
+
+### Corrigido
+- corrigido problema com `notifyError` não estava sendo utilizado o notify do `asteroid` mesmo que a aplicação tivesse o asteroid.
+
+### Removido
+- removido helper `handleProcess` em favor de usar o arquivo do configuração `hub.config.js`.
+- removido pagina `HubLoggedOut`, agora caso tenha desconectado com sucesso o usuário é enviado para tela de login do HUB.
+- removido utilização da env `STORE_ADAPTER`.
+
 ## 3.1.0-beta.0 - 22-02-2023
 ### Adicionado
 - `AppBtn`: adicionado componente de botão que é um wrapper do QasBtn (caso tenha asteroid) ou QBtn.
