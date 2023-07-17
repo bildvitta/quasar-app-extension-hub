@@ -2,8 +2,7 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
-## Não publicado
-
+## 3.1.1-beta.0 - 17-07-2023
 ### Corrigido
 - `auth-pinia.js`: corrigido função `can` que estava sendo usada sem importação.
 
