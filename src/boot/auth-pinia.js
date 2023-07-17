@@ -1,6 +1,8 @@
 import piniaHubStore from '../store/pinia-hub-store.js'
 import { DefineGlobalPiniaStore } from '@bildvitta/store-adapter'
 
+import can from '../helpers/can.js'
+
 import {
   addRoutes,
   beforeEach,

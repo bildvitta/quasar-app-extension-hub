@@ -2,6 +2,11 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
+## Não publicado
+
+### Corrigido
+- `auth-pinia.js`: corrigido função `can` que estava sendo usada sem importação.
+
 ## 3.1.0 - 05-04-2023
 ### Adicionado
 - `AppBtn`: adicionado componente de botão que é um wrapper do QasBtn (caso tenha asteroid) ou QBtn.
