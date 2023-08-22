@@ -2,6 +2,10 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
+## Não publicado
+### Corrigido
+- Adicionado import do `postMessage` no arquivo `mutations.js`, antes estava usando postMessage nativo do `window` e estava fugindo do padrão e não retornando o `user`.
+
 ## 3.1.1-beta.0 - 17-07-2023
 ### Corrigido
 - `auth-pinia.js`: corrigido função `can` que estava sendo usada sem importação.
