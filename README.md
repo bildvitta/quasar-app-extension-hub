@@ -159,6 +159,23 @@ Esta extensão comunica-se apenas com a aplicação servidor diretamente ligada 
   })
   ```
 
+- Evento que retorna toda vez que o `user` é atualizado (users/me):
+  ```js
+  
+  window.addEventListener('message', ({ data }) => {
+    data.type // updateUser
+    data.user // user atualizado
+  })
+  ```
+
+- Evento que retorna toda vez que o `accessToken` é atualizado:
+  ```js
+  window.addEventListener('message', ({ data }) => {
+    data.type // updateAccessToken
+    data.accessToken // token atualizado
+  })
+  ```
+
 ## Funções
 
 Esta extensão também verifica se o usuário possui ou não permissões para visualizar o conteúdo com a função `$can`

@@ -1,6 +1,7 @@
 import { LocalStorage } from 'quasar'
 import setAuthorizationHeader from './set-authorization-header.js'
 import { getStateFromAction } from '@bildvitta/store-adapter'
+import postMessage from './post-message.js'
 
 // mutations functions
 export function replaceAccessToken ({ accessToken = '', isPinia }) {
