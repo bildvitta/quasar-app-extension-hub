@@ -2,7 +2,7 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
-## Não publicado
+## 3.1.1-beta.1 - 22-08-2023
 ## BREAKING CHANGES
 - Como estava vindo de forma errada o `updateUser`, é possível que na aplicação tenha que corrigir também para se adequar ao padrão correto.
 
