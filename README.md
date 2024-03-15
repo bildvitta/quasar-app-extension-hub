@@ -31,6 +31,31 @@ module.exports = {
 
 Lembrando que este arquivo não é obrigatório sendo possível utilizar somente para alterar configurações especificas como por exemplo usar apenas para alterar o `storeAdapter`.
 
+### Dica
+O path `'hub'` quando utilizado para importação `import { ... } from 'hub'` é criado via alias, então é perdido todo o autocomplete/intellisense do vscode, para contornar isto, dentro do `jsconfig.json`, adicione:
+
+**pinia:**
+```json
+"compilerOptions": {
+  "baseUrl": ".",
+  "paths": {
+    "hub/pinia": ["node_modules/@bildvitta/quasar-app-extension-hub/src/globals/pinia/index.js"]
+  }
+}
+```
+
+**vuex:**
+```json
+"compilerOptions": {
+  "baseUrl": ".",
+  "paths": {
+    "hub/vuex": ["node_modules/@bildvitta/quasar-app-extension-hub/src/globals/vuex/index.js"]
+  }
+}
+```
+
+Pronto, agora ao importar vai aparecer todas possíveis opções a serem importadas, e o JSDOC irá funcionar.
+
 ## Usando com Vuex
 Por padrão a store de controle de estado é utilizando vuex, como estamos dando compatibilidade tanto para pinia quando para vuex, não existem `mutations` dentro da nossa store, uma vez que mutations não existem no `pinia`, por conta disto quando utilizar vuex é necessário desativar o modo `strict`, caso contrario vai aparecer vários erros de alteração de `state` fora de `mutations`, entre no `index.js` do `store` e desabilite, por exemplo:
 
@@ -75,7 +100,7 @@ module.exports = {
 
 Usando store do pinia:
 ```js
-import { hubStore } from 'hub'
+import { hubStore } from 'hub/pinia'
 
 const hub = hubStore()
 
@@ -175,6 +200,21 @@ Esta extensão comunica-se apenas com a aplicação servidor diretamente ligada 
     data.accessToken // token atualizado
   })
   ```
+
+## Composables
+É possível importar o composable `useCan` para utilizar com Composition API, existem 2 opções, para o pinia e para o vuex:
+
+```js
+import { useCan } from 'hub/vuex'
+
+const { can, canAny } = useCan()
+```
+
+```js
+import { useCan } from 'hub/pinia'
+
+const { can, canAny } = useCan()
+```
 
 ## Funções
 

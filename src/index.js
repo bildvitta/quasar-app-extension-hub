@@ -7,9 +7,6 @@ module.exports = function (api) {
     const boots = []
 
     api.compatibleWith('axios', '>=0.21.1')
-    api.compatibleWith('@bildvitta/composables', '1.0.0-beta.6')
-
-    console.log('Cai na extensão', api.compatibleWith('@bildvitta/composables', '1.0.0-beta.5'))
 
     const quasarVersion = api.getPackageVersion('quasar')
     const [quasarMajorVersion] = quasarVersion.split('.')

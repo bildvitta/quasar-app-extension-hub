@@ -1,14 +1,20 @@
-import { useCanWrapper, Can, CanAny } from '@bildvitta/composables'
+import { useCanWrapper } from '@bildvitta/composables'
 import { useStore } from 'vuex'
 
 /**
- * @returns {{
- *  can: import('@bildvitta/composables').Can,
- *  canAny: import('@bildvitta/composables').CanAny
- * }}
+ * @desc Composable base para permissionamento de tela
+ *
+ * @example
+ * ```js
+ * const { can, canAny } = useCan({ store })
+ *
+ * can('users.list') // true | false
+ * can('companies.list', 'companies') // true | false
+ *
+ * canAny(['users.list', 'users.show']) // true | false
+ * canAny(['companies.list', 'companies.delete'], 'companies') // true | false
+ * ```
  */
 export default function () {
-  const store = useStore().state.hub.user
-
-  return useCanWrapper({ store })
+  return useCanWrapper({ store: useStore().state.hub.user })
 }

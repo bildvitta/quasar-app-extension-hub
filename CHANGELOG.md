@@ -2,6 +2,17 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
+## 3.1.1-beta.2 - 15-03-2024
+## BREAKING CHANGES
+- Modificado exportação da extensão através do alias `hub`, agora para importar o `hubStore` é através do `hub/pinia`, checar documentação do readme.md.
+
+### Adicionado
+- Adicionado biblioteca `@bildvitta/composables`.
+- Adicionado composables `useCan` com versões para `pinia` e `vuex`.
+
+### Modificado
+- Modificado exportação da extensão através do alias `hub`, agora para importar o `hubStore` é através do `hub/pinia`, checar documentação do readme.md.
+
 ## 3.1.1-beta.1 - 22-08-2023
 ## BREAKING CHANGES
 - Como estava vindo de forma errada o `updateUser`, é possível que na aplicação tenha que corrigir também para se adequar ao padrão correto.
