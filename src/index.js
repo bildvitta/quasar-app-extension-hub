@@ -37,10 +37,9 @@ module.exports = function (api) {
     quasar.build.transpileDependencies.push(/quasar-app-extension-hub[\\/]src[\\/]boot/)
   })
 
-
   api.extendWebpack(webpack => {
     // Adiciona um "alias" chamado "hub" para a aplicação, necessário quando usar pinia
-    const hub = 'node_modules/@bildvitta/quasar-app-extension-hub/src/hub.js'
+    const hub = 'node_modules/@bildvitta/quasar-app-extension-hub/src/globals'
 
     const hasHubConfigFile = fs.existsSync(hubConfigPath)
     const aliasPath = hasHubConfigFile
