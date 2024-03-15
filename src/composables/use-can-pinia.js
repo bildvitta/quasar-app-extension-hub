@@ -18,5 +18,5 @@ import { useCanWrapper } from '@bildvitta/composables'
  * ```
  */
 export default function () {
-  return useCanWrapper({ store: hubStore() })
+  return useCanWrapper({ store: hubStore().user })
 }

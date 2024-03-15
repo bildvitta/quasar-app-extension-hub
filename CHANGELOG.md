@@ -2,6 +2,10 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
+## 3.1.1-beta.3 - 15-03-2024
+### Corrigido
+- `use-can-pinia`: adicionado `.user` no `hubStore()`, para recuperar o usuário.
+
 ## 3.1.1-beta.2 - 15-03-2024
 ## BREAKING CHANGES
 - Modificado exportação da extensão através do alias `hub`, agora para importar o `hubStore` é através do `hub/pinia`, checar documentação do readme.md.
