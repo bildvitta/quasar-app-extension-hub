@@ -32,7 +32,7 @@ module.exports = {
 Lembrando que este arquivo não é obrigatório sendo possível utilizar somente para alterar configurações especificas como por exemplo usar apenas para alterar o `storeAdapter`.
 
 ### Dica
-O path `'hub'` quando utilizado para importação `import { ... } from 'hub'` é criado via alias, então é perdido todo o autocomplete/intellisense do vscode, para contornar isto, dentro do `jsconfig.json`, adicione:
+O path `'hub'` quando utilizado para importação `import { ... } from 'hub/vuex'` ou `import { ... } from 'hub/pinia'` é criado via alias, então é perdido todo o autocomplete/intellisense do vscode, para contornar isto, dentro do `jsconfig.json`, adicione:
 
 **pinia:**
 ```json
