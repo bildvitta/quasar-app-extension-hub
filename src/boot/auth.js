@@ -106,8 +106,19 @@ export default async ({ router, store, app, Vue }) => {
     const hasUser = store.getters['hub/hasUser']
 
     // get user before enter on application
-    if (hasAccessToken && (!hasUser || !from.name)) {
-      await store.dispatch('hub/getUser')
+    if (hasAccessToken && (!hasUser || !from.name) && from.name !== 'HubCallback') {
+      try {
+        quasar.loading.show({ message: 'Carregando...' })
+
+        await store.dispatch('hub/getUser')
+      } catch (error) {
+        if (error && error.response && response.status === 401) return
+
+        notifyError('Erro ao carregar usuário')
+      }
+      finally {
+        quasar.loading.hide()
+      }
     }
 
     // Is user authenticated?
