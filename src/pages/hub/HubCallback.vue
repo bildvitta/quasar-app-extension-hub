@@ -9,7 +9,7 @@
       {{ errorMessage }}
 
       <template v-slot:action>
-        <q-btn color="red" flat label="Tentar novamente" @click="authorize" />
+        <q-btn color="red" flat label="Tentar novamente" href="/" />
       </template>
     </q-banner>
   </div>

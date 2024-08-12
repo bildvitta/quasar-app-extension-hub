@@ -2,6 +2,13 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
+## [Unreleased]
+### Adicionado
+- Loading quando estiver batendo a API `users/me`.
+
+### Modificado
+- Botão de "Tentar novamente" na página de `HubCallback` agora é redirecionado para a URL raiz do produto.
+
 ## [2.1.0] - 09-08-2022
 Versão estável lançada.
 
