@@ -2,7 +2,7 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
-## [Unreleased]
+## [2.2.0-beta.2] - 13-08-2024
 ### Corrigido
 - Corrigido erro na validação da chave de erros.
 
