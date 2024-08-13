@@ -2,6 +2,10 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
+## [Unreleased]
+### Corrigido
+- Corrigido erro na validação da chave de erros.
+
 ## [2.2.0-beta.1] - 12-08-2024
 ### Adicionado
 - Loading quando estiver batendo a API `users/me`.

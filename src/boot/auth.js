@@ -112,7 +112,7 @@ export default async ({ router, store, app, Vue }) => {
 
         await store.dispatch('hub/getUser')
       } catch (error) {
-        if (error && error.response && response.status === 401) return
+        if (error && error.response && error.response.status === 401) return
 
         notifyError('Erro ao carregar usuário')
       }
