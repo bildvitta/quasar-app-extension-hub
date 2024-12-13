@@ -2,6 +2,14 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
+## 3.1.1-beta.4 - 13-12-2024
+### Adicionado
+- Adicionado novo composable `useAppCan`.
+- Adicionado arquivo `.nvmrc`.
+
+### Modificado
+- Atualizado biblioteca `@bildvitta/composables` para versão `1.0.0-beta.9`.
+
 ## 3.1.1-beta.3 - 15-03-2024
 ### Corrigido
 - `use-can-pinia`: adicionado `.user` no `hubStore()`, para recuperar o usuário.
