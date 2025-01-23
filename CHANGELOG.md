@@ -2,6 +2,19 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
+## 3.1.1-beta.4 - 23-01-2025
+## BREAKING CHANGES
+- Necessário adicionar env `ME_VERSION` contendo 2 valores possíveis, `1|2`, 1 sendo o valor atual, e 2 para o novo /me.
+
+### Adicionado
+- Adicionado novo composable `useAppCan`.
+- Adicionado arquivo `.nvmrc`.
+- `store/hub/getUser`: adicionado query `version` no endpoint `GET -> users/me`, vindo da env `ME_VERSION`.
+- `store/hub/mutations/replaceUser`: adicionado company default dentro de `defaultFilters` no localStorage.
+
+### Modificado
+- Atualizado biblioteca `@bildvitta/composables` para versão `1.0.0-beta.9`.
+
 ## 3.1.1-beta.3 - 15-03-2024
 ### Corrigido
 - `use-can-pinia`: adicionado `.user` no `hubStore()`, para recuperar o usuário.

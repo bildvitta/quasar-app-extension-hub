@@ -1,11 +1,12 @@
-import axios from 'axios'
 import setAuthorizationHeader from '../helpers/set-authorization-header'
 import setMessageEvent from '../helpers/set-message-event'
-import { LocalStorage } from 'quasar'
 import { hasString } from '../helpers/string'
 import { replaceAccessToken, replaceUser } from '../helpers/mutations'
 import { getActionPayload } from '@bildvitta/store-adapter'
 import hubConfig from '../shared/default-hub-config.js'
+
+import axios from 'axios'
+import { LocalStorage } from 'quasar'
 
 const { storeAdapter } = hubConfig
 const isPinia = storeAdapter === 'pinia'
@@ -52,7 +53,11 @@ const actions = {
 
   async getUser () {
     try {
-      const { data } = await axios.get('/users/me')
+      const { data } = await axios.get('/users/me', {
+        params: {
+          version: process.env.ME_VERSION
+        }
+      })
 
       replaceUser.call(this, { user: data.result, isPinia })
       return data.result

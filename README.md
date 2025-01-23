@@ -31,6 +31,8 @@ module.exports = {
 
 Lembrando que este arquivo não é obrigatório sendo possível utilizar somente para alterar configurações especificas como por exemplo usar apenas para alterar o `storeAdapter`.
 
+Após isto adicione caso não exista a env `ME_VERSION` no arquivo `quasar.config.js` com os possíveis valores `1|2`, sendo number.
+
 ### Dica
 O path `'hub'` quando utilizado para importação `import { ... } from 'hub/vuex'` ou `import { ... } from 'hub/pinia'` é criado via alias, então é perdido todo o autocomplete/intellisense do vscode, para contornar isto, dentro do `jsconfig.json`, adicione:
 
@@ -150,7 +152,7 @@ Esta extensão comunica-se apenas com a aplicação servidor diretamente ligada 
 
 | Endpoint | Método | Parâmetros | Retorno | Descrição |
 |----------|--------|------------|---------|-----------|
-| `/users/me` | `GET` | | `{ user: { ... } }` | Busca os dados do usuário autenticado. |
+| `/users/me?version={process.env.ME_VERSION}` | `GET` | | `{ user: { ... } }` | Busca os dados do usuário autenticado. |
 | `/auth/callback` | `GET` | `code` e `state`: Chaves do Hub. | `{ accessToken: '...' }` | Irá retornar o JWT. |
 | `/auth/login` | `GET` | `url`: Endereço de _callback_. | `{ loginUrl: '...' }` | Busca o endereço de autenticação. |
 | `/auth/logout` | `GET` | `url`: Endereço de _callback_. | `{ logoutUrl: '...' }` | Busca o endereço de desconexão. |
@@ -202,21 +204,41 @@ Esta extensão comunica-se apenas com a aplicação servidor diretamente ligada 
   ```
 
 ## Composables
-É possível importar o composable `useCan` para utilizar com Composition API, existem 2 opções, para o pinia e para o vuex:
+É possível importar o composable `useCan` e `useAppCan` para utilizar com Composition API, existem 2 opções, para o pinia e para o vuex:
 
 ```js
-import { useCan } from 'hub/vuex'
+import { useCan, useAppCan } from 'hub/vuex'
 
 const { can, canAny } = useCan()
+
+const {
+  can,
+  canList,
+  canCreate,
+  canByPermission,
+  canEdit,
+  canDelete,
+  canShow
+} = useAppCan()
 ```
 
 ```js
 import { useCan } from 'hub/pinia'
 
-const { can, canAny } = useCan()
+const { can, canAny, useAppCan } = useCan()
+
+const {
+  can,
+  canList,
+  canCreate,
+  canByPermission,
+  canEdit,
+  canDelete,
+  canShow
+} = useAppCan()
 ```
 
-## Funções
+## Funções globais
 
 Esta extensão também verifica se o usuário possui ou não permissões para visualizar o conteúdo com a função `$can`
 A função verifica no retorno do usuário logado, se ele possui ou não privilégios atrelados à chamada do `/me` salvo na storage
@@ -233,6 +255,26 @@ ex. 2: `$can('realState.show`, realStateId)` -> Verifica se o usuário possui pe
 Obs.: Caso o usuário tenha permissões de verificar `todas as entidades`, ele terá um wildcard `*`.
 Obs. 2: Essa função também verifica se o usuário é superuser, caso positivo, ira retornar sempre `true`
 
+**Observação importante:**
+Não existe uma função global para o composable `useAppCan`, para isto, quando utilizado em options api, continue utilizando o composable, exemplo:
+```js
+import { useAppCan } from 'hub/vuex'
+
+export default {
+  name: 'XPTO',
+
+  data () {
+    permission: useAppCan()
+  },
+
+  created () {
+    ...
+
+    if (this.permission.canList('xpto')) ...
+  }
+}
+```
+
 ## Contribuindo
 
 Com este repositório em sua máquina, basta instalar a extensão apontando o diretório local de dentro de uma aplicação Quasar, por exemplo:
@@ -244,5 +286,5 @@ $ npm i -D file://../quasar-app-extension-hub
 Ainda que dispensável para esta extensão, você pode invocar o arquivo de instalação executando o comando:
 
 ```bash
-$ quasar ext invoke @bildvitta/hub  
+$ quasar ext invoke @bildvitta/hub
 ```
