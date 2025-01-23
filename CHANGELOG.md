@@ -4,7 +4,7 @@ O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versi
 
 ## 3.1.1-beta.4 - 23-01-2025
 ## BREAKING CHANGES
-- Necessário adicionar env `ME_VERSION` contendo 2 valores possíveis, `1|2`.
+- Necessário adicionar env `ME_VERSION` contendo 2 valores possíveis, `1|2`, 1 sendo o valor atual, e 2 para o novo /me.
 
 ### Adicionado
 - Adicionado novo composable `useAppCan`.
