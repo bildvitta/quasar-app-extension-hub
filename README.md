@@ -31,6 +31,8 @@ module.exports = {
 
 Lembrando que este arquivo não é obrigatório sendo possível utilizar somente para alterar configurações especificas como por exemplo usar apenas para alterar o `storeAdapter`.
 
+Após isto adicione caso não exista a env `ME_VERSION` no arquivo `quasar.config.js` com os possíveis valores `1|2`, sendo number.
+
 ### Dica
 O path `'hub'` quando utilizado para importação `import { ... } from 'hub/vuex'` ou `import { ... } from 'hub/pinia'` é criado via alias, então é perdido todo o autocomplete/intellisense do vscode, para contornar isto, dentro do `jsconfig.json`, adicione:
 
@@ -150,7 +152,7 @@ Esta extensão comunica-se apenas com a aplicação servidor diretamente ligada 
 
 | Endpoint | Método | Parâmetros | Retorno | Descrição |
 |----------|--------|------------|---------|-----------|
-| `/users/me` | `GET` | | `{ user: { ... } }` | Busca os dados do usuário autenticado. |
+| `/users/me?version={process.env.ME_VERSION}` | `GET` | | `{ user: { ... } }` | Busca os dados do usuário autenticado. |
 | `/auth/callback` | `GET` | `code` e `state`: Chaves do Hub. | `{ accessToken: '...' }` | Irá retornar o JWT. |
 | `/auth/login` | `GET` | `url`: Endereço de _callback_. | `{ loginUrl: '...' }` | Busca o endereço de autenticação. |
 | `/auth/logout` | `GET` | `url`: Endereço de _callback_. | `{ logoutUrl: '...' }` | Busca o endereço de desconexão. |
@@ -254,7 +256,7 @@ Obs.: Caso o usuário tenha permissões de verificar `todas as entidades`, ele t
 Obs. 2: Essa função também verifica se o usuário é superuser, caso positivo, ira retornar sempre `true`
 
 **Observação importante:**
-Não existe uma função global para o composable `useAppCan`, para isto, quando utilizado em options api, continue utilizando o composale, exemplo:
+Não existe uma função global para o composable `useAppCan`, para isto, quando utilizado em options api, continue utilizando o composable, exemplo:
 ```js
 import { useAppCan } from 'hub/vuex'
 
