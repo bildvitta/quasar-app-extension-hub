@@ -28,10 +28,10 @@ export function replaceUser ({ user = {}, isPinia }) {
    * como valor padrão para o filtro de empresa, caso não encontre ou então não exista a
    * propriedade "currentMainCompany", então é setado o primeiro valor do array de "companyLinksOptions".
    */
-  function setDefaultFiltersInStorage (user) {
+  function setDefaultFiltersInStorage (user = {}) {
     const defaultFiltersFromStorage = LocalStorage.getItem('defaultFilters') || {}
 
-    const firstCompanyLinkOptionValue = user.companyLinksOptions.at(0)?.value
+    const firstCompanyLinkOptionValue = user.companyLinksOptions?.at(0)?.value
 
     const defaultCompany = user.currentMainCompany
       ? user.companyLinksOptions.find(({ value }) => value === user.currentMainCompany)?.value || firstCompanyLinkOptionValue
