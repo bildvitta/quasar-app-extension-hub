@@ -2,7 +2,7 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
-## Não publicado
+## 3.1.1-beta.5 - 06-02-2025
 ### Adicionado
 - `HubLogout`: adicionado função para limpar todo local storage e session storage.
 
