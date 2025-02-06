@@ -2,6 +2,13 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
+## Não publicado
+### Adicionado
+- `HubLogout`: adicionado função para limpar todo local storage e session storage.
+
+### Corrigido
+- `helpers/mutations`: corrigido função `setDefaultFiltersInStorage` que dava erro quando não existia o user a primeira vez.
+
 ## 3.1.1-beta.4 - 23-01-2025
 ## BREAKING CHANGES
 - Necessário adicionar env `ME_VERSION` contendo 2 valores possíveis, `1|2`, 1 sendo o valor atual, e 2 para o novo /me.

@@ -60,12 +60,22 @@ export default {
           key: 'clear'
         })
 
+        this.clearStorage()
+
         location.href = url
       } catch {
         this.hasError = true
       } finally {
         Loading.hide()
       }
+    },
+
+    /**
+     * Limpa o localStorage e sessionStorage, removendo todos os dados armazenados.
+     */
+    clearStorage () {
+      localStorage.clear()
+      sessionStorage.clear()
     }
   }
 }
