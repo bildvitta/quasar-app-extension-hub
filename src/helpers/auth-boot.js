@@ -60,8 +60,6 @@ export const beforeEach = ({ router, quasar, isPinia, store }) => {
   router.beforeEach(async (to, from, next) => {
     productName = productName || document.title
 
-    authDevLoginHandler({ router, quasar, isPinia, store, next, to })
-
     // Routes that does not requires authentication.
     const requiresAuth = to.matched.some(item => item.meta.requiresAuth)
 
@@ -152,46 +150,46 @@ export const addRoutes = router => {
  * TODOS:
  *  - adicionar chave no hug.config para poder validar.
  */
-function authDevLoginHandler ({ quasar, isPinia, store, next, to }) {
-  if (to.name === 'HubDevLogin') return next()
+// function authDevLoginHandler ({ quasar, isPinia, store, next, to }) {
+//   if (to.name === 'HubDevLogin') return next()
 
-  const isLocalhost = ['localhost', '127.0.0.1'].includes(window.location.hostname)
-  const isVercelDomain = window.location.hostname.endsWith('.vercel.app')
-  const isCloudflareDomain = window.location.hostname.endsWith('.pages.dev')
-  const isProduction = process.env.NODE_ENV === 'production'
+//   const isLocalhost = ['localhost', '127.0.0.1'].includes(window.location.hostname)
+//   const isVercelDomain = window.location.hostname.endsWith('.vercel.app')
+//   const isCloudflareDomain = window.location.hostname.endsWith('.pages.dev')
+//   const isProduction = process.env.NODE_ENV === 'production'
 
-  const hasAccessToken = isPinia ? store.hasAccessToken : store.getters['hub/hasAccessToken']
+//   const hasAccessToken = isPinia ? store.hasAccessToken : store.getters['hub/hasAccessToken']
 
-  /**
-   * Se for produção ou não for localhost, vercel ou cloudflare, ou já tiver
-   * um access token, não precisa fazer nada.
-   */
-  if (
-    isProduction ||
-    !(isLocalhost || isVercelDomain || isCloudflareDomain) ||
-    hasAccessToken
-  ) return
+//   /**
+//    * Se for produção ou não for localhost, vercel ou cloudflare, ou já tiver
+//    * um access token, não precisa fazer nada.
+//    */
+//   if (
+//     isProduction ||
+//     !(isLocalhost || isVercelDomain || isCloudflareDomain) ||
+//     hasAccessToken
+//   ) return
 
-  router.addRoute('Hub', {
-    name: 'HubDevLogin',
-    path: 'auth/dev/login',
-    component: () => import('../pages/hub/HubDevLogin.vue'),
-    meta: {
-      title: 'Login de desenvolvimento'
-    }
-  })
+//   router.addRoute('Hub', {
+//     name: 'HubDevLogin',
+//     path: 'auth/dev/login',
+//     component: () => import('../pages/hub/HubDevLogin.vue'),
+//     meta: {
+//       title: 'Login de desenvolvimento'
+//     }
+//   })
 
-  next({ name: 'HubDevLogin' })
-}
+//   next({ name: 'HubDevLogin' })
+// }
 
-function hasAuthDevLogin () {
-  const isLocalhost = ['localhost', '127.0.0.1'].includes(window.location.hostname)
-  const isVercelDomain = window.location.hostname.endsWith('.vercel.app')
-  const isCloudflareDomain = window.location.hostname.endsWith('.pages.dev')
-  const isProduction = process.env.NODE_ENV === 'production'
+// function hasAuthDevLogin () {
+//   const isLocalhost = ['localhost', '127.0.0.1'].includes(window.location.hostname)
+//   const isVercelDomain = window.location.hostname.endsWith('.vercel.app')
+//   const isCloudflareDomain = window.location.hostname.endsWith('.pages.dev')
+//   const isProduction = process.env.NODE_ENV === 'production'
 
-  return (
-    isProduction ||
-    !(isLocalhost || isVercelDomain || isCloudflareDomain)
-  )
-}
+//   return (
+//     isProduction ||
+//     !(isLocalhost || isVercelDomain || isCloudflareDomain)
+//   )
+// }

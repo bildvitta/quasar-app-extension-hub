@@ -38,18 +38,18 @@
 
     <app-dev-logout-dialog
       v-model="showDevLogoutDialog"
-      environment="dev"
+      :environment="hubConfig.development[developmentMode].environment"
       @try-again="makeAutomaticLogin"
     />
   </div>
 </template>
 
 <script setup>
-import AppDevLogoutDialog from './AppDevLogoutDialog.vue'
+import AppDevLogoutDialog from '../../components/AppDevLogoutDialog.vue'
 // import { getGetter } from '@bildvitta/store-adapter'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
-import { computed, onMounted, ref, onBeforeMount } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 // import AppContent from '../../components/AppContent.vue'
 // import AppHubPage from '../../components/AppHubPage.vue'
 
@@ -63,21 +63,14 @@ const hubConfig = {
   development: {
     localhost: {
       useAutomaticLogin: true,
-      environment: 'temp'
+      environment: 'dev',
+      url: 'http://localhost:8080/auth/dev/login'
     },
 
     preview: {
       useAutomaticLogin: true,
-      environment: 'dev'
-    },
-
-    dev: {
+      environment: 'dev',
       url: 'https://vendas.nave.dev.br'
-    },
-
-    temp: {
-      url: 'http://localhost:8080/auth/dev/login'
-      // url: 'https://vendas-temporary.nave.dev.br'
     }
   }
 }
@@ -89,9 +82,7 @@ const store = useStore()
 const router = useRouter()
 const route = useRoute()
 
-const { showDevLogoutDialog, makeAutomaticLogin, listenerRequestAccessToken } = useAutomaticLogin()
-
-onBeforeMount(listenerRequestAccessToken)
+const { showDevLogoutDialog, makeAutomaticLogin } = useAutomaticLogin()
 
 // refs
 const accessToken = ref('')
@@ -122,7 +113,6 @@ function setAccessToken (token) {
 }
 
 function onSetAccessToken (token) {
-  console.log('TCL: onSetAccessToken -> token', token)
   setAccessToken(token)
 
   const { from } = route.query
@@ -146,30 +136,10 @@ function onSetAccessToken (token) {
 function useAutomaticLogin () {
   const showDevLogoutDialog = ref(false)
 
-  function listenerRequestAccessToken () {
-    const { requestAccessToken, requestAccessTokenOrigin } = route.query
-
-    if (window.opener && requestAccessToken === 'true' && requestAccessTokenOrigin) {
-      console.log('CAI AQUI!!', window.opener)
-      window.opener.postMessage({ type: 'responseToken', token: 'eae man' })
-    }
-
-    // window.addEventListener('message', event => {
-    //   const { origin, data: { type }, source } = event
-
-    //   // const previewSuffix = ['vercel.app', 'pages.dev']
-
-    //   if (origin === 'http://localhost:8080' && type === 'requestAccessToken') {
-    //     source.postMessage({ type: 'responseToken', token: '124' }, origin)
-    //   }
-    // })
-  }
-
   async function makeAutomaticLogin () {
-    const { environment } = development[developmentMode]
-    const baseURL = development[environment].url
+    const { url: baseURL } = development[developmentMode]
 
-    const url = `${baseURL}`
+    const url = `${baseURL}/?requestAccessToken=true&requestAccessTokenOrigin=http://localhost:8080/`
 
     const openedWindow = window.open(
       `${url}/?requestAccessToken=true&requestAccessTokenOrigin=http://localhost:8080/`,
@@ -204,7 +174,6 @@ function useAutomaticLogin () {
 
   return {
     showDevLogoutDialog,
-    listenerRequestAccessToken,
     makeAutomaticLogin,
     openDevLogoutDialog
   }
