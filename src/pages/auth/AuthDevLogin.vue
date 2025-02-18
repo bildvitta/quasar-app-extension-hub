@@ -38,7 +38,8 @@
 
     <app-dev-logout-dialog
       v-model="showDevLogoutDialog"
-      :environment="hubConfig.development[developmentMode].environment"
+      :environment="environment"
+      :url="baseURL"
       @try-again="makeAutomaticLogin"
     />
   </div>
@@ -71,7 +72,7 @@ const { development } = hubConfig
 
 const isLocalhost = ['localhost', '127.0.0.1'].includes(window.location.hostname)
 const developmentMode = isLocalhost ? 'localhost' : 'preview'
-const { environment } = development[developmentMode]
+const { environment, url: baseURL } = development[developmentMode]
 const isDev = environment === 'development'
 
 const headerProps = {
@@ -126,7 +127,6 @@ function useAutomaticLogin () {
   const showDevLogoutDialog = ref(false)
 
   async function makeAutomaticLogin () {
-    const { url: baseURL } = development[developmentMode]
     const { origin } = window.location
 
     const url = `${baseURL}/?requestAccessToken=true&requestAccessTokenOrigin=${origin}`

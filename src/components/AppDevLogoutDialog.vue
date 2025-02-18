@@ -25,7 +25,7 @@ const props = defineProps({
   },
 
   url: {
-    default: 'http://localhost:8080',
+    default: '',
     type: String
   }
 })
