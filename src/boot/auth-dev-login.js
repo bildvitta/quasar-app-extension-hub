@@ -1,3 +1,5 @@
+import hubConfig from 'hubConfig'
+
 import { LocalStorage } from 'quasar'
 
 export default ({ router, urlPath }) => {
@@ -8,7 +10,11 @@ export default ({ router, urlPath }) => {
 }
 
 function setRedirectURL ({ accessToken, router, urlPath }) {
-  if (!hasAuthDevLogin(window.location.hostname) || accessToken) return
+  if (!isLocalhostOrPreviewDomain(window.location.hostname) || accessToken) return
+
+  const mode = isLocalhost(window.location.hostname) ? 'localhost' : 'preview'
+
+  if (!hubConfig.development[mode].useAutomaticLogin) return
 
   router.addRoute('Hub', {
     name: 'HubDevLogin',
@@ -19,15 +25,20 @@ function setRedirectURL ({ accessToken, router, urlPath }) {
     }
   })
 
-  router.beforeEach((to, from, next) => {
-    if (to.name === 'HubDevLogin' || accessToken) return next()
+  router.beforeEach((to, _from, next) => {
+    const reloadedAccessToken = LocalStorage.getItem('accessToken')
+
+    if (to.name === 'HubDevLogin' || reloadedAccessToken) return next()
 
     next({ name: 'HubDevLogin', query: { from: urlPath, ...to.query } })
   })
 }
 
 function handleAccessTokenRequest ({ accessToken }) {
-  if (!hasAuthDevLogin(window.location.hostname) || !accessToken && window.opener) return
+  if (!accessToken && !window.opener) return
+
+  // TODO: voltar código abaixo
+  // if (!isLocalhostOrPreviewDomain(window.location.hostname) || !accessToken && !window.opener) return
 
   const urlParams = new URLSearchParams(window.location.search)
 
@@ -38,30 +49,21 @@ function handleAccessTokenRequest ({ accessToken }) {
   const isValid = value => value === true || value === 'true'
 
   if (isValid(requestAccessToken) && requestAccessTokenOrigin) {
-    window.opener.postMessage({ type: 'responseAccessToken', accessToken }, requestAccessTokenOrigin)
+    window.opener.postMessage({ type: 'responseAccessToken', accessToken: accessToken }, requestAccessTokenOrigin)
   }
 }
 
-// function setListener () {
-//   if (!hasAuthDevLogin(window.location.host) || !accessToken && window.opener) return
+function isLocalhost (host) {
+  return ['localhost', '127.0.0.1'].includes(host)
+}
 
-//   window.addEventListener('message', accessTokenListener)
+/**
+ * Preview de vercel ou cloudflare pages
+ */
+function isPreviewDomain (host) {
+  return host.endsWith('.vercel.app') || host.endsWith('.pages.dev')
+}
 
-//   function accessTokenListener (event) {
-//     const { origin, data: { type }, source } = event
-
-//     if (hasAuthDevLogin(origin) && type === 'requestAccessToken') {
-//       source.postMessage({ type: 'responseToken', accessToken }, origin)
-
-//       window.removeEventListener('message', accessTokenListener)
-//     }
-//   }
-// }
-
-function hasAuthDevLogin (host) {
-  const isLocalhost = ['localhost', '127.0.0.1'].includes(host)
-  const isVercelDomain = host.endsWith('.vercel.app')
-  const isCloudflareDomain = host.endsWith('.pages.dev')
-
-  return (isLocalhost || isVercelDomain || isCloudflareDomain)
+function isLocalhostOrPreviewDomain (host) {
+  return isLocalhost(host) || isPreviewDomain(host)
 }

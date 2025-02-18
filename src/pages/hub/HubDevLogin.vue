@@ -45,40 +45,19 @@
 </template>
 
 <script setup>
+import hubConfig from '../../shared/default-hub-config'
+
 import AppDevLogoutDialog from '../../components/AppDevLogoutDialog.vue'
-// import { getGetter } from '@bildvitta/store-adapter'
-import { useStore } from 'vuex'
+
 import { useRoute, useRouter } from 'vue-router'
-import { computed, onMounted, ref } from 'vue'
-// import AppContent from '../../components/AppContent.vue'
-// import AppHubPage from '../../components/AppHubPage.vue'
+import { computed, inject, onMounted, ref } from 'vue'
 
 defineOptions({ name: 'HubDevLogin' })
 
-// TODO: mover pro hubConfig
-const hubConfig = {
-  hasAsteroid: true, // usado caso tenha extensão @bildvitta/asteroid instalada na aplicação
-  forbiddenRouteName: 'Forbidden', // usado para definir o nome da rota da pagina de erro 404 (Forbidden)
-  storeAdapter: 'vuex',
-  development: {
-    localhost: {
-      useAutomaticLogin: true,
-      environment: 'dev',
-      url: 'http://localhost:8080/auth/dev/login'
-    },
-
-    preview: {
-      useAutomaticLogin: true,
-      environment: 'dev',
-      url: 'https://vendas.nave.dev.br'
-    }
-  }
-}
-
-const { development } = hubConfig
+// globals
+const qas = inject('qas')
 
 // composables
-const store = useStore()
 const router = useRouter()
 const route = useRoute()
 
@@ -88,40 +67,50 @@ const { showDevLogoutDialog, makeAutomaticLogin } = useAutomaticLogin()
 const accessToken = ref('')
 
 // consts
-const headerProps = {
-  description: 'Para fazer login automático, é necessário já estar logado em dev ou temporário, dependendo do ambiente.'
-}
+const { development } = hubConfig
 
 const isLocalhost = ['localhost', '127.0.0.1'].includes(window.location.hostname)
 const developmentMode = isLocalhost ? 'localhost' : 'preview'
+const { environment } = development[developmentMode]
+const isDev = environment === 'dev'
+
+const headerProps = {
+  description: (
+    `Para fazer login automático, é necessário já estar logado em ${isDev ? 'develop' : 'temporário'}.`
+  )
+}
 
 // computeds
-const hasAccessToken = computed(() => store.getters['hub/hasAccessToken'])
-// const hasAccessToken = computed(() => getGetter({ entity: 'hub', key: 'hasAccessToken' }))
+const hasAccessToken = computed(() => qas.getGetter({ entity: 'hub', key: 'hasAccessToken' }))
 
 const normalizedAccessToken = computed(() => accessToken.value.replace('__q_strn|', ''))
 
 onMounted(() => {
-  if (hasAccessToken.value) router.replace('/')
+  if (hasAccessToken.value) goToHome()
 })
 
 // functions
+function goToHome () {
+  router.replace('/')
+}
+
 function setAccessToken (token) {
   accessToken.value = token
 
-  store.dispatch('hub/setAccessToken', token)
+  qas.getAction({
+    entity: 'hub',
+    key: 'setAccessToken',
+    payload: token
+  })
 }
 
-function onSetAccessToken (token) {
+async function onSetAccessToken (token) {
   setAccessToken(token)
 
   const { from } = route.query
 
   // Se não tem from redireciona para a rota principal
-  if (!from) {
-    router.replace('/')
-    return
-  }
+  if (!from) return goToHome()
 
   // precisa começar com "/" para que o path funcione.
   const normalizedFrom = from.startsWith('/') ? from : `/${from}`
@@ -129,7 +118,7 @@ function onSetAccessToken (token) {
   const resolvedRoute = router.resolve({ path: normalizedFrom })
 
   // Redireciona para a rota de origem
-  router.replace(resolvedRoute)
+  router.push(resolvedRoute)
 }
 
 // composable definitions
@@ -138,22 +127,21 @@ function useAutomaticLogin () {
 
   async function makeAutomaticLogin () {
     const { url: baseURL } = development[developmentMode]
+    const { origin } = window.location
 
-    const url = `${baseURL}/?requestAccessToken=true&requestAccessTokenOrigin=http://localhost:8080/`
+    const url = `${baseURL}/?requestAccessToken=true&requestAccessTokenOrigin=${origin}`
 
-    const openedWindow = window.open(
-      `${url}/?requestAccessToken=true&requestAccessTokenOrigin=http://localhost:8080/`,
-      '_blank',
-      'width=600,height=600'
-    )
+    const openedWindow = window.open(url, '_blank', 'width=600,height=600')
 
+    // envia mensagem para a janela aberta quando ela estiver pronta
     openedWindow.onload = sendMessage
 
+    // escuta a mensagem enviada pela janela aberta
     window.addEventListener('message', messageListener)
 
-    function messageListener ({ data: { type, token } }) {
+    function messageListener ({ data: { type, accessToken: token } }) {
       // Garante que a mensagem vem do domínio correto
-      if (type === 'responseToken') {
+      if (type === 'responseAccessToken') {
         openedWindow.close()
 
         token ? onSetAccessToken(token) : openDevLogoutDialog()

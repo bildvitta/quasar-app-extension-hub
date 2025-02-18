@@ -30,7 +30,7 @@ module.exports = function (api) {
      */
     if (
       process.env.ENVIRONMENT !== 'production' &&
-      hubConfig.hasAsteroid &&
+      hubConfig?.hasAsteroid &&
       isLatestQuasar
     ) {
       boots.push('auth-dev-login')
