@@ -38,13 +38,11 @@ function handleAccessTokenRequest ({ accessToken }) {
   const envs = ['development', 'temporary']
 
   /**
-   * Se o ambiente for de desenvolvimento e não tiver accessToken
-   * e a janela for um popup e não for localhost ou preview domain
-   * então ele irá enviar uma mensagem para a janela pai com o accessToken.
+   * É apenas para ambientes de desenvolvimento e temporários e se a janela foi
+   * aberta por outra janela (window.opener) e não é localhost ou preview.
    */
   const hasRedirectRequestHandler = (
     envs.includes(process.env.ENVIRONMENT) &&
-    !accessToken &&
     window.opener &&
     !isLocalhostOrPreviewDomain(window.location.hostname)
   )
