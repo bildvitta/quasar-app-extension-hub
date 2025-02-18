@@ -16,29 +16,28 @@ function setRedirectURL ({ accessToken, router, urlPath }) {
 
   if (!hubConfig.development[mode].useAutomaticLogin) return
 
-  router.addRoute('Hub', {
-    name: 'HubDevLogin',
+  router.addRoute({
+    name: 'AuthDevLogin',
     path: '/auth/dev/login',
-    component: () => import('../pages/hub/HubDevLogin.vue'),
+    component: () => import('../pages/auth/AuthDevLogin.vue'),
     meta: {
       title: 'Login de desenvolvimento'
     }
   })
 
   router.beforeEach((to, _from, next) => {
-    const reloadedAccessToken = LocalStorage.getItem('accessToken')
+    const refreshedAccessToken = LocalStorage.getItem('accessToken')
 
-    if (to.name === 'HubDevLogin' || reloadedAccessToken) return next()
+    if (to.name === 'AuthDevLogin' || refreshedAccessToken) return next()
 
-    next({ name: 'HubDevLogin', query: { from: urlPath, ...to.query } })
+    next({ name: 'AuthDevLogin', query: { from: urlPath, ...to.query } })
   })
 }
 
 function handleAccessTokenRequest ({ accessToken }) {
   if (!accessToken && !window.opener) return
 
-  // TODO: voltar código abaixo
-  // if (!isLocalhostOrPreviewDomain(window.location.hostname) || !accessToken && !window.opener) return
+  if (!isLocalhostOrPreviewDomain(window.location.hostname) || !accessToken && !window.opener) return
 
   const urlParams = new URLSearchParams(window.location.search)
 
