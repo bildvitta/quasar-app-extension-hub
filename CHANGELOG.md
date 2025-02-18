@@ -2,6 +2,17 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
+## Não publicado
+## BREAKING CHANGES
+- Certifique-se que exista a env `ENVIRONMENT` setada com o valor `production` no ambiente de produção para não adicionar os recursos de login de desenvolvimento.
+- Modificado `asteroid.config.js`.
+
+### Adicionado
+- Adicionado recurso para fazer login automático para desenvolvimento, somente disponível com o uso do `asteroid`, mediante a env `ENVIRONMENT !== 'production'`.
+
+### Modificado
+- Modificado `asteroid.config.js`.
+
 ## 3.1.1-beta.5 - 06-02-2025
 ### Adicionado
 - `HubLogout`: adicionado função para limpar todo local storage e session storage.
