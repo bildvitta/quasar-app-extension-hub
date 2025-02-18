@@ -35,9 +35,21 @@ function setRedirectURL ({ accessToken, router, urlPath }) {
 }
 
 function handleAccessTokenRequest ({ accessToken }) {
-  if (!accessToken && !window.opener) return
+  const envs = ['development', 'temporary']
 
-  if (!isLocalhostOrPreviewDomain(window.location.hostname) || !accessToken && !window.opener) return
+  /**
+   * Se o ambiente for de desenvolvimento e não tiver accessToken
+   * e a janela for um popup e não for localhost ou preview domain
+   * então ele irá enviar uma mensagem para a janela pai com o accessToken.
+   */
+  const hasRedirectRequestHandler = (
+    envs.includes(process.env.ENVIRONMENT) &&
+    !accessToken &&
+    window.opener &&
+    !isLocalhostOrPreviewDomain(window.location.hostname)
+  )
+
+  if (!hasRedirectRequestHandler) return
 
   const urlParams = new URLSearchParams(window.location.search)
 
@@ -48,7 +60,9 @@ function handleAccessTokenRequest ({ accessToken }) {
   const isValid = value => value === true || value === 'true'
 
   if (isValid(requestAccessToken) && requestAccessTokenOrigin) {
-    window.opener.postMessage({ type: 'responseAccessToken', accessToken: accessToken }, requestAccessTokenOrigin)
+    const payload = { type: 'responseAccessToken', accessToken: accessToken }
+
+    window.opener.postMessage(payload, requestAccessTokenOrigin)
   }
 }
 

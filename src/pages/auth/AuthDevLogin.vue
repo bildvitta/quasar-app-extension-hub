@@ -72,7 +72,7 @@ const { development } = hubConfig
 const isLocalhost = ['localhost', '127.0.0.1'].includes(window.location.hostname)
 const developmentMode = isLocalhost ? 'localhost' : 'preview'
 const { environment } = development[developmentMode]
-const isDev = environment === 'dev'
+const isDev = environment === 'development'
 
 const headerProps = {
   description: (

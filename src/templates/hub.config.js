@@ -5,13 +5,13 @@ module.exports = {
   development: {
     localhost: {
       useAutomaticLogin: true,
-      environment: 'dev',
+      environment: 'development',
       url: ''
     },
 
     preview: {
       useAutomaticLogin: true,
-      environment: 'dev',
+      environment: 'temporary',
       url: ''
     }
   }

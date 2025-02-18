@@ -18,10 +18,10 @@ defineOptions({ name: 'AppDevLogoutDialog' })
 
 const props = defineProps({
   environment: {
-    default: 'dev',
+    default: 'development',
     type: String,
     required: true,
-    validator: value => ['dev', 'temp'].includes(value)
+    validator: value => ['development', 'temporary'].includes(value)
   },
 
   url: {
@@ -33,7 +33,7 @@ const props = defineProps({
 const emit = defineEmits(['try-again'])
 
 // consts
-const environmentLabel = props.environment === 'dev' ? 'desenvolvimento' : 'temporário'
+const environmentLabel = props.environment === 'development' ? 'desenvolvimento' : 'temporário'
 
 const dialogProps = {
   card: {
