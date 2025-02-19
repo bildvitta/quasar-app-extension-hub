@@ -7,19 +7,18 @@
 
     <qas-header v-bind="headerProps" />
 
-    <div>
-      <qas-input
-        v-model="accessToken"
-        class="full-width"
-        hint="Caso o prefixo '__q_strn|' seja adicionado, ele será removido internamente."
-        label="AccessToken"
-        type="textarea"
-      />
-    </div>
+    <qas-input
+      v-model="accessToken"
+      class="full-width"
+      hint="Caso o prefixo '__q_strn|' seja adicionado, ele será removido internamente."
+      label="AccessToken"
+      type="textarea"
+    />
 
     <qas-actions>
       <template #primary>
         <qas-btn
+          class="full-width"
           :disable="!accessToken"
           label="Acessar"
           variant="primary"
@@ -29,7 +28,7 @@
 
       <template #secondary>
         <qas-btn
-          class="q-ml-md"
+          class="full-width"
           label="Login automático"
           @click="makeAutomaticLogin"
         />
