@@ -19,18 +19,18 @@
       <template #primary>
         <qas-btn
           class="full-width"
-          :disable="!accessToken"
-          label="Acessar"
+          label="Login automático"
           variant="primary"
-          @click="onSetAccessToken(normalizedAccessToken)"
+          @click="makeAutomaticLogin"
         />
       </template>
 
       <template #secondary>
         <qas-btn
           class="full-width"
-          label="Login automático"
-          @click="makeAutomaticLogin"
+          :disable="!accessToken"
+          label="Acessar"
+          @click="onSetAccessToken(normalizedAccessToken)"
         />
       </template>
     </qas-actions>

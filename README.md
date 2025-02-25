@@ -40,7 +40,6 @@ Lembrando que este arquivo não é obrigatório sendo possível utilizar somente
 
 ### Dica
 O path `'hub'` quando utilizado para importação `import { ... } from 'hub/vuex'` ou `import { ... } from 'hub/pinia'` é criado via alias, então é perdido todo o autocomplete/intellisense do vscode, para contornar isto, dentro do `jsconfig.json`, adicione:
-Collecting workspace information
 
 **pinia:**
 ```json

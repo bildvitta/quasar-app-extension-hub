@@ -1,5 +1,5 @@
 <template>
-  <qas-dialog v-bind="dialogProps">
+  <qas-dialog v-model="model" v-bind="dialogProps">
     <template #description>
       Você não esta logado no ambiente de <strong>{{ environmentLabel }}</strong>.
       Para fazer login automático, siga os passos abaixo:
@@ -30,6 +30,10 @@ const props = defineProps({
   }
 })
 
+// models
+const model = defineModel({ type: Boolean })
+
+// emits
 const emit = defineEmits(['try-again'])
 
 // consts
@@ -52,6 +56,7 @@ const dialogProps = {
 
   maxWidth: '650px',
   useFullMaxWidth: true,
+  useForm: true,
   persistent: false
 }
 </script>
