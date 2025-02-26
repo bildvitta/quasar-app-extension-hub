@@ -101,5 +101,4 @@ function isPreviewDomain () {
 
 function isLocalhostOrPreviewDomain () {
   return isLocalDevelopment() || isPreviewDomain()
-  // return isLocalhost(host) || isPreviewDomain(host)
 }

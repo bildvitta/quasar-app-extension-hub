@@ -7,8 +7,8 @@ module.exports = function (api) {
 
   // caminho do arquivo "hub.config.js"
   const aliasPath = hasHubConfigFile
-  ? api.resolve.app(hubConfigPath)
-  : api.resolve.src('./templates/hub.config.js')
+    ? api.resolve.app(hubConfigPath)
+    : api.resolve.src('./templates/hub.config.js')
 
   // importa o arquivo "hub.config.js"
   const hubConfig = require(aliasPath)
