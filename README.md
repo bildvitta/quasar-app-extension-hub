@@ -33,10 +33,10 @@ Lembrando que este arquivo não é obrigatório sendo possível utilizar somente
 
 **Variáveis de ambiente:**
 
-| Nome        | Tipo                                | Obrigatório |
-|-------------|-------------------------------------|-------------|
-| `ME_VERSION`  | `1\|2`                              | Sim         |
-| `ENVIRONMENT` | `production\|development\|temporary` | Sim        |
+| Nome        | Tipo                                   | Obrigatório |
+|-------------|-------------------------------------   |-------------|
+| `ME_VERSION`  | `1\|2`                               | Sim         |
+| `ENVIRONMENT` | `production\|development\|temporary` | Sim         |
 
 ### Dica
 O path `'hub'` quando utilizado para importação `import { ... } from 'hub/vuex'` ou `import { ... } from 'hub/pinia'` é criado via alias, então é perdido todo o autocomplete/intellisense do vscode, para contornar isto, dentro do `jsconfig.json`, adicione:

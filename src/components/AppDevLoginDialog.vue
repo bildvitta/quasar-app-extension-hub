@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-defineOptions({ name: 'AppDevLogoutDialog' })
+defineOptions({ name: 'AppDevLoginDialog' })
 
 const props = defineProps({
   environment: {

@@ -35,7 +35,7 @@
       </template>
     </qas-actions>
 
-    <app-dev-logout-dialog
+    <app-dev-login-dialog
       v-model="showDevLogoutDialog"
       :environment="environment"
       :url="baseURL"
@@ -45,9 +45,11 @@
 </template>
 
 <script setup>
+import { isLocalDevelopment } from 'asteroid'
+
 import hubConfig from '../../shared/default-hub-config'
 
-import AppDevLogoutDialog from '../../components/AppDevLogoutDialog.vue'
+import AppDevLoginDialog from '../../components/AppDevLoginDialog.vue'
 
 import { useRoute, useRouter } from 'vue-router'
 import { computed, inject, onMounted, ref } from 'vue'
@@ -69,7 +71,7 @@ const accessToken = ref('')
 // consts
 const { development } = hubConfig
 
-const isLocalhost = ['localhost', '127.0.0.1'].includes(window.location.hostname)
+const isLocalhost = isLocalDevelopment()
 const developmentMode = isLocalhost ? 'localhost' : 'preview'
 const { environment, url: baseURL } = development[developmentMode]
 const isDev = environment === 'development'
@@ -116,6 +118,9 @@ async function onSetAccessToken (token) {
   const normalizedFrom = from.startsWith('/') ? from : `/${from}`
 
   const resolvedRoute = router.resolve({ path: normalizedFrom })
+
+  // Se a rota não existe redireciona para a rota principal
+  if (resolvedRoute.name === 'NotFound') return goToHome()
 
   // Redireciona para a rota de origem
   router.push(resolvedRoute)
