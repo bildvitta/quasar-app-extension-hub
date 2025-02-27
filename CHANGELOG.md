@@ -11,7 +11,30 @@ O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versi
 - Adicionado recurso para fazer login automático para desenvolvimento, somente disponível com o uso do `asteroid`, mediante a env `ENVIRONMENT !== 'production'`.
 
 ### Modificado
-- Modificado `asteroid.config.js`.
+- Modificado `asteroid.config.js`..
+
+### 3.1.1
+## BREAKING CHANGES
+- Modificado exportação da extensão através do alias `hub`, agora para importar o `hubStore` é através do `hub/pinia`, checar documentação do readme.md.
+- Como estava vindo de forma errada o `updateUser`, é possível que na aplicação tenha que corrigir também para se adequar ao padrão correto.
+- Necessário adicionar env `ME_VERSION` contendo 2 valores possíveis, `1|2`, 1 sendo o valor atual, e 2 para o novo /me.
+
+### Adicionado
+- Adicionado biblioteca `@bildvitta/composables`.
+- Adicionado composables `useCan` com versões para `pinia` e `vuex`.
+- Adicionado novo composable `useAppCan`.
+- Adicionado arquivo `.nvmrc`.
+- `store/hub/getUser`: adicionado query `version` no endpoint `GET -> users/me`, vindo da env `ME_VERSION`.
+- `store/hub/mutations/replaceUser`: adicionado company default dentro de `defaultFilters` no localStorage.
+
+### Modificado
+- Modificado exportação da extensão através do alias `hub`, agora para importar o `hubStore` é através do `hub/pinia`, checar documentação do readme.md.
+- Atualizado biblioteca `@bildvitta/composables` para versão `1.0.0-beta.9`.
+
+### Corrigido
+- `auth-pinia.js`: corrigido função `can` que estava sendo usada sem importação.
+- Adicionado import do `postMessage` para o `updateUser` no arquivo `mutations.js`, antes estava usando postMessage nativo do `window` e estava fugindo do padrão e não retornando o `user`.
+- `use-can-pinia`: adicionado `.user` no `hubStore()`, para recuperar o usuário.
 
 ## 3.1.1-beta.5 - 06-02-2025
 ### Adicionado
