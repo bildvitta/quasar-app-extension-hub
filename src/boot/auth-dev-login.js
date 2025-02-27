@@ -20,7 +20,7 @@ function setRedirectURL ({ accessToken, router, urlPath }) {
   const mode = isLocalDevelopment() ? 'localhost' : 'preview'
 
   // se não estiver configurado para usar o login automático, não faz nada.
-  if (!hubConfig.development[mode].useAutomaticLogin) return
+  if (!hubConfig.development?.[mode]?.useAutomaticLogin) return
 
   // a rota só é adicionada caso passe por todas as condições acima.
   router.addRoute({
