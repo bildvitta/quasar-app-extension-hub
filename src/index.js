@@ -2,6 +2,17 @@ module.exports = function (api) {
   const hubConfigPath = 'hub.config.js'
   const fs = require('fs')
 
+  // verifica se existe o arquivo "hub.config.js" na raiz do projeto
+  const hasHubConfigFile = fs.existsSync(hubConfigPath)
+
+  // caminho do arquivo "hub.config.js"
+  const aliasPath = hasHubConfigFile
+    ? api.resolve.app(hubConfigPath)
+    : api.resolve.src('./templates/hub.config.js')
+
+  // importa o arquivo "hub.config.js"
+  const hubConfig = require(aliasPath)
+
   api.extendQuasarConf(quasar => {
     // Boot
     const boots = []
@@ -14,6 +25,20 @@ module.exports = function (api) {
     const isLatestQuasar = Number(quasarMajorVersion) === 2
     const isPinia = api.hasPackage('pinia')
     const usePinia = isPinia && isLatestQuasar
+
+    /**
+     * Adiciona o boot de login de desenvolvimento apenas se:
+     * - O ambiente for diferente de produção.
+     * - Conter a extensão do asteroid.
+     * - Estiver utilizando a versão "2" do Quasar.
+     */
+    if (
+      process.env.ENVIRONMENT !== 'production' &&
+      hubConfig?.hasAsteroid &&
+      isLatestQuasar
+    ) {
+      boots.push('auth-dev-login')
+    }
 
     boots.push(usePinia ? 'auth-pinia' : 'auth-vuex')
 
@@ -40,11 +65,6 @@ module.exports = function (api) {
   api.extendWebpack(webpack => {
     // Adiciona um "alias" chamado "hub" para a aplicação, necessário quando usar pinia
     const hub = 'node_modules/@bildvitta/quasar-app-extension-hub/src/globals'
-
-    const hasHubConfigFile = fs.existsSync(hubConfigPath)
-    const aliasPath = hasHubConfigFile
-      ? api.resolve.app(hubConfigPath)
-      : api.resolve.src('./templates/hub.config.js')
 
     webpack.resolve.alias = {
       ...webpack.resolve.alias,
