@@ -243,6 +243,23 @@ const {
 } = useAppCan()
 ```
 
+Os métodos de permissionamento, irão olhar para a chave `companyPermissions` dentro do `user` (recebido do `/me`).
+A chave se trata de um objeto no qual retorna a `key` é o `UUID` da company em questão e seu valor é um array com a lista de permissões do usuário naquela company.
+Ex:
+```js
+companyPermissions = {
+  'ebde8a05-fe11-44ad-9b3a-39dee841c83b': [
+    'permission.list',
+    'otherPermission.list'
+  ]
+}
+```
+
+As permissões internamente são convertidas para `camelCase`, tanto a action quanto a entidade em questão, então para utilização do composable podemos utilizar a `entity` para facilitar o uso. Exemplo de uso:
+```js
+can('otherPermission', { action: 'viewContract' })
+```
+
 ## Funções globais
 
 Esta extensão também verifica se o usuário possui ou não permissões para visualizar o conteúdo com a função `$can`

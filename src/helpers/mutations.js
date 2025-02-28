@@ -2,6 +2,7 @@ import { LocalStorage } from 'quasar'
 import setAuthorizationHeader from './set-authorization-header.js'
 import { getStateFromAction } from '@bildvitta/store-adapter'
 import postMessage from './post-message.js'
+import { camelize } from 'humps'
 
 // mutations functions
 export function replaceAccessToken ({ accessToken = '', isPinia }) {
@@ -13,9 +14,16 @@ export function replaceAccessToken ({ accessToken = '', isPinia }) {
 }
 
 export function replaceUser ({ user = {}, isPinia }) {
+  const state = getStateFromAction.call(this, { isPinia, resource: 'hub' })
+
+  for (const key in user.companyPermissions) {
+    user.companyPermissions[key] = user.companyPermissions[key].map(permission => {
+      return camelize(permission)
+    })
+  }
+
   LocalStorage.set('user', user)
 
-  const state = getStateFromAction.call(this, { isPinia, resource: 'hub' })
   state.user = user
 
   postMessage('updateUser', { user })
