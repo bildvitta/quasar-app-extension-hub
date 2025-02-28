@@ -2,7 +2,11 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
-### 3.2.0-beta.0 - 27-02-2025
+## 3.2.0-beta.1 - 28-02-2025
+### Corrigido
+- Corrigido permissões para serem `camelCase`.
+
+## 3.2.0-beta.0 - 27-02-2025
 ## BREAKING CHANGES
 - Certifique-se que exista a env `ENVIRONMENT` setada com o valor `production` no ambiente de produção para não adicionar os recursos de login de desenvolvimento.
 - Modificado `asteroid.config.js`.
@@ -13,7 +17,7 @@ O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versi
 ### Modificado
 - Modificado `asteroid.config.js`..
 
-### 3.1.1 - 27-02-2025
+## 3.1.1 - 27-02-2025
 ## BREAKING CHANGES
 - Modificado exportação da extensão através do alias `hub`, agora para importar o `hubStore` é através do `hub/pinia`, checar documentação do readme.md.
 - Como estava vindo de forma errada o `updateUser`, é possível que na aplicação tenha que corrigir também para se adequar ao padrão correto.
