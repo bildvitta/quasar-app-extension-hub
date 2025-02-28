@@ -16,21 +16,19 @@ export function replaceAccessToken ({ accessToken = '', isPinia }) {
 export function replaceUser ({ user = {}, isPinia }) {
   const state = getStateFromAction.call(this, { isPinia, resource: 'hub' })
 
-  const userData = user
-
-  for (const key in userData.companyPermissions) {
-    userData.companyPermissions[key] = userData.companyPermissions[key].map(permission => {
+  for (const key in user.companyPermissions) {
+    user.companyPermissions[key] = user.companyPermissions[key].map(permission => {
       return camelize(permission)
     })
   }
 
-  LocalStorage.set('user', userData)
+  LocalStorage.set('user', user)
 
-  state.user = userData
+  state.user = user
 
-  postMessage('updateUser', { user: userData })
+  postMessage('updateUser', { user })
 
-  setDefaultFiltersInStorage(userData)
+  setDefaultFiltersInStorage(user)
 
   /**
    * Se existe a propriedade "currentMainCompany" no usuário, então é feito uma busca
