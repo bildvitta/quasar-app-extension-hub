@@ -2,6 +2,7 @@ import { LocalStorage } from 'quasar'
 import setAuthorizationHeader from './set-authorization-header.js'
 import { getStateFromAction } from '@bildvitta/store-adapter'
 import postMessage from './post-message.js'
+import { camelize } from 'humps'
 
 // mutations functions
 export function replaceAccessToken ({ accessToken = '', isPinia }) {
@@ -13,14 +14,23 @@ export function replaceAccessToken ({ accessToken = '', isPinia }) {
 }
 
 export function replaceUser ({ user = {}, isPinia }) {
-  LocalStorage.set('user', user)
-
   const state = getStateFromAction.call(this, { isPinia, resource: 'hub' })
-  state.user = user
 
-  postMessage('updateUser', { user })
+  const _user = user
 
-  setDefaultFiltersInStorage(user)
+  for (const key in _user.companyPermissions) {
+    _user.companyPermissions[key] = _user.companyPermissions[key].map(permission => {
+      return camelize(permission)
+    })
+  }
+
+  LocalStorage.set('user', _user)
+
+  state.user = _user
+
+  postMessage('updateUser', { user: _user })
+
+  setDefaultFiltersInStorage(_user)
 
   /**
    * Se existe a propriedade "currentMainCompany" no usuário, então é feito uma busca
