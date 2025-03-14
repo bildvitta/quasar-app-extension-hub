@@ -228,9 +228,9 @@ const {
 ```
 
 ```js
-import { useCan } from 'hub/pinia'
+import { useCan, useAppCan } from 'hub/pinia'
 
-const { can, canAny, useAppCan } = useCan()
+const { can, canAny } = useCan()
 
 const {
   can,
