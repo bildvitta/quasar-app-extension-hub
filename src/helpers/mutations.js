@@ -53,6 +53,8 @@ export function replaceUser ({ user = {}, isPinia }) {
     
     // Loopa as chaves recebidas de configuração e seta o primeiro item como default.
     for (const key in defaultFiltersConfig) {
+      if (!user[key]) continue
+
       defaultFilters[defaultFiltersConfig[key]] = user[key]?.at(0)?.value
     }
 
