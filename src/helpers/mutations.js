@@ -3,6 +3,7 @@ import setAuthorizationHeader from './set-authorization-header.js'
 import { getStateFromAction } from '@bildvitta/store-adapter'
 import postMessage from './post-message.js'
 import { camelize } from 'humps'
+import hubConfig from 'hubConfig'
 
 // mutations functions
 export function replaceAccessToken ({ accessToken = '', isPinia }) {
@@ -45,7 +46,18 @@ export function replaceUser ({ user = {}, isPinia }) {
       ? user.companyLinksOptions.find(({ value }) => value === user.currentMainCompany)?.value || firstCompanyLinkOptionValue
       : firstCompanyLinkOptionValue
 
+    // Objeto passado no hubConfig, no qual a chave representa a chave que vem do /me e e o valor, a chave que vai salvar no storage.
+    const { defaultFilters: defaultFiltersConfig = {} } = hubConfig
+
+    const defaultFilters = {}
+    
+    // Loopa as chaves recebidas de configuração e seta o primeiro item como default.
+    for (const key in defaultFiltersConfig) {
+      defaultFilters[defaultFiltersConfig[key]] = user[key]?.at(0)?.value
+    }
+
     LocalStorage.set('defaultFilters', {
+      ...defaultFilters,
       ...defaultFiltersFromStorage,
       company: defaultCompany
     })

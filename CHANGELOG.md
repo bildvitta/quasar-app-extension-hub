@@ -2,6 +2,10 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
+## [Unreleased]
+### Adicionado
+- Adicionar recurso para conseguir personalizar os `defaultFilters` com base no que vem do `hub.config`. 
+
 ## 3.2.0-beta.1 - 28-02-2025
 ### Corrigido
 - Corrigido permissões para serem `camelCase`.
