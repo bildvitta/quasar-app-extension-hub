@@ -37,7 +37,7 @@ A chave `defaultFilters`, serve como referência para salvar no storage quais se
 }
 ```
 
-A chave (properties), é a referência na qual vai ser olhado para pegar a primeira opção, ou seja, dentro do `user`, será olhado para a chave `properties`. Já o valor (property), é como vamos salvar no storage, sendo assim, vamos salvar `property: <value-da-primeira-opcao>`.
+A chave (properties), se trata da chave com as opções que virá dentro do `user`. Já o valor (property), é como vamos salvar no storage, sendo assim, vamos salvar `property: <value-da-primeira-opcao-de-properties>`.
 
 Lembrando que este arquivo não é obrigatório sendo possível utilizar somente para alterar configurações especificas como por exemplo usar apenas para alterar o `storeAdapter`.
 
