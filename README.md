@@ -26,6 +26,19 @@ module.exports = {
   hasAsteroid: true, // usado caso tenha extensão @bildvitta/asteroid instalada na aplicação
   forbiddenRouteName: 'Forbidden', // usado para definir o nome da rota da pagina de erro 404 (Forbidden)
   storeAdapter: 'vuex', // usado para definir qual store esta utilizando na aplicação "vuex" ou "pinia"
+  development: {
+    localhost: {
+      useAutomaticLogin: true,
+      environment: 'temporary',
+      url: 'https://produtoxyz-temporary.nave.dev.br' // url do ambiente que vai pegar o token
+    },
+
+    preview: {
+      useAutomaticLogin: true,
+      environment: 'temporary',
+      url: 'https://produtoxyz-temporary.nave.dev.br' // url do ambiente que vai pegar o token
+    }
+  }, // usado para realizar o login automático nos ambientes locais e de preview, sem precisar adicionar o token manualmente
   defaultFilters: {} // usado para deixar dinâmico e personalizável o filtro padrão salvo no storage.
 }
 ```
