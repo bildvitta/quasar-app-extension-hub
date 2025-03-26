@@ -25,9 +25,32 @@ Após isto, será gerado um arquivo `hub.config.js` com a seguinte configuraçã
 module.exports = {
   hasAsteroid: true, // usado caso tenha extensão @bildvitta/asteroid instalada na aplicação
   forbiddenRouteName: 'Forbidden', // usado para definir o nome da rota da pagina de erro 404 (Forbidden)
-  storeAdapter: 'vuex' // usado para definir qual store esta utilizando na aplicação "vuex" ou "pinia"
+  storeAdapter: 'vuex', // usado para definir qual store esta utilizando na aplicação "vuex" ou "pinia"
+  development: { // ambiente de desenvolvimento
+    localhost: {
+      useAutomaticLogin: true, // usado para definir se o login automático sera feito
+      environment: 'development', // flag para definir o ambiente
+      url: '' // url do ambiente a ser acessado
+    },
+
+    preview: {
+      useAutomaticLogin: true, // usado para definir se o login automático sera feito
+      environment: 'temporary', // flag para definir o ambiente
+      url: '' // url do ambiente a ser acessado
+    }
+  },
+  defaultFilters: {} // usado para deixar dinâmico e personalizável o filtro padrão salvo no storage.
 }
 ```
+
+A chave `defaultFilters`, serve como referência para salvar no storage quais serão os filtros padrões e da onde será pego a primeira opção. Ex:
+```js
+{
+  properties: 'property'
+}
+```
+
+A chave (properties) é a listagem de referência que será utilizada para pegar a primeira opção. Já o valor (property), é como vamos salvar no storage o primeiro item encontrado dentro de properties. Sendo assim, vamos salvar no storage property: `property: <valor-da-primeira-opção-de-properties>`.
 
 Lembrando que este arquivo não é obrigatório sendo possível utilizar somente para alterar configurações especificas como por exemplo usar apenas para alterar o `storeAdapter`.
 

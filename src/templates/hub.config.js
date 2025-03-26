@@ -14,5 +14,6 @@ module.exports = {
       environment: 'temporary', // flag para definir o ambiente
       url: '' // url do ambiente a ser acessado
     }
-  }
+  },
+  defaultFilters: {} // usado para deixar dinâmico e personalizável o filtro padrão salvo no storage.
 }
