@@ -59,8 +59,8 @@ export function replaceUser ({ user = {}, isPinia }) {
     }
 
     LocalStorage.set('defaultFilters', {
-      ...defaultFilters,
       ...defaultFiltersFromStorage,
+      ...defaultFilters,
       company: defaultCompany
     })
   }
