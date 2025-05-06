@@ -56,6 +56,7 @@ export const interceptAxios = ({ router, quasar, storeConfig = {} }) => {
 
 export const beforeEach = ({ router, quasar, isPinia, store }) => {
   let productName
+  let hasFetchedUser = false // Utilizado pra evitar que bata a API do /me quando ele ja foi buscado.
 
   router.beforeEach(async (to, from, next) => {
     productName = productName || document.title
@@ -72,14 +73,29 @@ export const beforeEach = ({ router, quasar, isPinia, store }) => {
     const hasAccessToken = isPinia ? store.hasAccessToken : store.getters['hub/hasAccessToken']
     const hasUser = isPinia ? store.hasUser : store.getters['hub/hasUser']
 
-    // get user before enter on application
-    if (hasAccessToken && (!hasUser || !from.name) && from.name !== 'HubCallback') {
+    // Caso perca os dados do usuário, deverá buscar novamente
+    if (hasFetchedUser && !hasUser) {
+      hasFetchedUser = false
+    }
+
+    /**
+     * Irá bater a API de /me quando:
+     * - Tem accessToken
+     * - User na store está vazio ou é a primeira página acessada
+     * - Não vem de da rota "HubCallback"
+     * - Nao foi buscado a API de /me ainda.
+     */
+    if (hasAccessToken && (!hasUser || !from.name) && from.name !== 'HubCallback' && !hasFetchedUser) {
       try {
         quasar.loading.show()
 
         isPinia ? await store.getUser() : await store.dispatch('hub/getUser')
+
+        hasFetchedUser = true
       } catch ({ response: { status } }) {
         if (status !== 401) notifyError('Erro ao carregar usuário')
+
+        hasFetchedUser = false
       }
       finally {
         quasar.loading.hide()
