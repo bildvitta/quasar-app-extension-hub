@@ -1,19 +1,57 @@
-module.exports = {
-  hasAsteroid: true, // usado caso tenha extensão @bildvitta/asteroid instalada na aplicação
-  forbiddenRouteName: 'Forbidden', // usado para definir o nome da rota da pagina de erro 404 (Forbidden)
-  storeAdapter: 'vuex', // usado para definir qual store esta utilizando na aplicação "vuex" ou "pinia"
-  development: { // ambiente de desenvolvimento
+export default {
+  /**
+   * @type {boolean=true} hasAsteroid - usado caso tenha extensão @bildvitta/asteroid instalada na aplicação.
+   */
+  hasAsteroid: true,
+
+  /**
+   * @type {string='Forbidden'} forbiddenRouteName - usado para definir o nome da rota da pagina de erro 404 (Forbidden)
+   */
+  forbiddenRouteName: 'Forbidden',
+
+  /**
+   * @type {'vuex'|'pinia'} storeAdapter - usado para definir qual store esta utilizando na aplicação "vuex" ou "pinia"
+   */
+  storeAdapter: 'vuex',
+
+  development: {
     localhost: {
-      useAutomaticLogin: true, // usado para definir se o login automático sera feito
-      environment: 'development', // flag para definir o ambiente
-      url: '' // url do ambiente a ser acessado
+      /**
+       * @type {boolean=true} useAutomaticLogin - usado para definir se o login automático sera feito
+       */
+      useAutomaticLogin: true,
+
+      /**
+       * @type {'temporary'|'development'} environment - flag para definir o ambiente
+       */
+      environment: 'development',
+
+      /**
+       * @type {string} url - url do ambiente a ser acessado
+       */
+      url: ''
     },
 
     preview: {
-      useAutomaticLogin: true, // usado para definir se o login automático sera feito
-      environment: 'temporary', // flag para definir o ambiente
-      url: '' // url do ambiente a ser acessado
+      /**
+       * @type {boolean=true} useAutomaticLogin - usado para definir se o login automático sera feito
+       */
+      useAutomaticLogin: true,
+
+      /**
+       * @type {'temporary'|'development'} environment - flag para definir o ambiente
+       */
+      environment: '',
+
+      /**
+       * @type {string} url - url do ambiente a ser acessado
+       */
+      url: ''
     }
   },
-  defaultFilters: {} // usado para deixar dinâmico e personalizável o filtro padrão salvo no storage.
+
+  /**
+   * @type {object} defaultFilters - usado para deixar dinâmico e personalizável o filtro padrão salvo no storage.
+   */
+  defaultFilters: {}
 }

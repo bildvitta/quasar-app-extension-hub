@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { notifyError } from './notifies'
+import { notifyError } from './notifies.js'
 import hubConfig from '../shared/default-hub-config.js'
 
 const { forbiddenRouteName } = hubConfig
@@ -17,8 +17,7 @@ export const interceptAxios = ({ router, quasar, storeConfig = {} }) => {
   const { refresh = () => {}, clear = () => {} } = storeConfig
 
   axios.interceptors.response.use(response => response, async error => {
-    const { status } = error.response
-
+    const { status } = error?.response || {}
 
     // Unauthorized
     if (status === 401) {
@@ -78,7 +77,9 @@ export const beforeEach = ({ router, quasar, isPinia, store }) => {
         quasar.loading.show()
 
         isPinia ? await store.getUser() : await store.dispatch('hub/getUser')
-      } catch ({ response: { status } }) {
+      } catch (error) {
+        const { status } = error?.response || {}
+
         if (status !== 401) notifyError('Erro ao carregar usuário')
       }
       finally {

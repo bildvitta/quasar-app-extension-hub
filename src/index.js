@@ -26,7 +26,6 @@ export default async function (api) {
     const isLatestQuasar = Number(quasarMajorVersion) === 2
     const isPinia = api.hasPackage('pinia')
     const usePinia = isPinia && isLatestQuasar
-		console.log("TCL: isPinia", { isPinia, usePinia, isLatestQuasar })
 
     /**
      * Adiciona o boot de login de desenvolvimento apenas se:
@@ -56,16 +55,13 @@ export default async function (api) {
 
     plugins.forEach(plugin => quasar.framework.plugins.push(plugin))
 
-    console.log("TCL: api.hasWebpack", api.hasWebpack)
-      // Transpilação de arquivos!
+    // Transpilação de arquivos!
     if (api.hasWebpack) {
       const transpileTarget = (
         quasar.build.webpackTranspileDependencies || // q/app-webpack >= v4
         quasar.build.transpileDependencies // q/app-webpack v3
       )
-      console.log("TCL: quasar.build.transpileDependencies", quasar.build)
 
-      console.log("TCL: transpileTarget", transpileTarget)
       transpileTarget.push(/quasar-app-extension-hub[\\/]src[\\/]boot/)
     }
   })
@@ -91,8 +87,6 @@ export default async function (api) {
 
     return
   }
-
-  console.log("TCL: api.extendWebpack", api.extendWebpack)
 
   api.extendWebpack(webpack => Object.assign(webpack.resolve.alias, alias))
 }

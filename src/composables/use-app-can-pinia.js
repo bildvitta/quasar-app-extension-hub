@@ -1,4 +1,4 @@
-import hubStore from '../store/pinia-hub-store'
+import hubStore from '../store/pinia-hub-store.js'
 
 import { useAppCanWrapper } from '@bildvitta/composables'
 

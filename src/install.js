@@ -1,4 +1,4 @@
-module.exports = function (api) {
+export default function (api) {
   api.onExitLog('A extensão Hub foi instalada. 😍')
 
   // adicionar arquivo de configuração da sdk do hub.

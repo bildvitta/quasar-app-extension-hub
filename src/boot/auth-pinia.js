@@ -1,6 +1,7 @@
 import piniaHubStore from '../store/pinia-hub-store.js'
-import { DefineGlobalPiniaStore } from '@bildvitta/store-adapter'
 import can from '../helpers/can.js'
+
+import { DefineGlobalPiniaStore } from '@bildvitta/store-adapter'
 
 import {
   addRoutes,
@@ -14,7 +15,8 @@ export default ({ router, app, Vue }) => {
 
   const { quasar } = getGlobalVariables({ app, Vue })
 
-  app.use(DefineGlobalPiniaStore, { stores: [store] })
+  // Adiciona a store hub ao Pinia globalmente
+  app.use(DefineGlobalPiniaStore, { stores: { hub: () => store } })
 
   interceptAxios({
     router,

@@ -1,9 +1,10 @@
-import setAuthorizationHeader from '../helpers/set-authorization-header'
-import setMessageEvent from '../helpers/set-message-event'
-import { hasString } from '../helpers/string'
-import { replaceAccessToken, replaceUser } from '../helpers/mutations'
-import { getActionPayload } from '@bildvitta/store-adapter'
+import setAuthorizationHeader from '../helpers/set-authorization-header.js'
+import setMessageEvent from '../helpers/set-message-event.js'
+import { hasString } from '../helpers/string.js'
+import { replaceAccessToken, replaceUser } from '../helpers/mutations.js'
 import hubConfig from '../shared/default-hub-config.js'
+
+import { getActionPayload } from '@bildvitta/store-adapter'
 
 import axios from 'axios'
 import { LocalStorage } from 'quasar'
