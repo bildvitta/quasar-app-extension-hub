@@ -45,15 +45,7 @@
 </template>
 
 <script setup>
-import {
-  QasActions,
-  QasBtn,
-  QasHeader,
-  QasInput,
-  QasPageHeader,
-
-  isLocalDevelopment
-} from 'asteroid'
+import { isLocalDevelopment } from 'asteroid'
 
 import hubConfig from '../../shared/default-hub-config'
 
