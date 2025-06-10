@@ -14,6 +14,8 @@
 </template>
 
 <script setup>
+import { QasDialog } from 'asteroid'
+
 defineOptions({ name: 'AppDevLoginDialog' })
 
 const props = defineProps({
