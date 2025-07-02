@@ -1,4 +1,5 @@
 import fs from 'fs'
+import { pathToFileURL } from 'url'
 
 export default async function (api) {
   const hubConfigPath = 'hub.config.js'
@@ -12,7 +13,7 @@ export default async function (api) {
     : api.resolve.src('./templates/hub.config.js')
 
   // importa o arquivo "hub.config.js"
-  const { default: hubConfig } = await import(aliasPath)
+  const { default: hubConfig } = await import(pathToFileURL(aliasPath).href)
 
   api.extendQuasarConf(quasar => {
     // Boot
