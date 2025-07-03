@@ -4,7 +4,7 @@ O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versi
 
 ## [Unreleased]
 ### Corrigido
-- Corrigido duplicidade nas requisições do `/me`.
+- Corrigido duplicidade nas requisições do `/me` quando utilizado `setDefaultFiltersBeforeEnter` do asteroid.
 
 ## 3.2.0-beta.3 - 23-04-2025
 ### Corrigido
