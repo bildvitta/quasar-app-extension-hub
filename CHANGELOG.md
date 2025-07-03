@@ -2,6 +2,10 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
+## [Unreleased]
+### Corrigido
+- Corrigido duplicidade nas requisições do `/me`.
+
 ## 3.2.0-beta.3 - 23-04-2025
 ### Corrigido
 - Corrigido comportamento para setar o `defaultFilters` com base no que vem do `/me` ao invés do `LocalStorage`.
