@@ -2,7 +2,7 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
-## [Unreleased]
+## 3.2.0-beta.4 - 11-07-2025
 ### Corrigido
 - Corrigido duplicidade nas requisições do `/me` quando utilizado `setDefaultFiltersBeforeEnter` do asteroid.
 
