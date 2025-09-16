@@ -2,6 +2,14 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
+## Unreleased
+### Adicionado
+- Adicionado suporte para vite.
+- Adiciono a store hub ao Pinia globalmente para não ser necessário fazer manual nos produtos, verificar e remover nos produtos caso exista.
+
+### Modificado
+- Modificações necessárias para adicionar suporte ao vite.
+
 ## 3.2.0-beta.3 - 23-04-2025
 ### Corrigido
 - Corrigido comportamento para setar o `defaultFilters` com base no que vem do `/me` ao invés do `LocalStorage`.
