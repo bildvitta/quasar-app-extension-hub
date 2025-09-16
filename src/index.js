@@ -1,6 +1,8 @@
-module.exports = function (api) {
+import fs from 'fs'
+import { pathToFileURL } from 'url'
+
+export default async function (api) {
   const hubConfigPath = 'hub.config.js'
-  const fs = require('fs')
 
   // verifica se existe o arquivo "hub.config.js" na raiz do projeto
   const hasHubConfigFile = fs.existsSync(hubConfigPath)
@@ -11,7 +13,7 @@ module.exports = function (api) {
     : api.resolve.src('./templates/hub.config.js')
 
   // importa o arquivo "hub.config.js"
-  const hubConfig = require(aliasPath)
+  const { default: hubConfig } = await import(pathToFileURL(aliasPath).href)
 
   api.extendQuasarConf(quasar => {
     // Boot
@@ -42,10 +44,6 @@ module.exports = function (api) {
 
     boots.push(usePinia ? 'auth-pinia' : 'auth-vuex')
 
-    console.log(
-      `Hub está utilizando adapter store: ${usePinia ? 'pinia' : 'vuex'}`
-    )
-
     boots.forEach(boot => {
       quasar.boot.push(`~@bildvitta/quasar-app-extension-hub/src/boot/${boot}.js`)
     })
@@ -58,19 +56,38 @@ module.exports = function (api) {
 
     plugins.forEach(plugin => quasar.framework.plugins.push(plugin))
 
-    // Transpile dependencies
-    quasar.build.transpileDependencies.push(/quasar-app-extension-hub[\\/]src[\\/]boot/)
-  })
+    // Transpilação de arquivos!
+    if (api.hasWebpack) {
+      const transpileTarget = (
+        quasar.build.webpackTranspileDependencies || // q/app-webpack >= v4
+        quasar.build.transpileDependencies // q/app-webpack v3
+      )
 
-  api.extendWebpack(webpack => {
-    // Adiciona um "alias" chamado "hub" para a aplicação, necessário quando usar pinia
-    const hub = 'node_modules/@bildvitta/quasar-app-extension-hub/src/globals'
-
-    webpack.resolve.alias = {
-      ...webpack.resolve.alias,
-
-      hub: api.resolve.app(hub),
-      hubConfig: aliasPath
+      transpileTarget.push(/quasar-app-extension-hub[\\/]src[\\/]boot/)
     }
   })
+
+  const alias = {
+    hub: api.resolve.app('node_modules/@bildvitta/quasar-app-extension-hub/src/globals'),
+    hubConfig: aliasPath
+  }
+
+  if (api.hasVite) {
+    api.compatibleWith('@quasar/app-vite', '^2.0.0')
+
+    api.extendViteConf(viteConf => {
+      Object.assign(viteConf.resolve.alias, alias)
+
+      // optimizeDeps (necessário para funcionamento do QasMap)
+      viteConf.optimizeDeps = viteConf.optimizeDeps || {}
+      viteConf.optimizeDeps.include = viteConf.optimizeDeps.include || []
+      viteConf.optimizeDeps.include.push(...[
+        'humps'
+      ])
+    })
+
+    return
+  }
+
+  api.extendWebpack(webpack => Object.assign(webpack.resolve.alias, alias))
 }

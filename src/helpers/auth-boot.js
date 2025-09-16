@@ -85,7 +85,6 @@ export const beforeEach = ({ router, quasar, isPinia, store }) => {
 
         isPinia ? await store.getUser() : await store.dispatch('hub/getUser')
 
-
         /**
          * Setado meta para indicar que a API do /me foi chamada.
          * Necessário para resolver o problema de chamada duplicada ao entrar na rota "/".

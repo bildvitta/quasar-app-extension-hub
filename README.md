@@ -22,7 +22,7 @@ $ quasar ext add @bildvitta/hub
 Após isto, será gerado um arquivo `hub.config.js` com a seguinte configuração:
 
 ```js
-module.exports = {
+export default {
   hasAsteroid: true, // usado caso tenha extensão @bildvitta/asteroid instalada na aplicação
   forbiddenRouteName: 'Forbidden', // usado para definir o nome da rota da pagina de erro 404 (Forbidden)
   storeAdapter: 'vuex', // usado para definir qual store esta utilizando na aplicação "vuex" ou "pinia"
@@ -123,7 +123,7 @@ Caso não exista o arquivo `hub.config.js`, crie um na raiz da aplicação e adi
 
 ```js
 // hub.config.js
-module.exports = {
+export default {
   storeAdapter: 'pinia'
 }
 ```
