@@ -100,10 +100,12 @@ export const beforeEach = ({ router, quasar, isPinia, store }) => {
       }
     }
 
+    const formattedURL = `${window.location.origin}${to.fullPath}`
+
     // Is user authenticated?
     return next(hasAccessToken ? true : {
       name: 'Hub',
-      query: { url: to.fullPath }
+      query: { url: formattedURL }
     })
   })
 }
