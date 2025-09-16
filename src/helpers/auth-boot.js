@@ -71,12 +71,25 @@ export const beforeEach = ({ router, quasar, isPinia, store }) => {
     const hasAccessToken = isPinia ? store.hasAccessToken : store.getters['hub/hasAccessToken']
     const hasUser = isPinia ? store.hasUser : store.getters['hub/hasUser']
 
-    // get user before enter on application
-    if (hasAccessToken && (!hasUser || !from.name) && from.name !== 'HubCallback') {
+
+    /**
+     * Irá bater a API de /me quando:
+     * - Tem accessToken
+     * - User na store está vazio ou é a primeira página acessada
+     * - Não vem de da rota "HubCallback"
+     * - Nao tem o meta "hasFetched"
+     */
+    if (hasAccessToken && (!hasUser || !from.name) && from.name !== 'HubCallback' && !from.meta.hasFetched) {
       try {
         quasar.loading.show()
 
         isPinia ? await store.getUser() : await store.dispatch('hub/getUser')
+
+        /**
+         * Setado meta para indicar que a API do /me foi chamada.
+         * Necessário para resolver o problema de chamada duplicada ao entrar na rota "/".
+         */
+        from.meta = { hasFetched: true }
       } catch (error) {
         const { status } = error?.response || {}
 

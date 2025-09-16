@@ -10,6 +10,27 @@ O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versi
 ### Modificado
 - Modificações necessárias para adicionar suporte ao vite.
 
+## 3.2.0 - 16-09-2025
+## BREAKING CHANGES
+- Certifique-se que exista a env `ENVIRONMENT` setada com o valor `production` no ambiente de produção para não adicionar os recursos de login de desenvolvimento.
+- Modificado `asteroid.config.js`.
+
+### Adicionado
+- Adicionado recurso para fazer login automático para desenvolvimento, somente disponível com o uso do `asteroid`, mediante a env `ENVIRONMENT !== 'production'`.
+- Adicionado recurso para conseguir personalizar e adicionar `defaultFilters` com base no que vem do `hub.config`. 
+
+### Corrigido
+- Corrigido permissões para serem `camelCase`.
+- Corrigido comportamento para setar o `defaultFilters` com base no que vem do `/me` ao invés do `LocalStorage`.
+- Corrigido duplicidade nas requisições do `/me` quando utilizado `setDefaultFiltersBeforeEnter` do asteroid.
+
+### Modificado
+- Modificado `asteroid.config.js`.
+
+## 3.2.0-beta.4 - 11-07-2025
+### Corrigido
+- Corrigido duplicidade nas requisições do `/me` quando utilizado `setDefaultFiltersBeforeEnter` do asteroid.
+
 ## 3.2.0-beta.3 - 23-04-2025
 ### Corrigido
 - Corrigido comportamento para setar o `defaultFilters` com base no que vem do `/me` ao invés do `LocalStorage`.
