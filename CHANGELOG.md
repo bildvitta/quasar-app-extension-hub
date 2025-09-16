@@ -2,7 +2,7 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
-## Unreleased
+## 3.3.0-beta.0
 ### Adicionado
 - Adicionado suporte para vite.
 - Adiciono a store hub ao Pinia globalmente para não ser necessário fazer manual nos produtos, verificar e remover nos produtos caso exista.
